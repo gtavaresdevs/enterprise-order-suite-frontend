@@ -8,22 +8,30 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # Dependencies and Build Outputs
-node_modules
-dist
-dist-ssr
-coverage
+node_modules/
+dist/
+dist-ssr/
+coverage/
 
-# Environments
+# Environment files
+.env
+.env.*
 *.local
 
-# Editor directories and files
+# IDE / Editor
 .vscode/
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-.idea
+
+.idea/
 .DS_Store
+
+# OS / Windows
+Thumbs.db
+
+# Visual Studio
 *.suo
 *.ntvs*
 *.njsproj
