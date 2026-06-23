@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { isAxiosError } from 'axios';
+import { Link } from 'react-router-dom';
 import { Mail, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -54,9 +55,9 @@ export const LoginForm = () => {
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <Label htmlFor="password">Password</Label>
-          <a href="#" className="text-xs text-slate-600 hover:text-slate-800">
+          <Link to="/forgot-password" className="text-xs text-slate-600 hover:text-slate-800">
             Forgot password?
-          </a>
+          </Link>
         </div>
         <div className="relative">
           <Lock className="absolute left-3 top-3 h-5 w-5 text-slate-400" />
@@ -85,7 +86,11 @@ export const LoginForm = () => {
         </Label>
       </div>
 
-      <Button type="submit" className="w-full bg-slate-700 hover:bg-slate-800" disabled={isPending}>
+      <Button
+        type="submit"
+        className="w-full rounded-[8px] bg-slate-950 hover:bg-slate-900 text-slate-50 font-semibold border border-slate-800 transition-all duration-200 shadow-sm hover:shadow"
+        disabled={isPending}
+      >
         {isPending ? 'Signing in...' : 'Sign In'}
       </Button>
     </form>

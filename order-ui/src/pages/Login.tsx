@@ -1,4 +1,5 @@
 import { Package } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { LoginForm } from '@/features/auth/components/LoginForm';
 
 const LoginPage = () => {
@@ -17,6 +18,16 @@ const LoginPage = () => {
 
           {/* Form Section */}
           <LoginForm />
+
+          <p className="mt-6 text-center text-sm text-slate-600">
+            Don&apos;t have an account?{' '}
+            <Link
+              to="/register"
+              className="font-medium text-slate-800 hover:text-slate-600 hover:underline"
+            >
+              Create account
+            </Link>
+          </p>
         </div>
 
         {/* Footer */}

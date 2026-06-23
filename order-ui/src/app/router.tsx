@@ -1,25 +1,65 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
-import { AppLayout } from '@/components/layout/AppLayout';
-import HomePage from '@/pages/Home';
+
+// ── Layout Interfaces ───────────────────────────────────────
+import { AppLayout } from '@/layouts/app-layout';
+import { ProtectedLayout } from '@/layouts/protected-layout';
+
+// ── Public Pages ────────────────────────────────────────────
 import LoginPage from '@/pages/Login';
+import RegisterPage from '@/pages/Register';
+import ForgotPasswordPage from '@/pages/ForgotPassword';
+import ResetPasswordPage from '@/pages/ResetPassword';
+
+// ── Protected Pages ─────────────────────────────────────────
+import HomePage from '@/pages/Home';
+import OrdersPage from '@/pages/Orders';
 
 export const router = createBrowserRouter([
+  // Public Auth Routes
   {
     path: '/login',
     element: <LoginPage />,
   },
   {
-    element: <AppLayout />,
+    path: '/register',
+    element: <RegisterPage />,
+  },
+  {
+    path: '/forgot-password',
+    element: <ForgotPasswordPage />,
+  },
+  {
+    path: '/reset-password',
+    element: <ResetPasswordPage />,
+  },
+
+  // Protected Application Routes
+  {
+    element: <ProtectedLayout />, // First Boundary: Authentication check
     children: [
       {
-        path: '/home',
-        element: <HomePage />,
+        element: <AppLayout />,   // Second Boundary: Application Shell (Sidebar + Header)
+        children: [
+          {
+            path: '/home',
+            element: <HomePage />,
+          },
+          {
+            path: '/orders',
+            element: <OrdersPage />,
+          },
+          // Future protected routes (/inventory, /analytics, etc.) will be added here
+        ],
       },
     ],
   },
+
+  // Fallbacks & Redirects
   {
     path: '/',
-    element: <Navigate to="/login" replace />,
+    // Redirecting to home enables ProtectedLayout to decide if they should see 
+    // the dashboard or be bounced to login, rather than blindly forcing login.
+    element: <Navigate to="/home" replace />, 
   },
   {
     path: '*',

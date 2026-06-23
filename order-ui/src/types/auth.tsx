@@ -18,3 +18,20 @@ export interface LoginCredentials {
   email: string;
   password?: string; // Optional if using OAuth, but required for your form
 }
+
+export interface RegisterFields {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  role: Role;
+}
+
+export interface ForgotPasswordFields {
+  email: string;
+}
+
+export interface ResetPasswordFields {
+  token: string;
+  newPassword: string;
+}
