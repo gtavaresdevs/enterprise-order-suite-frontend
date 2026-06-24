@@ -1,5 +1,13 @@
 import type { ElementType } from "react";
 
+// ── Navigation & Action Contracts ───────────────────────────────────────────
+
+export interface NavItem {
+  icon: ElementType;
+  label: string;
+  to: string;
+}
+
 export interface ActionCard {
   icon: ElementType;
   label: string;
@@ -9,6 +17,8 @@ export interface ActionCard {
   accent: string;
   iconBg: string;
 }
+
+// ── Dashboard/Portal Data Contracts ────────────────────────────────────────
 
 export interface Stat {
   label: string;

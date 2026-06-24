@@ -13,6 +13,10 @@ import ResetPasswordPage from '@/pages/ResetPassword';
 // ── Protected Pages ─────────────────────────────────────────
 import HomePage from '@/pages/Home';
 import OrdersPage from '@/pages/Orders';
+import ProfilePage from '@/pages/Profile';
+import NotificationsPage from '@/pages/Notifications';
+import PreferencesPage from '@/pages/Preferences';
+import SettingsPage from '@/pages/Settings';
 
 export const router = createBrowserRouter([
   // Public Auth Routes
@@ -48,7 +52,22 @@ export const router = createBrowserRouter([
             path: '/orders',
             element: <OrdersPage />,
           },
-          // Future protected routes (/inventory, /analytics, etc.) will be added here
+          {
+            path: '/profile',
+            element: <ProfilePage />,
+          },
+          {
+            path: '/notifications',
+            element: <NotificationsPage />,
+          },
+          {
+            path: '/preferences',
+            element: <PreferencesPage />,
+          },
+          {
+            path: '/settings',
+            element: <SettingsPage />,
+          },
         ],
       },
     ],
@@ -59,7 +78,7 @@ export const router = createBrowserRouter([
     path: '/',
     // Redirecting to home enables ProtectedLayout to decide if they should see 
     // the dashboard or be bounced to login, rather than blindly forcing login.
-    element: <Navigate to="/home" replace />, 
+    element: <Navigate to="/home" replace />,
   },
   {
     path: '*',

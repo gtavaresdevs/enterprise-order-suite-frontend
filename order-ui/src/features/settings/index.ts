@@ -1,0 +1,1 @@
+export { SettingsFeature } from "@/features/settings/components/SettingsFeature";

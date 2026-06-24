@@ -1,0 +1,1 @@
+export { NotificationsFeature } from "@/features/notifications/components/NotificationsFeature";

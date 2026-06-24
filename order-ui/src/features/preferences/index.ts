@@ -1,0 +1,1 @@
+export { PreferencesFeature } from "@/features/preferences/components/PreferencesFeature";

@@ -1,0 +1,1 @@
+export { ProfileFeature } from "@/features/profile/components/ProfileFeature";
