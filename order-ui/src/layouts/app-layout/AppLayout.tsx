@@ -8,14 +8,14 @@ export function AppLayout() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     return (
-        <div className="flex h-screen w-full bg-slate-50 font-sans overflow-hidden">
+        <div className="flex h-screen w-full bg-[#f8fafc] overflow-hidden" style={{ fontFamily: "'Outfit', sans-serif" }}>
 
             {/* ── Desktop Sidebar ── */}
             <Sidebar />
 
             {/* ── Mobile Sidebar (Drawer via ShadCN) ── */}
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-                <SheetContent side="left" className="w-64 p-0 bg-slate-950 border-r-slate-800">
+                <SheetContent side="left" className="w-[220px] p-0 bg-white border-r-slate-100">
                     <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                     <SidebarContent onNavigate={() => setIsMobileMenuOpen(false)} />
                 </SheetContent>

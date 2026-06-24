@@ -70,6 +70,19 @@ export const router = createBrowserRouter([
           },
         ],
       },
+      // Unbuilt nav stubs — redirect home
+      {
+        path: '/inventory',
+        element: <Navigate to="/home" replace />,
+      },
+      {
+        path: '/analytics',
+        element: <Navigate to="/home" replace />,
+      },
+      {
+        path: '/security',
+        element: <Navigate to="/settings" replace />,
+      },
     ],
   },
 
