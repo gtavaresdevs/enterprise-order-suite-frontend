@@ -24,8 +24,6 @@ export function PreferenceSectionCard({
                     <p className="text-xs text-slate-400">{description}</p>
                 </div>
             </CardHeader>
-
-            {/* Delegating all internal padding purely to CardContent and utilizing Flex layout */}
             <CardContent className="p-5 flex flex-col gap-5">
                 {children}
             </CardContent>

@@ -13,10 +13,14 @@ import ResetPasswordPage from '@/pages/ResetPassword';
 // ── Protected Pages ─────────────────────────────────────────
 import HomePage from '@/pages/Home';
 import OrdersPage from '@/pages/Orders';
+import InventoryPage from '@/pages/inventory';
 import ProfilePage from '@/pages/Profile';
 import NotificationsPage from '@/pages/Notifications';
 import PreferencesPage from '@/pages/Preferences';
 import SettingsPage from '@/pages/Settings';
+
+// ── Standalone Pages ────────────────────────────────────────
+// import StorefrontPage from '@/pages/Storefront';
 
 export const router = createBrowserRouter([
   // Public Auth Routes
@@ -37,6 +41,12 @@ export const router = createBrowserRouter([
     element: <ResetPasswordPage />,
   },
 
+  // Standalone Routes (Outside Admin Shell)
+  // {
+  //path: '/storefront',
+  //element: <StorefrontPage />,
+  //},
+
   // Protected Application Routes
   {
     element: <ProtectedLayout />, // First Boundary: Authentication check
@@ -51,6 +61,10 @@ export const router = createBrowserRouter([
           {
             path: '/orders',
             element: <OrdersPage />,
+          },
+          {
+            path: '/inventory',
+            element: <InventoryPage />,
           },
           {
             path: '/profile',
@@ -70,11 +84,7 @@ export const router = createBrowserRouter([
           },
         ],
       },
-      // Unbuilt nav stubs — redirect home
-      {
-        path: '/inventory',
-        element: <Navigate to="/home" replace />,
-      },
+      // Redirects for unbuilt or legacy-mapped paths
       {
         path: '/analytics',
         element: <Navigate to="/home" replace />,
@@ -89,8 +99,6 @@ export const router = createBrowserRouter([
   // Fallbacks & Redirects
   {
     path: '/',
-    // Redirecting to home enables ProtectedLayout to decide if they should see 
-    // the dashboard or be bounced to login, rather than blindly forcing login.
     element: <Navigate to="/home" replace />,
   },
   {

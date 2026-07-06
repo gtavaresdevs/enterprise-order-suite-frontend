@@ -1,8 +1,8 @@
 import { useState, useCallback } from "react";
-import type { PreferencesState, ThemeOption, SidebarOption } from "@/types/preferences";
+import type { PreferencesState } from "@/types/preferences";
 import {
-    TIMEZONES,
     LANGUAGES,
+    TIMEZONES,
     DATE_FORMATS,
     CURRENCIES,
     FONT_SIZES,
@@ -33,10 +33,9 @@ export function usePreferences() {
     }, []);
 
     const savePreferences = useCallback(() => {
-        // In production, this would trigger a TanStack Query mutation via preferencesService
         setIsSaved(true);
         setTimeout(() => setIsSaved(false), 2200);
-    }, [preferences]);
+    }, []);
 
     return {
         preferences,

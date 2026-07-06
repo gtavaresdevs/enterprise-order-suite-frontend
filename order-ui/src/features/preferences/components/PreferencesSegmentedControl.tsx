@@ -1,5 +1,3 @@
-// Implemented as a feature component since it's a specific visual primitive 
-// that sits outside the standard ShadCN Tabs ARIA-tablist structure.
 interface SegmentedOption<T> {
     value: T;
     label: string;

@@ -8,7 +8,7 @@ interface PreferencesFooterProps {
 
 export function PreferencesFooter({ isSaved, onSave }: PreferencesFooterProps) {
     return (
-        <div className="mt-2 flex items-center justify-between">
+        <div className="mt-6 flex items-center justify-between">
             <p className="text-xs text-slate-400 font-mono">
                 Preferences are applied immediately after saving.
             </p>

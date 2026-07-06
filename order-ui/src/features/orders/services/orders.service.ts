@@ -1,23 +1,162 @@
 import type { Order } from "@/types/orders";
 
-/**
- * Service Layer: API Communication Only
- * Currently acts as a structural boundary blueprint. Replace mock promises
- * with real Axios/fetch calls once endpoints are available.
- */
-export const OrdersService = {
-  getOrders: async (): Promise<Order[]> => {
-    // Expected API: GET /api/v1/orders
-    throw new Error("Not implemented - replace with actual API call");
+export const ORDERS: Order[] = [
+  {
+    id: "DEL-2024-8801",
+    customer: "Marcus Chen",
+    company: "Self",
+    email: "m.chen@gmail.com",
+    phone: "+1 (415) 555-0182",
+    deliveryAddress: "142 Oak Street, Apt 4B, San Francisco, CA 94102",
+    estimatedDelivery: "14:35",
+    products: [
+      {
+        id: "ITM-001", name: "Double Smash Burger", quantity: 2, unitPrice: 14.99,
+        modifiers: [
+          { label: "No Onion", price: 0, type: "remove" },
+          { label: "Extra Bacon", price: 2.00, type: "addon" },
+          { label: "Extra Cheese", price: 1.50, type: "addon" },
+        ],
+      },
+      { id: "ITM-002", name: "Loaded Fries", quantity: 1, unitPrice: 8.99, modifiers: [] },
+    ],
+    dateCreated: "2024-11-20",
+    total: 42.47,
+    status: "Preparing",
   },
-
-  createOrder: async (order: Omit<Order, "id">): Promise<Order> => {
-    // Expected API: POST /api/v1/orders
-    throw new Error("Not implemented - replace with actual API call");
+  {
+    id: "DEL-2024-8802",
+    customer: "Alicia Torres",
+    company: "Self",
+    email: "alicia.t@outlook.com",
+    phone: "+1 (628) 555-0294",
+    deliveryAddress: "780 Market St, Floor 3, San Francisco, CA 94102",
+    estimatedDelivery: "14:50",
+    products: [
+      {
+        id: "ITM-003", name: "Margherita Pizza 12\"", quantity: 1, unitPrice: 18.99,
+        modifiers: [
+          { label: "Extra Crispy Crust", price: 0, type: "addon" },
+          { label: "No Basil", price: 0, type: "remove" },
+        ],
+      },
+      {
+        id: "ITM-004", name: "Caramel Latte", quantity: 2, unitPrice: 5.99,
+        modifiers: [
+          { label: "Oat Milk", price: 0.80, type: "addon" },
+          { label: "No Sugar", price: 0, type: "remove" },
+        ],
+      },
+    ],
+    dateCreated: "2024-11-20",
+    total: 43.56,
+    status: "New",
   },
-
-  deleteOrder: async (id: string): Promise<void> => {
-    // Expected API: DELETE /api/v1/orders/{id}
-    throw new Error("Not implemented - replace with actual API call");
-  }
-};
+  {
+    id: "DEL-2024-8803",
+    customer: "Jordan Webb",
+    company: "Self",
+    email: "j.webb@proton.me",
+    phone: "+1 (510) 555-0371",
+    deliveryAddress: "33 Valencia St, Apt 12, San Francisco, CA 94110",
+    estimatedDelivery: "14:20",
+    products: [
+      {
+        id: "ITM-005", name: "Crispy Chicken Sandwich", quantity: 1, unitPrice: 13.49,
+        modifiers: [
+          { label: "Spicy Level 2", price: 0, type: "addon" },
+          { label: "Add Avocado", price: 1.50, type: "addon" },
+        ],
+      },
+      { id: "ITM-006", name: "Strawberry Milkshake", quantity: 1, unitPrice: 7.49, modifiers: [] },
+    ],
+    dateCreated: "2024-11-20",
+    total: 23.48,
+    status: "In Route",
+  },
+  {
+    id: "DEL-2024-8804",
+    customer: "Priya Nair",
+    company: "Self",
+    email: "p.nair@gmail.com",
+    phone: "+1 (415) 555-0449",
+    deliveryAddress: "501 Brannan St, Suite 101, San Francisco, CA 94107",
+    estimatedDelivery: "13:45",
+    products: [
+      { id: "ITM-007", name: "Caesar Salad", quantity: 2, unitPrice: 11.99, modifiers: [{ label: "No Croutons", price: 0, type: "remove" }] },
+      { id: "ITM-008", name: "Sparkling Water", quantity: 2, unitPrice: 2.49, modifiers: [] },
+    ],
+    dateCreated: "2024-11-20",
+    total: 29.94,
+    status: "Delivered",
+  },
+  {
+    id: "DEL-2024-8805",
+    customer: "Lena Fischer",
+    company: "Self",
+    email: "lena.f@gmail.com",
+    phone: "+1 (408) 555-0512",
+    deliveryAddress: "2180 Bryant St, Apt 6, San Francisco, CA 94110",
+    estimatedDelivery: "15:10",
+    products: [
+      {
+        id: "ITM-009", name: "Truffle Fries", quantity: 1, unitPrice: 10.99,
+        modifiers: [{ label: "Extra Truffle Oil", price: 1.50, type: "addon" }],
+      },
+      { id: "ITM-010", name: "Chocolate Brownie", quantity: 2, unitPrice: 6.49, modifiers: [] },
+    ],
+    dateCreated: "2024-11-20",
+    total: 25.47,
+    status: "New",
+  },
+  {
+    id: "DEL-2024-8806",
+    customer: "Mateo Rivera",
+    company: "Self",
+    email: "mateo.r@icloud.com",
+    phone: "+1 (650) 555-0673",
+    deliveryAddress: "88 King St, Apt 2A, San Francisco, CA 94107",
+    estimatedDelivery: "14:05",
+    products: [
+      {
+        id: "ITM-011", name: "Double Smash Burger", quantity: 3, unitPrice: 14.99,
+        modifiers: [{ label: "No Pickles", price: 0, type: "remove" }, { label: "Truffle Mayo", price: 1.00, type: "addon" }],
+      },
+    ],
+    dateCreated: "2024-11-20",
+    total: 50.97,
+    status: "In Route",
+  },
+  {
+    id: "DEL-2024-8807",
+    customer: "Sophie Laurent",
+    company: "Self",
+    email: "sophie.l@gmail.com",
+    phone: "+1 (415) 555-0821",
+    deliveryAddress: "1260 Mission St, San Francisco, CA 94103",
+    estimatedDelivery: "13:15",
+    products: [
+      { id: "ITM-012", name: "Margherita Pizza 12\"", quantity: 1, unitPrice: 18.99, modifiers: [] },
+      { id: "ITM-013", name: "Caramel Latte", quantity: 1, unitPrice: 5.99, modifiers: [{ label: "Almond Milk", price: 0.80, type: "addon" }] },
+    ],
+    dateCreated: "2024-11-19",
+    total: 25.78,
+    status: "Delivered",
+  },
+  {
+    id: "DEL-2024-8808",
+    customer: "Kwame Asante",
+    company: "Self",
+    email: "k.asante@gmail.com",
+    phone: "+1 (415) 555-0934",
+    deliveryAddress: "39 Dolores St, Apt 7, San Francisco, CA 94103",
+    estimatedDelivery: "15:30",
+    products: [
+      { id: "ITM-014", name: "Crispy Chicken Sandwich", quantity: 2, unitPrice: 13.49, modifiers: [{ label: "BBQ Sauce", price: 0, type: "addon" }] },
+      { id: "ITM-015", name: "Loaded Fries", quantity: 2, unitPrice: 8.99, modifiers: [] },
+    ],
+    dateCreated: "2024-11-20",
+    total: 47.96,
+    status: "Preparing",
+  },
+];

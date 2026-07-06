@@ -4,12 +4,13 @@ import {
 } from "lucide-react";
 import { usePreferences } from "@/features/preferences/hooks/usePreferences";
 import { PreferencesHeader } from "@/features/preferences/components/PreferencesHeader";
-import { PreferenceSectionCard } from "@/features/preferences/components/PreferenceSectionCard";
-import { PreferenceRow } from "@/features/preferences/components/PreferenceRow";
+import { PreferenceSectionCard } from "@/features/preferences/components/PreferencesSectionCard";
+import { PreferenceRow } from "@/features/preferences/components/PreferencesRow";
 import { PreferencesSegmentedControl } from "@/features/preferences/components/PreferencesSegmentedControl";
 import { PreferencesSelect } from "@/features/preferences/components/PreferencesSelect";
+import { PreferencesToggle } from "@/features/preferences/components/PreferencesToggle";
 import { PreferencesFooter } from "@/features/preferences/components/PreferencesFooter";
-import { Switch } from "@/components/ui/switch";
+import { StorefrontSection } from "@/features/preferences/components/StorefrontSection";
 import { Separator } from "@/components/ui/separator";
 import {
     TIMEZONES, LANGUAGES, DATE_FORMATS, CURRENCIES, FONT_SIZES,
@@ -27,12 +28,14 @@ export function PreferencesFeature() {
     return (
         <div className="min-h-full font-['Outfit',sans-serif]">
             <div className="fixed inset-0 pointer-events-none z-0" style={DOT_BG} />
-            <div className="relative z-10 max-w-[800px] mx-auto px-6 py-8 flex flex-col gap-8">
+            <div className="relative z-10 max-w-[800px] mx-auto px-6 py-8">
+                <div className="mb-8">
+                    <PreferencesHeader />
+                </div>
 
-                <PreferencesHeader />
+                <div className="space-y-4">
+                    <StorefrontSection />
 
-                <div className="flex flex-col gap-4">
-                    {/* Interface Section */}
                     <PreferenceSectionCard icon={Monitor} title="Interface" description="Visual theme and display density options.">
                         <PreferenceRow label="Color Theme" sub="Controls the global visual mode of the dashboard.">
                             <PreferencesSegmentedControl
@@ -45,34 +48,33 @@ export function PreferencesFeature() {
                                 ]}
                             />
                         </PreferenceRow>
-                        <Separator className="bg-slate-50" />
+                        <Separator />
                         <PreferenceRow label="Font Size" sub="Base text size for all UI elements.">
                             <div className="w-52">
                                 <PreferencesSelect value={preferences.fontSize} onChange={(v) => updatePreference("fontSize", v)} options={FONT_SIZES} icon={Type} />
                             </div>
                         </PreferenceRow>
-                        <Separator className="bg-slate-50" />
+                        <Separator />
                         <PreferenceRow label="Compact Mode" sub="Reduce padding and spacing for higher information density.">
-                            <Switch checked={preferences.compactMode} onCheckedChange={(v) => updatePreference("compactMode", v)} />
+                            <PreferencesToggle checked={preferences.compactMode} onChange={(v) => updatePreference("compactMode", v)} />
                         </PreferenceRow>
-                        <Separator className="bg-slate-50" />
+                        <Separator />
                         <PreferenceRow label="Dense Table Rows" sub="Show more order rows per screen in the data table.">
-                            <Switch checked={preferences.denseTable} onCheckedChange={(v) => updatePreference("denseTable", v)} />
+                            <PreferencesToggle checked={preferences.denseTable} onChange={(v) => updatePreference("denseTable", v)} />
                         </PreferenceRow>
-                        <Separator className="bg-slate-50" />
+                        <Separator />
                         <PreferenceRow label="Reduce Motion" sub="Disable non-essential transitions and animations.">
-                            <Switch checked={preferences.reducedMotion} onCheckedChange={(v) => updatePreference("reducedMotion", v)} />
+                            <PreferencesToggle checked={preferences.reducedMotion} onChange={(v) => updatePreference("reducedMotion", v)} />
                         </PreferenceRow>
                     </PreferenceSectionCard>
 
-                    {/* Regional Section */}
                     <PreferenceSectionCard icon={Globe} title="Regional" description="Time zone, language, and localization preferences.">
                         <PreferenceRow label="Language" sub="Interface text and content language.">
                             <div className="w-56">
                                 <PreferencesSelect value={preferences.language} onChange={(v) => updatePreference("language", v)} options={LANGUAGES} icon={Globe} />
                             </div>
                         </PreferenceRow>
-                        <Separator className="bg-slate-50" />
+                        <Separator />
                         <PreferenceRow label="Time Zone" sub="Used for order timestamps and scheduling displays.">
                             <div className="w-72">
                                 <PreferencesSelect value={preferences.timezone} onChange={(v) => updatePreference("timezone", v)} options={TIMEZONES} />
@@ -80,14 +82,13 @@ export function PreferencesFeature() {
                         </PreferenceRow>
                     </PreferenceSectionCard>
 
-                    {/* Data Formatting Section */}
                     <PreferenceSectionCard icon={Rows3} title="Data Formatting" description="Date, currency, and numerical display conventions.">
                         <PreferenceRow label="Date Format" sub="How dates are displayed across order and transaction records.">
                             <div className="w-44">
                                 <PreferencesSelect value={preferences.dateFormat} onChange={(v) => updatePreference("dateFormat", v)} options={DATE_FORMATS} icon={Calendar} />
                             </div>
                         </PreferenceRow>
-                        <Separator className="bg-slate-50" />
+                        <Separator />
                         <PreferenceRow label="Currency" sub="Default currency for pricing, invoices, and totals.">
                             <div className="w-52">
                                 <PreferencesSelect value={preferences.currency} onChange={(v) => updatePreference("currency", v)} options={CURRENCIES} icon={DollarSign} />
@@ -95,7 +96,6 @@ export function PreferencesFeature() {
                         </PreferenceRow>
                     </PreferenceSectionCard>
 
-                    {/* Layout Section */}
                     <PreferenceSectionCard icon={Layout} title="Layout" description="Configure dashboard panel and sidebar behavior.">
                         <PreferenceRow label="Sidebar Navigation" sub="Pin the sidebar or collapse to icon-only mode.">
                             <PreferencesSegmentedControl

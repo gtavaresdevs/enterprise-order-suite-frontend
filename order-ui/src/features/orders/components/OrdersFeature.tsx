@@ -1,15 +1,9 @@
 import { useState } from "react";
-import { ShoppingCart, Plus, Package, Search } from "lucide-react";
-import type { Order } from "@/types/orders";
+import { ShoppingCart, Plus, Search, Package } from "lucide-react";
+import type { Order, OrderStatus } from "@/types/orders";
 import { useOrders } from "@/features/orders/hooks/useOrders";
 import { useOrderFilters } from "@/features/orders/hooks/useOrderFilters";
-import { STATUS_CONFIG, FILTERS } from "@/features/orders/constants/orders.constants";
-
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-
+import { STATUS_CONFIG, FILTERS, fmt } from "@/features/orders/constants/orders.constants";
 import { OrderRow } from "./OrderRow";
 import { OrderDrawer } from "./OrderDrawer";
 import { DeleteOrderModal } from "./DeleteOrderModal";
@@ -24,107 +18,78 @@ export function OrdersFeature() {
     const [createOpen, setCreateOpen] = useState(false);
 
     return (
-        <div className="min-h-full font-['Outfit']">
+        <div className="min-h-full" style={{ fontFamily: "'Outfit', sans-serif" }}>
             <div className="fixed inset-0 pointer-events-none z-0" style={{ backgroundImage: "radial-gradient(#0f172a 1px, transparent 1px)", backgroundSize: "32px 32px", opacity: 0.03 }} />
-
-            <div className="relative z-10 max-w-[1200px] mx-auto px-6 py-8 flex flex-col gap-8">
-
-                {/* Header Area */}
-                <div className="flex items-start justify-between">
-                    <div className="flex flex-col items-start gap-1">
-                        <div className="flex items-center gap-2 mb-1">
-                            <ShoppingCart className="w-4 h-4 text-slate-400" />
-                            <span className="text-xs font-medium text-slate-400 uppercase tracking-widest">Enterprise Order Suite</span>
-                        </div>
-                        <h1 className="text-2xl font-semibold text-slate-900 leading-tight">Order Operations</h1>
-                        <p className="text-sm text-slate-400">Manage, verify, and track enterprise logistical fulfillment.</p>
+            <div className="relative z-10 max-w-[1200px] mx-auto px-6 py-8">
+                <div className="flex items-start justify-between mb-8">
+                    <div>
+                        <div className="flex items-center gap-2 mb-1"><ShoppingCart className="w-4 h-4 text-slate-400" /><span className="text-xs font-medium text-slate-400 uppercase tracking-widest">Enterprise Order Suite</span></div>
+                        <h1 className="text-2xl font-semibold text-slate-900">Order Operations</h1>
+                        <p className="text-sm text-slate-400 mt-1">Manage and track active delivery orders in real time.</p>
                     </div>
-                    <Button onClick={() => setCreateOpen(true)} className="gap-2 mt-1">
-                        <Plus className="w-4 h-4" /> Create Order
-                    </Button>
+                    <button onClick={() => setCreateOpen(true)} className="inline-flex items-center gap-2 h-9 px-4 rounded-[8px] bg-slate-950 text-slate-50 text-sm font-semibold border border-slate-800 shadow-inner hover:bg-slate-800 active:scale-[0.98] transition-all mt-1">
+                        <Plus className="w-3.5 h-3.5" /> New Order
+                    </button>
                 </div>
 
-                {/* 2x2 Grid constraint enforcement */}
-                <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {(Object.keys(STATUS_CONFIG) as (keyof typeof STATUS_CONFIG)[]).map((s) => {
+                <div className="grid grid-cols-4 gap-3 mb-6">
+                    {(["New", "Preparing", "In Route", "Delivered"] as OrderStatus[]).map((s) => {
                         const cfg = STATUS_CONFIG[s];
                         return (
-                            <Card key={s} className="border-slate-100 shadow-sm">
-                                <CardContent className="p-4 flex items-center justify-between">
-                                    <div className="flex flex-col items-start gap-1">
-                                        <p className="text-xs text-slate-400 font-medium uppercase tracking-wide">{s}</p>
-                                        <p className="text-2xl font-semibold text-slate-900 font-mono">{counts[s] ?? 0}</p>
-                                    </div>
-                                    <span className={`w-8 h-8 rounded-[8px] flex items-center justify-center ${cfg.dot} bg-opacity-15`}>
-                                        <cfg.Icon className={`w-4 h-4 ${cfg.dot.replace("bg-", "text-")}`} />
-                                    </span>
-                                </CardContent>
-                            </Card>
+                            <div key={s} className="bg-white rounded-[8px] border border-slate-100 px-4 py-3.5 flex items-center justify-between">
+                                <div>
+                                    <p className="text-xs text-slate-400 font-medium mb-1 uppercase tracking-wide">{s}</p>
+                                    <p className="text-2xl font-semibold text-slate-900 font-mono">{counts[s] ?? 0}</p>
+                                </div>
+                                <div className={`w-9 h-9 rounded-[8px] flex items-center justify-center ${cfg.dot.replace("bg-", "bg-").replace(/bg-(\w+)-\d+/, "bg-$1-50")}`}>
+                                    <cfg.Icon className={`w-4 h-4 ${cfg.dot.replace("bg-", "text-")}`} />
+                                </div>
+                            </div>
                         );
                     })}
                 </div>
 
-                {/* Sticky Toolbar */}
-                <div className="sticky top-4 z-30">
-                    <Card className="bg-white/90 backdrop-blur-md shadow-sm">
-                        <CardContent className="p-3 flex items-center gap-4">
-                            <div className="relative flex-1">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-                                <Input type="text" value={search} onChange={(e) => setSearch(e.target.value)}
-                                    placeholder="Search orders by ID, customer name, or status..." className="pl-9 h-9" />
-                            </div>
-                            <div className="w-px h-5 bg-slate-200" />
-                            <div className="flex items-center gap-2">
-                                {FILTERS.map((f) => (
-                                    <Button key={f} variant={activeFilter === f ? "default" : "secondary"} size="sm" onClick={() => setActiveFilter(f)} className="h-8">
-                                        {f} <Badge variant={activeFilter === f ? "secondary" : "outline"} className="ml-1.5 opacity-70 font-mono">{counts[f] ?? 0}</Badge>
-                                    </Button>
-                                ))}
-                            </div>
-                        </CardContent>
-                    </Card>
+                <div className="sticky top-4 z-30 mb-4">
+                    <div className="bg-white/90 backdrop-blur-md border border-slate-100 rounded-[8px] px-4 py-3 flex items-center gap-3 shadow-sm">
+                        <div className="relative flex-1">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                            <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search by order ID, customer name, or status..." className="w-full h-9 pl-9 pr-4 rounded-[8px] bg-slate-50 border border-slate-200 text-sm text-slate-800 placeholder-slate-400 outline-none focus:ring-2 focus:ring-slate-950/10 focus:border-slate-300 transition-all" />
+                        </div>
+                        <div className="w-px h-5 bg-slate-200" />
+                        <div className="flex items-center gap-1.5">
+                            {FILTERS.map((f) => (
+                                <button key={f} onClick={() => setActiveFilter(f)} className={`h-7 px-3 rounded-[8px] text-xs font-medium transition-all ${activeFilter === f ? "bg-slate-950 text-slate-50 border border-slate-800 shadow-inner" : "bg-slate-100 text-slate-500 hover:bg-slate-200"}`}>
+                                    {f}<span className="ml-1.5 font-mono text-slate-400">{counts[f] ?? 0}</span>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
                 </div>
 
-                {/* Table Area */}
-                <Card className="shadow-sm">
-                    <CardHeader className="p-0 border-b border-slate-100 bg-slate-50/70 rounded-t-xl">
-                        <div className="flex items-center gap-4 px-4 py-3">
-                            <span className="w-32 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Order ID</span>
-                            <span className="flex-1 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Customer</span>
-                            <span className="w-32 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Products</span>
-                            <span className="w-28 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Date Created</span>
-                            <span className="w-24 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Total</span>
-                            <span className="w-32 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Status</span>
-                            <span className="w-28"></span>
+                <div className="bg-white rounded-[8px] border border-slate-100 shadow-sm overflow-hidden">
+                    <div className="grid grid-cols-[1fr_1.2fr_0.8fr_0.7fr_0.8fr_0.7fr_auto] gap-4 items-center px-5 py-3 border-b border-slate-100 bg-slate-50/70">
+                        {["Order ID", "Customer", "Items", "Date", "Total", "Status", ""].map((col, i) => (
+                            <span key={i} className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">{col}</span>
+                        ))}
+                    </div>
+                    {filteredOrders.length === 0 ? (
+                        <div className="py-16 flex flex-col items-center gap-3">
+                            <Package className="w-8 h-8 text-slate-200" />
+                            <div className="text-center"><p className="text-sm font-medium text-slate-500">No orders found</p><p className="text-xs text-slate-400 mt-0.5">Try adjusting your search or filter.</p></div>
                         </div>
-                    </CardHeader>
-                    <CardContent className="p-0">
-                        {filteredOrders.length === 0 ? (
-                            <div className="py-16 flex flex-col items-center justify-center gap-3 text-center">
-                                <Package className="w-8 h-8 text-slate-200" />
-                                <div className="flex flex-col items-center gap-0.5">
-                                    <p className="text-sm font-medium text-slate-500">No orders found</p>
-                                    <p className="text-xs text-slate-400">Try adjusting your search or filter.</p>
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="flex flex-col divide-y divide-slate-50">
-                                {filteredOrders.map((order) => (
-                                    <OrderRow key={order.id} order={order} onView={() => setSelectedOrder(order)} onEdit={() => setSelectedOrder(order)} onDelete={() => setDeleteTarget(order)} />
-                                ))}
-                            </div>
-                        )}
-                    </CardContent>
-                    <CardFooter className="p-4 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between rounded-b-xl">
+                    ) : (
+                        <div className="divide-y divide-slate-50">
+                            {filteredOrders.map((order) => (
+                                <OrderRow key={order.id} order={order} onView={() => setSelectedOrder(order)} onEdit={() => setSelectedOrder(order)} onDelete={() => setDeleteTarget(order)} />
+                            ))}
+                        </div>
+                    )}
+                    <div className="px-5 py-3 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between">
                         <span className="text-xs text-slate-400 font-mono">Showing {filteredOrders.length} of {orders.length} orders</span>
-                        <div className="flex items-center gap-1.5">
-                            <span className="text-xs text-slate-400">via</span>
-                            <Badge variant="secondary" className="font-mono text-[11px] text-slate-500 font-normal">GET /api/v1/orders</Badge>
-                        </div>
-                    </CardFooter>
-                </Card>
+                        <span className="font-mono text-[11px] text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">GET /api/v1/orders</span>
+                    </div>
+                </div>
             </div>
-
             {selectedOrder && <OrderDrawer order={selectedOrder} onClose={() => setSelectedOrder(null)} />}
             {deleteTarget && <DeleteOrderModal order={deleteTarget} onConfirm={() => { deleteOrder(deleteTarget.id); setDeleteTarget(null); }} onCancel={() => setDeleteTarget(null)} />}
             {createOpen && <CreateOrderModal onClose={() => setCreateOpen(false)} onSave={createOrder} />}

@@ -20,12 +20,7 @@ export const LANGUAGES = [
     "Español",
 ];
 
-export const DATE_FORMATS = [
-    "MM/DD/YYYY",
-    "DD/MM/YYYY",
-    "YYYY-MM-DD",
-    "D MMM YYYY",
-];
+export const DATE_FORMATS = ["MM/DD/YYYY", "DD/MM/YYYY", "YYYY-MM-DD", "D MMM YYYY"];
 
 export const CURRENCIES = [
     "USD — US Dollar",
@@ -36,8 +31,4 @@ export const CURRENCIES = [
     "INR — Indian Rupee",
 ];
 
-export const FONT_SIZES = [
-    "Compact (13px)",
-    "Default (15px)",
-    "Comfortable (17px)",
-];
+export const FONT_SIZES = ["Compact (13px)", "Default (15px)", "Comfortable (17px)"];

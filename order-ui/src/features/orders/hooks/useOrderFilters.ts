@@ -1,32 +1,23 @@
 import { useState, useMemo } from "react";
-import type { Order, OrderFilter } from "@/types/orders";
+import type { Order, OrderStatus } from "@/types/orders";
 
 export function useOrderFilters(orders: Order[]) {
   const [search, setSearch] = useState("");
-  const [activeFilter, setActiveFilter] = useState<OrderFilter>("All");
+  const [activeFilter, setActiveFilter] = useState<OrderStatus | "All">("All");
 
   const filteredOrders = useMemo(() => {
-    const query = search.toLowerCase();
+    const q = search.toLowerCase();
     return orders.filter((o) => {
-      const matchSearch =
-        !query ||
-        o.id.toLowerCase().includes(query) ||
-        o.customer.toLowerCase().includes(query) ||
-        o.company.toLowerCase().includes(query) ||
-        o.status.toLowerCase().includes(query);
-        
+      const matchSearch = !q || o.id.toLowerCase().includes(q) || o.customer.toLowerCase().includes(q) || o.status.toLowerCase().includes(q);
       const matchFilter = activeFilter === "All" || o.status === activeFilter;
-      
       return matchSearch && matchFilter;
     });
   }, [orders, search, activeFilter]);
 
   const counts = useMemo(() => {
-    const countsMap: Record<string, number> = { All: orders.length };
-    orders.forEach((o) => {
-      countsMap[o.status] = (countsMap[o.status] ?? 0) + 1;
-    });
-    return countsMap;
+    const c: Record<string, number> = { All: orders.length };
+    orders.forEach((o) => { c[o.status] = (c[o.status] ?? 0) + 1; });
+    return c;
   }, [orders]);
 
   return {
