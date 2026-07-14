@@ -17,6 +17,7 @@ export interface KdsTicket {
     id: string;
     customer: string;
     type: 'DELIVERY' | 'DINE-IN' | 'PICKUP';
+    status: TicketStatus;
     isRush: boolean;
     timer: string;
     timerState: 'good' | 'late';

@@ -16,6 +16,7 @@ let mockTickets: KdsTicket[] = [
     id: "#ORD-8802",
     customer: "Marcus T.",
     type: "DELIVERY",
+    status: "preparing",
     isRush: true,
     timer: "18:30",
     timerState: "late", // rose pill
@@ -44,6 +45,7 @@ let mockTickets: KdsTicket[] = [
     id: "#ORD-8803",
     customer: "Walk-in #42",
     type: "DINE-IN",
+    status: "pending",
     isRush: false,
     timer: "04:12",
     timerState: "good", // emerald pill
@@ -71,6 +73,7 @@ let mockTickets: KdsTicket[] = [
     id: "#ORD-8804",
     customer: "UberEats - 1A3F",
     type: "DELIVERY",
+    status: "ready",
     isRush: false,
     timer: "08:15",
     timerState: "good",

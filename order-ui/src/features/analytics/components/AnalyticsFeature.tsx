@@ -5,6 +5,7 @@ import { RevenueChart } from "./RevenueChart";
 import { ChannelChart } from "./ChannelChart";
 import { Heatmap } from "./Heatmap";
 import { TopItemsList } from "./TopItemsList";
+import { AnalyticsHeader } from "./AnalyticsHeader";
 
 export const AnalyticsFeature = () => {
     const { kpis, revenue, channels, topItems, heatmap } = useAnalytics();
@@ -17,23 +18,16 @@ export const AnalyticsFeature = () => {
     };
 
     return (
-        <div className="relative px-8 pt-8 max-w-[1400px] mx-auto pb-12">
-            <div className="flex items-center justify-between mb-8">
-                <div>
-                    <h1 className="text-2xl font-semibold text-slate-900 tracking-tight font-outfit">Analytics & Performance</h1>
-                    <p className="text-sm text-slate-500 mt-1">Monitor your restaurant's key metrics and sales trends.</p>
-                </div>
-                <div className="flex items-center gap-3">
-                    <button className="flex items-center gap-2 px-3 py-2 bg-white border border-slate-200 rounded-[8px] text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors shadow-sm">
-                        <Calendar className="w-4 h-4 text-slate-400" />
-                        Last 30 Days
-                    </button>
-                    <button className="flex items-center gap-4 px-4 py-2 bg-slate-950 text-slate-50 rounded-[8px] text-sm font-semibold hover:bg-slate-900 transition-colors shadow-sm">
-                        <Download className="w-4 h-4" />
-                        Export Report (CSV)
-                    </button>
-                </div>
-            </div>
+        <div className="min-h-full relative pb-12" style={{
+            backgroundImage: "radial-gradient(#0f172a 1px, transparent 1px)",
+            backgroundSize: "24px 24px",
+            backgroundColor: "rgba(248, 250, 252, 0.97)",
+            backgroundBlendMode: "lighten"
+        }}>
+            <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-white/90 to-transparent pointer-events-none" />
+            
+            <div className="relative px-8 pt-8 max-w-[1400px] mx-auto">
+                <AnalyticsHeader />
 
             <div className="grid grid-cols-4 gap-4 mb-6">
                 {kpis.data?.map((kpi, idx) => (
@@ -69,6 +63,7 @@ export const AnalyticsFeature = () => {
                     </div>
                     {channels.data && <ChannelChart data={channels.data} />}
                 </div>
+            </div>
             </div>
         </div>
     );

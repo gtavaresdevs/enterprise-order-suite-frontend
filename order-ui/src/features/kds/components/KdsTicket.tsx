@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 // Alias the imported type to avoid naming collision with the component
 import type { KdsTicket as KdsTicketType } from '@/types/kds';
 import { STATUS_COLORS } from '../constants/kds.constants';
+import { StatusBadge } from './StatusBadge';
 
 interface KdsTicketProps {
     ticket: KdsTicketType;
@@ -40,6 +41,7 @@ export const KdsTicket = ({ ticket, onItemToggle }: KdsTicketProps) => {
                         <Badge variant="outline" className="bg-slate-800/50 text-slate-300 border-slate-700 px-2 py-0.5 rounded-[6px] text-xs font-bold tracking-wide uppercase">
                             {ticket.type}
                         </Badge>
+                        <StatusBadge status={ticket.status} />
                     </div>
                 </div>
 

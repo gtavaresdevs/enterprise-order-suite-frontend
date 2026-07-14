@@ -58,6 +58,9 @@ export const KdsFeature = () => {
                         <button className="px-6 py-1.5 rounded-[6px] text-slate-400 hover:text-slate-200 text-sm font-medium transition-colors">
                             Delivery ({tickets?.filter(t => t.type === 'DELIVERY').length || 0})
                         </button>
+                        <button className="px-6 py-1.5 rounded-[6px] text-slate-400 hover:text-slate-200 text-sm font-medium transition-colors">
+                            Pickup ({tickets?.filter(t => t.type === 'PICKUP').length || 0})
+                        </button>
                     </div>
                 </div>
 
