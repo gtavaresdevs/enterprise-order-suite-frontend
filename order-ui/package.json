@@ -28,7 +28,9 @@
     "lucide-react": "^1.14.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
+    "react-is": "^19.2.7",
     "react-router-dom": "^7.15.0",
+    "recharts": "^3.9.2",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.2.4",
     "vaul": "^1.1.2"

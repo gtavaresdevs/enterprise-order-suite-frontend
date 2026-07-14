@@ -13,14 +13,16 @@ import ResetPasswordPage from '@/pages/ResetPassword';
 // ── Protected Pages ─────────────────────────────────────────
 import HomePage from '@/pages/Home';
 import OrdersPage from '@/pages/Orders';
-import InventoryPage from '@/pages/inventory';
+import InventoryPage from '@/pages/Inventory';
+import AnalyticsPage from '@/pages/Analytics';
 import ProfilePage from '@/pages/Profile';
 import NotificationsPage from '@/pages/Notifications';
 import PreferencesPage from '@/pages/Preferences';
 import SettingsPage from '@/pages/Settings';
 
 // ── Standalone Pages ────────────────────────────────────────
-// import StorefrontPage from '@/pages/Storefront';
+import StorefrontPage from '@/pages/Storefront';
+import KDSPage from '@/pages/Kds';
 
 export const router = createBrowserRouter([
   // Public Auth Routes
@@ -42,10 +44,18 @@ export const router = createBrowserRouter([
   },
 
   // Standalone Routes (Outside Admin Shell)
-  // {
-  //path: '/storefront',
-  //element: <StorefrontPage />,
-  //},
+  {
+    path: '/storefront',
+    element: <StorefrontPage />,
+  },
+  {
+    path: '/checkout',
+    element: <Navigate to="/storefront" replace />,
+  },
+  {
+    path: '/kds',
+    element: <KDSPage />,
+  },
 
   // Protected Application Routes
   {
@@ -67,6 +77,10 @@ export const router = createBrowserRouter([
             element: <InventoryPage />,
           },
           {
+            path: '/analytics',
+            element: <AnalyticsPage />,
+          },
+          {
             path: '/profile',
             element: <ProfilePage />,
           },
@@ -85,10 +99,6 @@ export const router = createBrowserRouter([
         ],
       },
       // Redirects for unbuilt or legacy-mapped paths
-      {
-        path: '/analytics',
-        element: <Navigate to="/home" replace />,
-      },
       {
         path: '/security',
         element: <Navigate to="/settings" replace />,

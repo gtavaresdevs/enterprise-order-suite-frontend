@@ -1,0 +1,1 @@
+export { KdsFeature } from '@/features/kds/components/KDSFeature'
