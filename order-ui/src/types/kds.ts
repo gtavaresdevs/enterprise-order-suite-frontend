@@ -23,3 +23,8 @@ export interface KdsTicket {
     isActive: boolean;
     items: TicketItem[];
 }
+
+export interface KdsSummaryItem {
+    qty: number;
+    name: string;
+}

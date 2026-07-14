@@ -1,1 +1,1 @@
-export { KdsFeature } from '@/features/kds/components/KDSFeature'
+export { KdsFeature } from './components/KdsFeature';
