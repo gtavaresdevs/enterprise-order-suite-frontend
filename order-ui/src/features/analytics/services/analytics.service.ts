@@ -1,4 +1,3 @@
-import api from '@/api/client';
 import type { AnalyticsKPI, RevenueData, ChannelData, TopItem, HeatmapData } from '@/types/analytics';
 import { DollarSign, BarChart3, Clock, Percent } from "lucide-react";
 

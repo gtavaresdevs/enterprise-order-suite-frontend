@@ -1,6 +1,4 @@
-import { Layers, Bell } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { AvatarDropdown } from "./AvatarDropdown";
+import { Layers } from "lucide-react";
 import { useTimestamp } from "../hooks/useTimestamp";
 
 export function HomeHeader() {
@@ -30,20 +28,6 @@ export function HomeHeader() {
                     <span className="font-mono text-sm text-slate-400">{timeStr}</span>
                 </div>
             </div>
-
-            <div className="flex items-center gap-2">
-                <Button
-                    variant="outline"
-                    size="icon"
-                    className="relative w-9 h-9 rounded-[8px] border-slate-200 bg-white text-slate-500 hover:bg-slate-50 hover:border-slate-300 transition-all"
-                >
-                    <Bell className="w-4 h-4" />
-                    <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-blue-500" />
-                </Button>
-
-                <AvatarDropdown />
-            </div>
-
         </div>
     );
 }

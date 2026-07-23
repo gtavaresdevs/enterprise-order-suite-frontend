@@ -1,13 +1,13 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router";
-import { Store, Camera, ImagePlus, ExternalLink, MapPin, Clock, DollarSign } from "lucide-react";
+import { Store, Camera, ImagePlus, ExternalLink } from "lucide-react";
 
 export function StorefrontSection() {
     const navigate = useNavigate();
     const logoRef = useRef<HTMLInputElement>(null);
     const coverRef = useRef<HTMLInputElement>(null);
-    const [logoSrc, setLogoSrc] = useState<string | null>(null);
-    const [coverSrc, setCoverSrc] = useState<string | null>(null);
+    const [logoSrc, _setLogoSrc] = useState<string | null>(null);
+    const [coverSrc, _setCoverSrc] = useState<string | null>(null);
     const [brandColor, setBrandColor] = useState("#0f172a");
 
     const inputCls = "w-full h-9 px-3 rounded-[8px] border border-slate-200 bg-slate-50 text-sm text-slate-800 placeholder-slate-400 outline-none focus:ring-2 focus:ring-slate-950/10 focus:border-slate-400 transition-all";

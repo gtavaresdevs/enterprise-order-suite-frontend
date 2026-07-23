@@ -1,6 +1,6 @@
 import { X, ChevronRight, MapPin, Phone, Mail } from "lucide-react";
 import type { Order, ProductLine } from "@/types/orders";
-import { fmt, STATUS_CONFIG } from "@/features/orders/constants/orders.constants";
+import { fmt } from "@/features/orders/constants/orders.constants";
 import { StatusBadge } from "./StatusBadge";
 
 export function OrderDrawer({ order, onClose }: { order: Order; onClose: () => void }) {

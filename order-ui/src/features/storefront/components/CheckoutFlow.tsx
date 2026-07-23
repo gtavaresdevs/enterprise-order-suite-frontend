@@ -1,4 +1,4 @@
-import { ArrowLeft, MapPin, CreditCard, Smartphone, Banknote } from "lucide-react";
+import { ArrowLeft, MapPin, CreditCard } from "lucide-react";
 
 export const CheckoutFlow = ({ onBack, onComplete }: { onBack: () => void; onComplete: () => void }) => {
     return (

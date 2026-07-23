@@ -1,4 +1,3 @@
-import api from "@/api/client";
 import type { Product } from "@/types/inventory";
 import { MOCK_PRODUCTS } from "../constants/inventory.constants";
 
@@ -25,8 +24,8 @@ export const inventoryService = {
         });
     },
 
-    deleteProduct: async (id: string): Promise<void> => {
-        // await api.delete(`/api/v1/products/${id}`);
+    deleteProduct: async (_id: string): Promise<void> => {
+        // await api.delete(`/api/v1/products/${_id}`);
 
         return new Promise((resolve) => setTimeout(resolve, 300));
     }

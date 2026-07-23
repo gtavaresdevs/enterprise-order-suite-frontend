@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { Sidebar, SidebarContent } from "./Sidebar";
 import { MobileHeader } from "./MobileHeader";
+import { GlobalHeader } from "./GlobalHeader";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 
 export function AppLayout() {
@@ -24,6 +25,7 @@ export function AppLayout() {
             {/* ── Main Content Area ── */}
             <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
                 <MobileHeader onMenuClick={() => setIsMobileMenuOpen(true)} />
+                <GlobalHeader />
 
                 {/* The router outlet layer manages scroll tracking for the primary view */}
                 <main className="flex-1 relative overflow-y-auto focus:outline-none">

@@ -1,4 +1,4 @@
-import { Calendar, Download, BarChart3, DollarSign, Clock, Percent } from "lucide-react";
+import { BarChart3, DollarSign, Clock, Percent } from "lucide-react";
 import { useAnalytics } from "../hooks/useAnalytics";
 import { KPICard } from "./KPICard";
 import { RevenueChart } from "./RevenueChart";
@@ -18,15 +18,15 @@ export const AnalyticsFeature = () => {
     };
 
     return (
-        <div className="min-h-full relative pb-12" style={{
-            backgroundImage: "radial-gradient(#0f172a 1px, transparent 1px)",
-            backgroundSize: "24px 24px",
-            backgroundColor: "rgba(248, 250, 252, 0.97)",
-            backgroundBlendMode: "lighten"
-        }}>
-            <div className="absolute top-0 left-0 right-0 h-64 bg-gradient-to-b from-white/90 to-transparent pointer-events-none" />
+        <div className="min-h-full relative pb-12" style={{ fontFamily: "'Outfit', sans-serif" }}>
+            <div className="fixed inset-0 pointer-events-none z-0" style={{ 
+                backgroundImage: "radial-gradient(#0f172a 1px, transparent 1px)", 
+                backgroundSize: "32px 32px", 
+                opacity: 0.03 
+            }} />
+
             
-            <div className="relative px-8 pt-8 max-w-[1400px] mx-auto">
+            <div className="relative px-8 pt-8 max-w-[1400px] mx-auto z-10">
                 <AnalyticsHeader />
 
             <div className="grid grid-cols-4 gap-4 mb-6">

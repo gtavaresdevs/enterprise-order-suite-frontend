@@ -5,7 +5,7 @@ export const preferencesService = {
         return Promise.resolve({});
     },
 
-    savePreferences: async (preferences: PreferencesState): Promise<void> => {
+    savePreferences: async (_preferences: PreferencesState): Promise<void> => {
         return new Promise((resolve) => setTimeout(resolve, 500));
     }
 };
