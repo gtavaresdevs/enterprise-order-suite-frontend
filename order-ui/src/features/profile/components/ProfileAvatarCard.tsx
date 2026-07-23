@@ -9,7 +9,7 @@ interface ProfileAvatarCardProps {
     name: string;
     role: string;
     avatarSrc?: string;
-    fileInputRef: React.RefObject<HTMLInputElement>;
+    fileInputRef: React.RefObject<HTMLInputElement | null>;
     onTriggerUpload: () => void;
     onUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }

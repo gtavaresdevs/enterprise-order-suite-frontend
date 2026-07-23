@@ -24,3 +24,11 @@ export const forgotPasswordRequest = async (data: ForgotPasswordFields): Promise
 export const resetPasswordRequest = async (data: ResetPasswordFields): Promise<void> => {
   await api.post('/auth/reset-password', data);
 };
+
+export const logoutRequest = async (): Promise<void> => {
+  // If your backend supports blacklisting tokens on logout, call the endpoint:
+  // await api.post('/auth/logout');
+  
+  // As a fallback or if it's purely client-side, we can just resolve immediately
+  return Promise.resolve();
+};

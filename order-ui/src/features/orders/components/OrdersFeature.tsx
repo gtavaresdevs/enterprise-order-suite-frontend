@@ -3,7 +3,7 @@ import { ShoppingCart, Plus, Search, Package } from "lucide-react";
 import type { Order, OrderStatus } from "@/types/orders";
 import { useOrders } from "@/features/orders/hooks/useOrders";
 import { useOrderFilters } from "@/features/orders/hooks/useOrderFilters";
-import { STATUS_CONFIG, FILTERS, fmt } from "@/features/orders/constants/orders.constants";
+import { STATUS_CONFIG, FILTERS } from "@/features/orders/constants/orders.constants";
 import { OrderRow } from "./OrderRow";
 import { OrderDrawer } from "./OrderDrawer";
 import { DeleteOrderModal } from "./DeleteOrderModal";

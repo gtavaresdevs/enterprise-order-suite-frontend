@@ -7,7 +7,7 @@ export const profileService = {
     },
 
     // Simulates a mutation to save the profile
-    saveProfile: async (data: UserProfileForm): Promise<void> => {
+    saveProfile: async (_data: UserProfileForm): Promise<void> => {
         return new Promise((resolve) => setTimeout(resolve, 500));
     },
 };

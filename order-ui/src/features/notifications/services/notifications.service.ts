@@ -8,7 +8,7 @@ export const notificationsService = {
   },
   
   // Simulates an API save mutation
-  savePreferences: async (preferences: NotificationPreferencesState, globalMute: boolean): Promise<void> => {
+  savePreferences: async (_preferences: NotificationPreferencesState, _globalMute: boolean): Promise<void> => {
     return new Promise((resolve) => setTimeout(resolve, 500));
   }
 };

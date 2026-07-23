@@ -9,14 +9,25 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useLogout } from "@/features/auth/hooks/useLogout";
 
 export function AvatarDropdown() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const { mutate: logout, isPending: isLoggingOut } = useLogout();
+
+  // RBAC check: get role from local storage or context
+  // Defaulting to ADMIN for safety if not found for this mock
+  const role = localStorage.getItem("role") || "ADMIN";
 
   const handleNavigate = (path: string) => {
     setOpen(false);
     navigate(path);
+  };
+
+  const handleLogout = () => {
+    setOpen(false);
+    logout();
   };
 
   return (
@@ -83,13 +94,24 @@ export function AvatarDropdown() {
             <Settings className="w-3.5 h-3.5 text-slate-400" />
             Preferences
           </DropdownMenuItem>
+
+          {role !== "USER" && (
+            <DropdownMenuItem
+              onClick={() => handleNavigate("/settings")}
+              className="flex items-center gap-2.5 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 cursor-pointer"
+            >
+              <Settings className="w-3.5 h-3.5 text-slate-400" />
+              Settings
+            </DropdownMenuItem>
+          )}
         </div>
 
         <DropdownMenuSeparator className="m-0 bg-slate-100" />
 
         <div className="py-1 bg-white">
           <DropdownMenuItem
-            onClick={() => handleNavigate("/login")}
+            onClick={handleLogout}
+            disabled={isLoggingOut}
             className="flex items-center gap-2.5 px-3 py-2 text-sm text-red-600 hover:bg-red-50 cursor-pointer"
           >
             <LogOut className="w-3.5 h-3.5" />

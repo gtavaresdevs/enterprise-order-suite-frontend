@@ -1,6 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { inventoryService } from "../services/inventory.service";
-import type { Product } from "@/types/inventory";
 
 export const useInventory = () => {
     const queryClient = useQueryClient();

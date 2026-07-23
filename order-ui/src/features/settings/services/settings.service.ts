@@ -6,9 +6,9 @@ export const settingsService = {
     getSessions: async (): Promise<ActiveSession[]> => Promise.resolve(SESSIONS_INIT),
     getSecurityPreferences: async (): Promise<SecurityPreferences> => Promise.resolve({ twoFA: true, loginAlerts: true }),
 
-    revokeKey: async (id: string): Promise<void> => new Promise(resolve => setTimeout(resolve, 300)),
-    revokeSession: async (id: string): Promise<void> => new Promise(resolve => setTimeout(resolve, 300)),
+    revokeKey: async (_id: string): Promise<void> => new Promise(resolve => setTimeout(resolve, 300)),
+    revokeSession: async (_id: string): Promise<void> => new Promise(resolve => setTimeout(resolve, 300)),
     revokeAllSessions: async (): Promise<void> => new Promise(resolve => setTimeout(resolve, 400)),
-    updatePreferences: async (prefs: Partial<SecurityPreferences>): Promise<void> => new Promise(resolve => setTimeout(resolve, 300)),
+    updatePreferences: async (_prefs: Partial<SecurityPreferences>): Promise<void> => new Promise(resolve => setTimeout(resolve, 300)),
     deleteAccount: async (): Promise<void> => new Promise(resolve => setTimeout(resolve, 1000)),
 };

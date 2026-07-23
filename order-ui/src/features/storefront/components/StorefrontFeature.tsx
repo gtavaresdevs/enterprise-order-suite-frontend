@@ -1,4 +1,4 @@
-import { Star, ShoppingCart, Clock } from "lucide-react";
+import { Star } from "lucide-react";
 import { useStorefront } from "../hooks/useStorefront";
 import { CATEGORIES } from "../constants/storefront.constants";
 import { MenuCard } from "./MenuCard";
