@@ -1,5 +1,6 @@
 import { Phone, Globe, Clock, Building, Save, CheckCircle2 } from "lucide-react";
-import type { UserProfileForm } from "@/features/profile/types/profile.types";
+import type { UserProfileForm } from "@/types/profile";
+
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";

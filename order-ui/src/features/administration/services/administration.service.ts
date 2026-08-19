@@ -1,8 +1,9 @@
 import type {
     AdministrationPageId,
     AdministrationPageStatus,
-} from "@/features/administration/types/administration.types";
+} from "@/types/administration";
 import { ESTIMATED_RELEASE } from "@/features/administration/constants/administration.constants";
+
 
 export const administrationService = {
     getPageStatus: async (pageId: AdministrationPageId): Promise<AdministrationPageStatus> =>

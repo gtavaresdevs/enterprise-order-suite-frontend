@@ -3,7 +3,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { COMING_SOON_MESSAGE } from "@/features/administration/constants/administration.constants";
-import type { AdministrationPageConfig } from "@/features/administration/types/administration.types";
+import type { AdministrationPageConfig } from "@/types/administration";
+
 
 interface ComingSoonPanelProps {
     page: AdministrationPageConfig;

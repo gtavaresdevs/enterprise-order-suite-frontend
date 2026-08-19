@@ -1,5 +1,6 @@
 import { Users, UserCog, KeySquare } from "lucide-react";
-import type { AdministrationPageConfig } from "@/features/administration/types/administration.types";
+import type { AdministrationPageConfig } from "@/types/administration";
+
 
 export const ADMINISTRATION_PAGES: Record<
     AdministrationPageConfig["id"],

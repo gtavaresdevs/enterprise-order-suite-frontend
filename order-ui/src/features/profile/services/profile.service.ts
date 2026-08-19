@@ -1,4 +1,5 @@
-import type { UserProfileForm, ChangePasswordPayload } from "@/features/profile/types/profile.types";
+import type { UserProfileForm, ChangePasswordPayload } from "@/types/profile";
+
 
 export const profileService = {
     // GET /api/v1/users/me

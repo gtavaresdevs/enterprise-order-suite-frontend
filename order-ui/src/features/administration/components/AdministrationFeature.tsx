@@ -1,7 +1,8 @@
 import { useAdministrationPage } from "@/features/administration/hooks/useAdministrationPage";
 import { AdministrationHeader } from "@/features/administration/components/AdministrationHeader";
 import { ComingSoonPanel } from "@/features/administration/components/ComingSoonPanel";
-import type { AdministrationPageId } from "@/features/administration/types/administration.types";
+import type { AdministrationPageId } from "@/types/administration";
+
 
 const DOT_BG = {
     backgroundImage: "radial-gradient(#0f172a 1px, transparent 1px)",

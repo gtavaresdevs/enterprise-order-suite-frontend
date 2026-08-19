@@ -4,7 +4,8 @@ import { administrationService } from "@/features/administration/services/admini
 import type {
     AdministrationPageId,
     AdministrationPageStatus,
-} from "@/features/administration/types/administration.types";
+} from "@/types/administration";
+
 
 export function useAdministrationPage(pageId: AdministrationPageId) {
     const page = ADMINISTRATION_PAGES[pageId];

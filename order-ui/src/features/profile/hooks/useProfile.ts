@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from "react";
-import type { UserProfileForm } from "@/features/profile/types/profile.types";
+import type { UserProfileForm } from "@/types/profile";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { profileService } from "@/features/profile/services/profile.service";
 
