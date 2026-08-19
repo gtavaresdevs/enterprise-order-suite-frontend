@@ -1,7 +1,9 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { Layers, Settings, ChevronRight, User, Bell, Sliders, LogOut } from "lucide-react";
-import { NAVIGATION_ITEMS } from "./navigation";
+import { NAVIGATION_ITEMS, ADMINISTRATION_ITEMS, type NavItem } from "./navigation";
 import { useState } from "react";
+import { useAuth } from "@/features/auth/hooks/useAuth";
+import type { Role } from "@/types/auth";
 
 const ACCOUNT_NAV = [
   { to: "/profile",       label: "View Profile",    icon: User         },
@@ -13,12 +15,18 @@ const ACCOUNT_NAV = [
 function UserChip({ onNavigate }: { onNavigate?: () => void }) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   function go(path: string) {
     setOpen(false);
     navigate(path);
     if (onNavigate) onNavigate();
   }
+
+  if (!user) return null;
+
+  const initials = (user.firstName?.[0] || "") + (user.lastName?.[0] || "");
+  const displayName = `${user.firstName || ""} ${user.lastName || ""}`.trim();
 
   return (
     <div className="relative">
@@ -27,11 +35,11 @@ function UserChip({ onNavigate }: { onNavigate?: () => void }) {
         className="w-full mt-2 flex items-center gap-2.5 px-3 py-2.5 rounded-[8px] bg-slate-50 border border-slate-100 hover:border-slate-200 hover:bg-slate-100 transition-all"
       >
         <div className="w-7 h-7 rounded-full bg-slate-200 flex items-center justify-center flex-shrink-0">
-          <span className="text-xs font-semibold text-slate-600">AW</span>
+          <span className="text-xs font-semibold text-slate-600">{initials}</span>
         </div>
         <div className="min-w-0 flex-1 text-left">
-          <p className="text-xs font-semibold text-slate-700 truncate leading-none">Alex Watson</p>
-          <p className="text-[10px] text-slate-400 mt-0.5 truncate">Enterprise · Admin</p>
+          <p className="text-xs font-semibold text-slate-700 truncate leading-none">{displayName}</p>
+          <p className="text-[10px] text-slate-400 mt-0.5 truncate">Enterprise · {user.roles[0] || "USER"}</p>
         </div>
         <ChevronRight className={`w-3 h-3 text-slate-400 flex-shrink-0 transition-transform ${open ? "-rotate-90" : "rotate-90"}`} />
       </button>
@@ -41,8 +49,8 @@ function UserChip({ onNavigate }: { onNavigate?: () => void }) {
           <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
           <div className="absolute left-0 bottom-full mb-1.5 w-full bg-white rounded-[8px] border border-slate-200 shadow-lg shadow-slate-900/10 z-20 overflow-hidden">
             <div className="px-3 py-2.5 border-b border-slate-100 bg-slate-50/60">
-              <p className="text-xs font-semibold text-slate-700">Alex Watson</p>
-              <p className="text-[11px] text-slate-400 mt-0.5 font-mono">a.watson@enterprise.io</p>
+              <p className="text-xs font-semibold text-slate-700">{displayName}</p>
+              <p className="text-[11px] text-slate-400 mt-0.5 font-mono">{user.email}</p>
             </div>
             <div className="py-1">
               {ACCOUNT_NAV.map(({ to, label, icon: Icon }) => (
@@ -61,6 +69,8 @@ function UserChip({ onNavigate }: { onNavigate?: () => void }) {
                 onClick={() => {
                   setOpen(false);
                   localStorage.removeItem("accessToken");
+                  localStorage.removeItem("refreshToken");
+                  localStorage.removeItem("role");
                   navigate("/login");
                 }}
                 className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors text-left"
@@ -81,6 +91,41 @@ interface SidebarContentProps {
 }
 
 export function SidebarContent({ onNavigate }: SidebarContentProps) {
+  const { user } = useAuth();
+  
+  const hasAccess = (roles?: Role[]) => {
+    if (!roles || !roles.length) return true;
+    if (!user) return false;
+    return roles.some((role) => user.roles.includes(role));
+  };
+
+  const renderNavItem = ({ to, label, icon: Icon, end }: NavItem) => {
+    if (!to) return null;
+    return (
+      <NavLink
+        key={to}
+        to={to}
+        end={end}
+        onClick={onNavigate}
+        className={({ isActive }) =>
+          `flex items-center gap-2.5 px-3 py-2 rounded-[8px] text-sm font-medium transition-all group ${
+            isActive
+              ? "bg-slate-950 text-slate-50 shadow-inner"
+              : "text-slate-500 hover:text-slate-800 hover:bg-slate-100"
+          }`
+        }
+      >
+        {({ isActive }) => (
+          <>
+            <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? "text-slate-300" : "text-slate-400 group-hover:text-slate-600"}`} />
+            <span className="flex-1 truncate">{label}</span>
+            {isActive && <ChevronRight className="w-3 h-3 text-slate-500 flex-shrink-0" />}
+          </>
+        )}
+      </NavLink>
+    );
+  };
+
   return (
     <div className="flex flex-col h-full bg-white text-slate-900">
       {/* Brand Header */}
@@ -99,28 +144,14 @@ export function SidebarContent({ onNavigate }: SidebarContentProps) {
       {/* Navigation Area */}
       <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mb-2">Navigation</p>
-        {NAVIGATION_ITEMS.map(({ to, label, icon: Icon, end }) => (
-          <NavLink
-            key={to}
-            to={to}
-            end={end}
-            onClick={onNavigate}
-            className={({ isActive }) =>
-              `flex items-center gap-2.5 px-3 py-2 rounded-[8px] text-sm font-medium transition-all group ${
-                isActive
-                  ? "bg-slate-950 text-slate-50 shadow-inner"
-                  : "text-slate-500 hover:text-slate-800 hover:bg-slate-100"
-              }`
-            }
-          >
-            {({ isActive }) => (
-              <>
-                <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? "text-slate-300" : "text-slate-400 group-hover:text-slate-600"}`} />
-                <span className="flex-1 truncate">{label}</span>
-                {isActive && <ChevronRight className="w-3 h-3 text-slate-500 flex-shrink-0" />}
-              </>
-            )}
-          </NavLink>
+        {NAVIGATION_ITEMS.map(renderNavItem)}
+
+        {/* Administration Section */}
+        {ADMINISTRATION_ITEMS.filter(item => hasAccess(item.roles)).map(section => (
+          <div key={section.label} className="pt-4">
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mb-2">{section.label}</p>
+            {section.children?.filter(child => hasAccess(child.roles)).map(renderNavItem)}
+          </div>
         ))}
 
         {/* Account section */}

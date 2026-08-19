@@ -10,15 +10,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useLogout } from "@/features/auth/hooks/useLogout";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
 export function AvatarDropdown() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { mutate: logout, isPending: isLoggingOut } = useLogout();
+  const { user } = useAuth();
 
-  // RBAC check: get role from local storage or context
-  // Defaulting to ADMIN for safety if not found for this mock
-  const role = localStorage.getItem("role") || "ADMIN";
+  const role = user?.roles[0] || (localStorage.getItem("role") as string) || "USER";
+  const initials = user ? ((user.firstName?.[0] || "") + (user.lastName?.[0] || "")).toUpperCase() || "U" : "U";
+  const displayName = user ? `${user.firstName || ""} ${user.lastName || ""}`.trim() || user.email : "Account";
+  const email = user?.email || "";
 
   const handleNavigate = (path: string) => {
     setOpen(false);
@@ -36,16 +39,16 @@ export function AvatarDropdown() {
         <button className="flex items-center gap-2 px-3 py-2 rounded-[8px] border border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 transition-all outline-none">
           <Avatar className="w-7 h-7 rounded-[8px] flex-shrink-0">
             <AvatarFallback className="text-xs font-semibold text-slate-600 bg-slate-200">
-              AW
+              {initials}
             </AvatarFallback>
           </Avatar>
 
           <div className="text-left hidden sm:block space-y-0.5">
             <p className="text-xs font-semibold text-slate-700 leading-none">
-              Alex Watson
+              {displayName}
             </p>
             <p className="text-[10px] text-slate-400 leading-none">
-              Enterprise Admin
+              Enterprise · {role}
             </p>
           </div>
 
@@ -62,9 +65,9 @@ export function AvatarDropdown() {
         className="w-48 rounded-[8px] border border-slate-200 shadow-lg shadow-slate-900/10 p-0 overflow-hidden"
       >
         <div className="px-3 py-2.5 bg-white">
-          <p className="text-xs font-semibold text-slate-700">Alex Watson</p>
+          <p className="text-xs font-semibold text-slate-700">{displayName}</p>
           <p className="text-[11px] text-slate-400 mt-0.5">
-            a.watson@enterprise.io
+            {email}
           </p>
         </div>
 
