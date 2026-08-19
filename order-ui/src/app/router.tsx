@@ -2,7 +2,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 
 // ── Layout Interfaces ───────────────────────────────────────
 import { AppLayout } from '@/layouts/app-layout';
-import { ProtectedLayout } from '@/layouts/protected-layout';
+import { ProtectedLayout, RoleGuard } from '@/layouts/protected-layout';
 
 // ── Public Pages ────────────────────────────────────────────
 import LoginPage from '@/pages/Login';
@@ -19,6 +19,9 @@ import ProfilePage from '@/pages/Profile';
 import NotificationsPage from '@/pages/Notifications';
 import PreferencesPage from '@/pages/Preferences';
 import SettingsPage from '@/pages/Settings';
+import AdministrationUsersPage from '@/pages/AdministrationUsers';
+import AdministrationAdministratorsPage from '@/pages/AdministrationAdministrators';
+import AdministrationRolesPage from '@/pages/AdministrationRoles';
 
 // ── Standalone Pages ────────────────────────────────────────
 import StorefrontPage from '@/pages/Storefront';
@@ -95,6 +98,30 @@ export const router = createBrowserRouter([
           {
             path: '/settings',
             element: <SettingsPage />,
+          },
+          {
+            path: '/administration/users',
+            element: (
+              <RoleGuard allowedRoles={['ADMIN', 'SUPER_ADMIN']}>
+                <AdministrationUsersPage />
+              </RoleGuard>
+            ),
+          },
+          {
+            path: '/administration/administrators',
+            element: (
+              <RoleGuard allowedRoles={['SUPER_ADMIN']}>
+                <AdministrationAdministratorsPage />
+              </RoleGuard>
+            ),
+          },
+          {
+            path: '/administration/roles',
+            element: (
+              <RoleGuard allowedRoles={['SUPER_ADMIN']}>
+                <AdministrationRolesPage />
+              </RoleGuard>
+            ),
           },
         ],
       },

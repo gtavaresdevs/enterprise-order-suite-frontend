@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 
 export interface UserStat {
     icon: React.ElementType;
@@ -8,11 +8,19 @@ export interface UserStat {
 }
 
 export interface UserProfileForm {
-    name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     role: string;
     department: string;
     phone: string;
-    location: string;
+    country: string;
+    timezone: string;
+    office: string;
     bio: string;
+}
+
+export interface ChangePasswordPayload {
+    currentPassword: string;
+    newPassword: string;
 }

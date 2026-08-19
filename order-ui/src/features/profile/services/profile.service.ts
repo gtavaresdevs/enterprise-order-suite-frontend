@@ -1,13 +1,24 @@
-import type { UserProfileForm } from "@/types/profile";
+import type { UserProfileForm, ChangePasswordPayload } from "@/types/profile";
+
 
 export const profileService = {
-    // Simulates fetching initial profile data
+    // GET /api/v1/users/me
     getProfile: async (): Promise<Partial<UserProfileForm>> => {
         return Promise.resolve({});
     },
 
-    // Simulates a mutation to save the profile
-    saveProfile: async (_data: UserProfileForm): Promise<void> => {
-        return new Promise((resolve) => setTimeout(resolve, 500));
+    // PATCH /api/v1/users/me
+    saveProfile: async (_data: Partial<UserProfileForm>): Promise<void> => {
+        return new Promise((resolve) => setTimeout(resolve, 800));
+    },
+
+    // POST /api/v1/users/me/avatar
+    updateAvatar: async (_file: File): Promise<void> => {
+        return new Promise((resolve) => setTimeout(resolve, 1000));
+    },
+
+    // PUT /api/v1/users/me/password
+    changePassword: async (_data: ChangePasswordPayload): Promise<void> => {
+        return new Promise((resolve) => setTimeout(resolve, 800));
     },
 };

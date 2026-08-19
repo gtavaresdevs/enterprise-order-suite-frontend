@@ -1,8 +1,10 @@
 import { useProfile } from "@/features/profile/hooks/useProfile";
+import { useChangePassword } from "@/features/profile/hooks/useChangePassword";
 import { ProfileHeader } from "@/features/profile/components/ProfileHeader";
 import { ProfileAvatarCard } from "@/features/profile/components/ProfileAvatarCard";
 import { ProfileAccountInfoCard } from "@/features/profile/components/ProfileAccountInfoCard";
 import { ProfilePersonalInfoCard } from "@/features/profile/components/ProfilePersonalInfoCard";
+import { ProfilePasswordCard } from "@/features/profile/components/ProfilePasswordCard";
 
 const DOT_BG = {
     backgroundImage: "radial-gradient(#0f172a 1px, transparent 1px)",
@@ -12,6 +14,7 @@ const DOT_BG = {
 
 export function ProfileFeature() {
     const profile = useProfile();
+    const password = useChangePassword();
 
     return (
         <div className="min-h-full font-['Outfit',sans-serif]">
@@ -26,7 +29,8 @@ export function ProfileFeature() {
                     {/* Left Sidebar */}
                     <div className="w-full md:w-[280px] flex-shrink-0 flex flex-col gap-4">
                         <ProfileAvatarCard
-                            name={profile.form.name}
+                            firstName={profile.form.firstName}
+                            lastName={profile.form.lastName}
                             role={profile.form.role}
                             avatarSrc={profile.avatarSrc}
                             fileInputRef={profile.fileInputRef}
@@ -37,12 +41,24 @@ export function ProfileFeature() {
                     </div>
 
                     {/* Right Content */}
-                    <div className="flex-1 min-w-0">
+                    <div className="flex-1 min-w-0 flex flex-col gap-6">
                         <ProfilePersonalInfoCard
                             form={profile.form}
+                            isDirty={profile.isDirty}
+                            isSaving={profile.isSaving}
                             isSaved={profile.saved}
+                            lastUpdated={profile.lastUpdated}
                             onUpdate={profile.updateField}
                             onSave={profile.saveProfile}
+                        />
+                        <ProfilePasswordCard
+                            form={password.form}
+                            isSaving={password.isSaving}
+                            saved={password.saved}
+                            error={password.error}
+                            isValid={password.isValid}
+                            onUpdate={password.updateField}
+                            onSubmit={password.submit}
                         />
                     </div>
 

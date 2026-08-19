@@ -4,14 +4,20 @@ import {
   Package,
   BarChart3,
   Shield,
+  Users,
+  UserCog,
+  KeySquare,
   type LucideIcon
 } from "lucide-react";
+import type { Role } from "@/types/auth";
 
 export interface NavItem {
-  to: string;
+  to?: string;
   label: string;
   icon: LucideIcon;
   end?: boolean;
+  roles?: Role[];
+  children?: NavItem[];
 }
 
 export const NAVIGATION_ITEMS: NavItem[] = [
@@ -20,4 +26,17 @@ export const NAVIGATION_ITEMS: NavItem[] = [
   { to: "/inventory", label: "Inventory", icon: Package, end: false },
   { to: "/analytics", label: "Analytics", icon: BarChart3, end: false },
   { to: "/security", label: "Security", icon: Shield, end: false },
+];
+
+export const ADMINISTRATION_ITEMS: NavItem[] = [
+  {
+    label: "Administration",
+    icon: Shield,
+    roles: ["ADMIN", "SUPER_ADMIN"],
+    children: [
+      { to: "/administration/users", label: "Users", icon: Users, roles: ["ADMIN", "SUPER_ADMIN"] },
+      { to: "/administration/administrators", label: "Administrators", icon: UserCog, roles: ["SUPER_ADMIN"] },
+      { to: "/administration/roles", label: "Roles & Permissions", icon: KeySquare, roles: ["SUPER_ADMIN"] },
+    ],
+  },
 ];
