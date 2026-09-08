@@ -1,60 +1,113 @@
 import { useState, useCallback, useRef, useEffect } from "react";
-import type { UserProfileForm } from "@/types/profile";
+import type { UserProfileForm, UpdateProfileRequest } from "@/types/profile";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { profileService } from "@/features/profile/services/profile.service";
+
+function formatDate(dateStr?: string): string {
+    if (!dateStr) return "Recently";
+    try {
+        const date = new Date(dateStr);
+        if (isNaN(date.getTime())) return dateStr;
+        return date.toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+        });
+    } catch {
+        return dateStr;
+    }
+}
 
 export function useProfile() {
     const { user } = useAuth();
 
-    const initialForm: UserProfileForm = {
-        firstName: user?.firstName || "Alex",
-        lastName: user?.lastName || "Watson",
-        email: user?.email || "a.watson@enterprise.io",
-        role: "Operations Director",
-        department: "Supply Chain & Logistics",
-        phone: "+1 (415) 882-0044",
-        country: "United States",
-        timezone: "America/Los_Angeles (PST)",
-        office: "San Francisco HQ",
-        bio: "Senior operations lead overseeing enterprise procurement workflows and cross-regional fulfillment logistics for 12+ years.",
-    };
+    const [form, setForm] = useState<UserProfileForm>({
+        firstName: user?.firstName || "",
+        lastName: user?.lastName || "",
+        email: user?.email || "",
+        role: user?.roles?.[0] || "USER",
+        department: "",
+        phone: "",
+        country: "",
+        timezone: "",
+        office: "",
+        bio: "",
+    });
 
-    const [form, setForm] = useState<UserProfileForm>(initialForm);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [fetchError, setFetchError] = useState<string | null>(null);
+    const [saveError, setSaveError] = useState<string | null>(null);
     const [saved, setSaved] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [avatarSrc, setAvatarSrc] = useState<string | undefined>(undefined);
     const [stagedAvatarFile, setStagedAvatarFile] = useState<File | null>(null);
-    const [lastUpdated] = useState<string>("Jul 22, 2026");
 
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    // Snapshot of the last-saved editable values for dirty comparison (change D)
-    const savedSnapshot = useRef({
-        phone: initialForm.phone,
-        country: initialForm.country,
-        timezone: initialForm.timezone,
-        office: initialForm.office,
-        bio: initialForm.bio,
+    // Snapshot of the last-saved editable values for dirty comparison
+    const savedSnapshot = useRef<UpdateProfileRequest>({
+        department: "",
+        phone: "",
+        country: "",
+        timezone: "",
+        office: "",
+        bio: "",
     });
 
-    // Keep snapshot in sync when user data loads asynchronously
-    useEffect(() => {
-        savedSnapshot.current = {
-            phone: initialForm.phone,
-            country: initialForm.country,
-            timezone: initialForm.timezone,
-            office: initialForm.office,
-            bio: initialForm.bio,
-        };
+    // Fetch profile data from backend on mount
+    const fetchProfile = useCallback(async () => {
+        setIsLoading(true);
+        setFetchError(null);
+        try {
+            const data = await profileService.getProfile();
+            const populatedForm: UserProfileForm = {
+                id: data.id,
+                firstName: data.firstName || user?.firstName || "",
+                lastName: data.lastName || user?.lastName || "",
+                email: data.email || user?.email || "",
+                role: data.role || user?.roles?.[0] || "USER",
+                department: data.department || "",
+                phone: data.phone || "",
+                country: data.country || "",
+                timezone: data.timezone || "",
+                office: data.office || "",
+                bio: data.bio || "",
+                createdAt: data.createdAt,
+                updatedAt: data.updatedAt,
+            };
+
+            setForm(populatedForm);
+
+            savedSnapshot.current = {
+                department: data.department || "",
+                phone: data.phone || "",
+                country: data.country || "",
+                timezone: data.timezone || "",
+                office: data.office || "",
+                bio: data.bio || "",
+            };
+        } catch (err: any) {
+            console.error("Failed to load profile:", err);
+            setFetchError(
+                err?.response?.data?.message || err?.message || "Failed to load profile from server."
+            );
+        } finally {
+            setIsLoading(false);
+        }
     }, [user]);
+
+    useEffect(() => {
+        fetchProfile();
+    }, [fetchProfile]);
 
     // Track dirty state by comparing editable fields to the saved snapshot
     const isDirty =
-        form.phone !== savedSnapshot.current.phone ||
-        form.country !== savedSnapshot.current.country ||
-        form.timezone !== savedSnapshot.current.timezone ||
-        form.office !== savedSnapshot.current.office ||
-        form.bio !== savedSnapshot.current.bio ||
+        form.department !== (savedSnapshot.current.department ?? "") ||
+        form.phone !== (savedSnapshot.current.phone ?? "") ||
+        form.country !== (savedSnapshot.current.country ?? "") ||
+        form.timezone !== (savedSnapshot.current.timezone ?? "") ||
+        form.office !== (savedSnapshot.current.office ?? "") ||
+        form.bio !== (savedSnapshot.current.bio ?? "") ||
         stagedAvatarFile !== null;
 
     const updateField = useCallback(<K extends keyof UserProfileForm>(
@@ -62,6 +115,7 @@ export function useProfile() {
         value: UserProfileForm[K]
     ) => {
         setForm((prev) => ({ ...prev, [field]: value }));
+        setSaveError(null);
     }, []);
 
     const handleAvatarUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,30 +132,67 @@ export function useProfile() {
 
     const saveProfile = useCallback(async () => {
         setIsSaving(true);
+        setSaveError(null);
 
         try {
-            // Wire through the service layer (change B)
-            const { phone, country, timezone, office, bio } = form;
-            await profileService.saveProfile({ phone, country, timezone, office, bio });
+            const payload: UpdateProfileRequest = {
+                department: form.department,
+                phone: form.phone,
+                country: form.country,
+                timezone: form.timezone,
+                office: form.office,
+                bio: form.bio,
+            };
+
+            const updatedProfile = await profileService.updateProfile(payload);
+
+            setForm((prev) => ({
+                ...prev,
+                department: updatedProfile.department ?? prev.department,
+                phone: updatedProfile.phone ?? prev.phone,
+                country: updatedProfile.country ?? prev.country,
+                timezone: updatedProfile.timezone ?? prev.timezone,
+                office: updatedProfile.office ?? prev.office,
+                bio: updatedProfile.bio ?? prev.bio,
+                updatedAt: updatedProfile.updatedAt ?? prev.updatedAt,
+            }));
+
+            // Update saved snapshot so dirty state resets
+            savedSnapshot.current = {
+                department: updatedProfile.department ?? form.department,
+                phone: updatedProfile.phone ?? form.phone,
+                country: updatedProfile.country ?? form.country,
+                timezone: updatedProfile.timezone ?? form.timezone,
+                office: updatedProfile.office ?? form.office,
+                bio: updatedProfile.bio ?? form.bio,
+            };
 
             if (stagedAvatarFile) {
                 await profileService.updateAvatar(stagedAvatarFile);
+                setStagedAvatarFile(null);
             }
 
-            // Update saved snapshot so dirty resets correctly (change D)
-            savedSnapshot.current = { phone, country, timezone, office, bio };
-            setStagedAvatarFile(null);
             setSaved(true);
             setTimeout(() => setSaved(false), 2200);
+        } catch (err: any) {
+            console.error("Failed to save profile:", err);
+            setSaveError(
+                err?.response?.data?.message || err?.message || "Failed to save profile changes."
+            );
         } finally {
             setIsSaving(false);
         }
     }, [form, stagedAvatarFile]);
 
+    const lastUpdated = formatDate(form.updatedAt || form.createdAt);
+
     return {
         form,
         saved,
+        isLoading,
         isSaving,
+        fetchError,
+        saveError,
         isDirty,
         avatarSrc,
         stagedAvatarFile,
@@ -111,5 +202,6 @@ export function useProfile() {
         handleAvatarUpload,
         triggerFileInput,
         saveProfile,
+        refetch: fetchProfile,
     };
 }

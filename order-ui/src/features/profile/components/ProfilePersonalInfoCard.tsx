@@ -1,4 +1,4 @@
-import { Phone, Globe, Clock, Building, Save, CheckCircle2 } from "lucide-react";
+import { Phone, Globe, Clock, Building, Briefcase, Save, CheckCircle2, AlertCircle } from "lucide-react";
 import type { UserProfileForm } from "@/types/profile";
 
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
@@ -12,6 +12,7 @@ interface ProfilePersonalInfoCardProps {
     isDirty: boolean;
     isSaving: boolean;
     isSaved: boolean;
+    error?: string | null;
     lastUpdated: string;
     onUpdate: <K extends keyof UserProfileForm>(key: K, value: UserProfileForm[K]) => void;
     onSave: () => void;
@@ -22,6 +23,7 @@ export function ProfilePersonalInfoCard({
     isDirty,
     isSaving,
     isSaved,
+    error,
     lastUpdated,
     onUpdate,
     onSave,
@@ -45,43 +47,54 @@ export function ProfilePersonalInfoCard({
                         <ProfileReadOnlyField label="Last Name" value={form.lastName} />
                         <ProfileReadOnlyField label="Email" value={form.email} />
                         <ProfileReadOnlyField label="Role" value={form.role} />
-                        <ProfileReadOnlyField label="Department" value={form.department} />
                     </div>
                 </div>
 
                 <div className="border-t border-slate-100" />
 
                 {/* Editable Fields */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <ProfileField
-                        label="Phone"
-                        icon={Phone}
-                        value={form.phone}
-                        onChange={(v) => onUpdate("phone", v)}
-                        type="tel"
-                        placeholder="+1 (555) 000-0000"
-                    />
-                    <ProfileField
-                        label="Country"
-                        icon={Globe}
-                        value={form.country}
-                        onChange={(v) => onUpdate("country", v)}
-                        placeholder="e.g. United States"
-                    />
-                    <ProfileField
-                        label="Timezone"
-                        icon={Clock}
-                        value={form.timezone}
-                        onChange={(v) => onUpdate("timezone", v)}
-                        placeholder="e.g. America/New_York (EST)"
-                    />
-                    <ProfileField
-                        label="Office"
-                        icon={Building}
-                        value={form.office}
-                        onChange={(v) => onUpdate("office", v)}
-                        placeholder="e.g. San Francisco HQ"
-                    />
+                <div>
+                    <p className="text-[10px] font-bold text-slate-300 uppercase tracking-widest mb-3">
+                        Details & Contact
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <ProfileField
+                            label="Department"
+                            icon={Briefcase}
+                            value={form.department}
+                            onChange={(v) => onUpdate("department", v)}
+                            placeholder="e.g. Supply Chain & Logistics"
+                        />
+                        <ProfileField
+                            label="Phone"
+                            icon={Phone}
+                            value={form.phone}
+                            onChange={(v) => onUpdate("phone", v)}
+                            type="tel"
+                            placeholder="+1 (555) 000-0000"
+                        />
+                        <ProfileField
+                            label="Country"
+                            icon={Globe}
+                            value={form.country}
+                            onChange={(v) => onUpdate("country", v)}
+                            placeholder="e.g. United States"
+                        />
+                        <ProfileField
+                            label="Timezone"
+                            icon={Clock}
+                            value={form.timezone}
+                            onChange={(v) => onUpdate("timezone", v)}
+                            placeholder="e.g. America/Los_Angeles"
+                        />
+                        <ProfileField
+                            label="Office Location"
+                            icon={Building}
+                            value={form.office}
+                            onChange={(v) => onUpdate("office", v)}
+                            placeholder="e.g. San Francisco HQ"
+                        />
+                    </div>
                 </div>
 
                 <ProfileField label="Bio" isTextarea>
@@ -93,6 +106,13 @@ export function ProfilePersonalInfoCard({
                         placeholder="Short professional bio..."
                     />
                 </ProfileField>
+
+                {error && (
+                    <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-lg">
+                        <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                        <span>{error}</span>
+                    </div>
+                )}
             </CardContent>
 
             <CardFooter className="px-6 py-4 border-t border-slate-100 bg-slate-50/50 flex flex-row items-center justify-between">
