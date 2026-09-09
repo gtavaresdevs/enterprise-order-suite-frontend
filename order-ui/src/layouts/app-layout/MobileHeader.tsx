@@ -7,7 +7,7 @@ interface MobileHeaderProps {
 
 export function MobileHeader({ onMenuClick }: MobileHeaderProps) {
   return (
-    <header className="flex lg:hidden flex-shrink-0 items-center h-16 px-4 bg-white border-b border-slate-200">
+    <header className="flex lg:hidden flex-shrink-0 items-center h-16 px-4 bg-card border-b border-border">
       <Button
         variant="ghost"
         size="icon"
@@ -22,7 +22,7 @@ export function MobileHeader({ onMenuClick }: MobileHeaderProps) {
         <div className="w-7 h-7 rounded-[8px] bg-blue-600 flex items-center justify-center shrink-0">
           <Layers className="w-3.5 h-3.5 text-white" />
         </div>
-        <span className="text-sm font-bold text-slate-900 uppercase tracking-wide">
+        <span className="text-sm font-bold text-foreground uppercase tracking-wide">
           Order Suite
         </span>
       </div>

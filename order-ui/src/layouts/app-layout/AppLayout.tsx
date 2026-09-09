@@ -16,7 +16,7 @@ export function AppLayout() {
 
             {/* ── Mobile Sidebar (Drawer via ShadCN) ── */}
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-                <SheetContent side="left" className="w-[220px] p-0 bg-white border-r-slate-100">
+                <SheetContent side="left" className="w-[220px] p-0 bg-card border-r-border">
                     <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                     <SidebarContent onNavigate={() => setIsMobileMenuOpen(false)} />
                 </SheetContent>

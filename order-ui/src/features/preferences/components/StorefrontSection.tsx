@@ -22,13 +22,21 @@ export function StorefrontSection() {
     const handleLogoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        updatePreference("storefrontLogo", await readFileAsDataUrl(file));
+        try {
+            updatePreference("storefrontLogo", await readFileAsDataUrl(file));
+        } catch (err) {
+            console.error("Failed to read logo file", err);
+        }
     };
 
     const handleCoverChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        updatePreference("storefrontCover", await readFileAsDataUrl(file));
+        try {
+            updatePreference("storefrontCover", await readFileAsDataUrl(file));
+        } catch (err) {
+            console.error("Failed to read cover file", err);
+        }
     };
 
     const inputCls = "w-full h-9 px-3 rounded-[8px] border border-slate-200 bg-slate-50 text-sm text-slate-800 placeholder-slate-400 outline-none focus:ring-2 focus:ring-slate-950/10 focus:border-slate-400 transition-all";

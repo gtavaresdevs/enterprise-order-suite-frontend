@@ -25,7 +25,11 @@ const MONTH_ABBR = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep
 export function formatCurrency(value: number, currency: string, language: string): string {
     const code = currency.split(" — ")[0]?.trim() || "USD";
     const locale = LOCALE_MAP[language] ?? "en-US";
-    return new Intl.NumberFormat(locale, { style: "currency", currency: code, minimumFractionDigits: 2 }).format(value);
+    try {
+        return new Intl.NumberFormat(locale, { style: "currency", currency: code, minimumFractionDigits: 2 }).format(value);
+    } catch {
+        return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 2 }).format(value);
+    }
 }
 
 export function formatDate(iso: string, dateFormat: string, timezone: string): string {

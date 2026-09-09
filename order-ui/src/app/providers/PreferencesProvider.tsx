@@ -46,9 +46,11 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     const [isSaved, setIsSaved] = useState(false);
 
     useEffect(() => {
-        preferencesService.getPreferences().then((stored) => {
-            setPreferences((prev) => ({ ...prev, ...stored }));
-        });
+        preferencesService.getPreferences()
+            .then((stored) => {
+                setPreferences((prev) => ({ ...prev, ...stored }));
+            })
+            .catch(() => {});
     }, []);
 
     useEffect(() => {
@@ -93,9 +95,12 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     }, []);
 
     const savePreferences = useCallback(() => {
-        preferencesService.savePreferences(preferences).catch((err) => console.error("Failed to save preferences", err));
-        setIsSaved(true);
-        setTimeout(() => setIsSaved(false), 2200);
+        preferencesService.savePreferences(preferences)
+            .then(() => {
+                setIsSaved(true);
+                setTimeout(() => setIsSaved(false), 2200);
+            })
+            .catch((err) => console.error("Failed to save preferences", err));
     }, [preferences]);
 
     return (
