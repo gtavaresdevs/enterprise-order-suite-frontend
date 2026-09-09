@@ -4,6 +4,7 @@ import { NAVIGATION_ITEMS, ADMINISTRATION_ITEMS, type NavItem } from "./navigati
 import { useState, useSyncExternalStore } from "react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { usePreferencesContext } from "@/app/providers/PreferencesProvider";
+import { useTranslation } from "@/features/preferences/hooks/useTranslation";
 import type { Role } from "@/types/auth";
 
 const ACCOUNT_NAV = [
@@ -17,6 +18,7 @@ function UserChip({ onNavigate }: { onNavigate?: () => void }) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   function go(path: string) {
     setOpen(false);
@@ -61,7 +63,7 @@ function UserChip({ onNavigate }: { onNavigate?: () => void }) {
                   className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors text-left"
                 >
                   <Icon className="w-3.5 h-3.5 text-slate-400" />
-                  {label}
+                  {t(label)}
                 </button>
               ))}
             </div>
@@ -77,7 +79,7 @@ function UserChip({ onNavigate }: { onNavigate?: () => void }) {
                 className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors text-left"
               >
                 <LogOut className="w-3.5 h-3.5" />
-                Sign out
+                {t("Sign out")}
               </button>
             </div>
           </div>
@@ -94,7 +96,8 @@ interface SidebarContentProps {
 
 export function SidebarContent({ onNavigate, collapsed = false }: SidebarContentProps) {
   const { user } = useAuth();
-  
+  const { t } = useTranslation();
+
   const hasAccess = (roles?: Role[]) => {
     if (!roles || !roles.length) return true;
     if (!user) return false;
@@ -121,7 +124,7 @@ export function SidebarContent({ onNavigate, collapsed = false }: SidebarContent
         {({ isActive }) => (
           <>
             <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? "text-slate-300" : "text-slate-400 group-hover:text-slate-600"}`} />
-            <span className={`flex-1 truncate ${collapsed ? "sr-only" : ""}`}>{label}</span>
+            <span className={`flex-1 truncate ${collapsed ? "sr-only" : ""}`}>{t(label)}</span>
             {isActive && !collapsed && <ChevronRight className="w-3 h-3 text-slate-500 flex-shrink-0" />}
           </>
         )}
@@ -148,20 +151,20 @@ export function SidebarContent({ onNavigate, collapsed = false }: SidebarContent
 
       {/* Navigation Area */}
       <nav className="app-shell-padded flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
-        {!collapsed && <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mb-2">Navigation</p>}
+        {!collapsed && <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mb-2">{t("Navigation")}</p>}
         {NAVIGATION_ITEMS.map((item) => renderNavItem(item, collapsed))}
 
         {/* Administration Section */}
         {ADMINISTRATION_ITEMS.filter(item => hasAccess(item.roles)).map(section => (
           <div key={section.label} className="pt-4">
-            {!collapsed && <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mb-2">{section.label}</p>}
+            {!collapsed && <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mb-2">{t(section.label)}</p>}
             {section.children?.filter(child => hasAccess(child.roles)).map((item) => renderNavItem(item, collapsed))}
           </div>
         ))}
 
         {/* Account section */}
         <div className="pt-4">
-          {!collapsed && <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mb-2">Account</p>}
+          {!collapsed && <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mb-2">{t("Account")}</p>}
           {ACCOUNT_NAV.map(({ to, label, icon: Icon }) => (
             <NavLink
               key={to}
@@ -178,7 +181,7 @@ export function SidebarContent({ onNavigate, collapsed = false }: SidebarContent
               {({ isActive }) => (
                 <>
                   <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? "text-slate-300" : "text-slate-400 group-hover:text-slate-600"}`} />
-                  <span className="flex-1 truncate">{label}</span>
+                  <span className="flex-1 truncate">{t(label)}</span>
                   {isActive && <ChevronRight className="w-3 h-3 text-slate-500 flex-shrink-0" />}
                 </>
               )}
