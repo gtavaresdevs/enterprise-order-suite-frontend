@@ -45,6 +45,24 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
         });
     }, []);
 
+    useEffect(() => {
+        const root = document.documentElement;
+
+        const applyTheme = (isDark: boolean) => {
+            root.classList.toggle("dark", isDark);
+        };
+
+        if (preferences.theme === "system") {
+            const media = window.matchMedia("(prefers-color-scheme: dark)");
+            applyTheme(media.matches);
+            const listener = (e: MediaQueryListEvent) => applyTheme(e.matches);
+            media.addEventListener("change", listener);
+            return () => media.removeEventListener("change", listener);
+        }
+
+        applyTheme(preferences.theme === "dark");
+    }, [preferences.theme]);
+
     const updatePreference = useCallback(<K extends keyof PreferencesState>(
         key: K,
         value: PreferencesState[K]

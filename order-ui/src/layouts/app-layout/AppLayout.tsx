@@ -9,7 +9,7 @@ export function AppLayout() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     return (
-        <div className="flex h-screen w-full bg-[#f8fafc] overflow-hidden" style={{ fontFamily: "'Outfit', sans-serif" }}>
+        <div className="flex h-screen w-full bg-background overflow-hidden" style={{ fontFamily: "'Outfit', sans-serif" }}>
 
             {/* ── Desktop Sidebar ── */}
             <Sidebar />

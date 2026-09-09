@@ -127,7 +127,7 @@ export function SidebarContent({ onNavigate }: SidebarContentProps) {
   };
 
   return (
-    <div className="flex flex-col h-full bg-white text-slate-900">
+    <div className="flex flex-col h-full bg-card text-foreground">
       {/* Brand Header */}
       <div className="px-5 py-5 border-b border-slate-100 shrink-0">
         <div className="flex items-center gap-2.5">
@@ -192,7 +192,7 @@ export function SidebarContent({ onNavigate }: SidebarContentProps) {
 
 export function Sidebar() {
   return (
-    <aside className="hidden lg:flex flex-col w-[220px] shrink-0 border-r border-slate-100 z-10 bg-white">
+    <aside className="hidden lg:flex flex-col w-[220px] shrink-0 border-r border-border z-10 bg-card">
       <SidebarContent />
     </aside>
   );
