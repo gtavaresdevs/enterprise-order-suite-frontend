@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { User, Phone, MapPin, Package, Plus, DollarSign, Minus, X } from "lucide-react";
 import type { Order, OrderStatus, DraftProduct } from "@/types/orders";
-import { fmt } from "@/features/orders/constants/orders.constants";
+import { useFormat } from "@/features/preferences/hooks/useFormat";
 
 const emptyDraftProduct = (): DraftProduct => ({ _key: Math.random().toString(36).slice(2), name: "", quantity: "1", unitPrice: "" });
 
 export function CreateOrderModal({ onClose, onSave }: { onClose: () => void; onSave: (o: Order) => void }) {
+    const { formatCurrency } = useFormat();
     const [customer, setCustomer] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
@@ -119,7 +120,7 @@ export function CreateOrderModal({ onClose, onSave }: { onClose: () => void; onS
                                 <div className="mt-3 flex justify-end">
                                     <div className="bg-slate-900 text-slate-50 rounded-[8px] px-4 py-2 flex items-center gap-3">
                                         <span className="text-xs text-slate-400 font-medium uppercase tracking-wide">Total</span>
-                                        <span className="font-mono font-semibold">{fmt(grandTotal)}</span>
+                                        <span className="font-mono font-semibold">{formatCurrency(grandTotal)}</span>
                                     </div>
                                 </div>
                             )}

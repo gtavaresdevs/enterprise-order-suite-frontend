@@ -9,9 +9,3 @@ export const STATUS_CONFIG: Record<OrderStatus, { pill: string; dot: string; Ico
 };
 
 export const FILTERS: Array<OrderStatus | "All"> = ["All", "New", "Preparing", "In Route", "Delivered"];
-
-export const fmt = (n: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 2 }).format(n);
-
-export const fmtDate = (d: string) =>
-  new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });

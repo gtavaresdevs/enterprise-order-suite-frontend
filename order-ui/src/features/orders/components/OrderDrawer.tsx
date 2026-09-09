@@ -1,9 +1,10 @@
 import { X, ChevronRight, MapPin, Phone, Mail } from "lucide-react";
 import type { Order, ProductLine } from "@/types/orders";
-import { fmt } from "@/features/orders/constants/orders.constants";
+import { useFormat } from "@/features/preferences/hooks/useFormat";
 import { StatusBadge } from "./StatusBadge";
 
 export function OrderDrawer({ order, onClose }: { order: Order; onClose: () => void }) {
+  const { formatCurrency } = useFormat();
   const lineTotal = (p: ProductLine) => {
     const modTotal = (p.modifiers ?? []).reduce((s, m) => s + m.price, 0);
     return p.quantity * (p.unitPrice + modTotal);
@@ -83,10 +84,10 @@ export function OrderDrawer({ order, onClose }: { order: Order; onClose: () => v
                           <span className="font-mono text-xs font-bold text-slate-600 bg-slate-200 px-1.5 py-0.5 rounded">×{p.quantity}</span>
                           <p className="text-sm font-semibold text-slate-800">{p.name}</p>
                         </div>
-                        <p className="text-[11px] text-slate-400 font-mono mt-0.5">{fmt(p.unitPrice)} each</p>
+                        <p className="text-[11px] text-slate-400 font-mono mt-0.5">{formatCurrency(p.unitPrice)} each</p>
                       </div>
                       <div className="text-right flex-shrink-0">
-                        <p className="text-sm font-semibold text-slate-900 font-mono">{fmt(total)}</p>
+                        <p className="text-sm font-semibold text-slate-900 font-mono">{formatCurrency(total)}</p>
                       </div>
                     </div>
                     {hasModifiers && (
@@ -101,7 +102,7 @@ export function OrderDrawer({ order, onClose }: { order: Order; onClose: () => v
                                 {mod.label}
                               </span>
                             </div>
-                            {mod.price > 0 && <span className="text-xs font-medium text-emerald-600 font-mono">+{fmt(mod.price)}</span>}
+                            {mod.price > 0 && <span className="text-xs font-medium text-emerald-600 font-mono">+{formatCurrency(mod.price)}</span>}
                           </div>
                         ))}
                       </div>
@@ -116,7 +117,7 @@ export function OrderDrawer({ order, onClose }: { order: Order; onClose: () => v
         <div className="px-6 py-4 border-t border-slate-100 bg-slate-50/80 flex items-center justify-between">
           <div>
             <p className="text-xs text-slate-400 font-medium uppercase tracking-wider">Order Total</p>
-            <p className="text-2xl font-semibold text-slate-900 font-mono mt-0.5">{fmt(order.total)}</p>
+            <p className="text-2xl font-semibold text-slate-900 font-mono mt-0.5">{formatCurrency(order.total)}</p>
           </div>
           <div className="flex gap-2">
             <button className="h-9 px-4 rounded-[8px] border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors">
