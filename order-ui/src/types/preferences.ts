@@ -12,4 +12,7 @@ export interface PreferencesState {
     dateFormat: string;
     currency: string;
     sidebarNavigation: SidebarOption;
+    storefrontLogo: string | null;
+    storefrontCover: string | null;
+    storefrontBrandColor: string;
 }

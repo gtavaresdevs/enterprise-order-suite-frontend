@@ -19,6 +19,9 @@ const DEFAULT_PREFERENCES: PreferencesState = {
     dateFormat: DATE_FORMATS[0],
     currency: CURRENCIES[0],
     sidebarNavigation: "expanded",
+    storefrontLogo: null,
+    storefrontCover: null,
+    storefrontBrandColor: "",
 };
 
 export function usePreferences() {
