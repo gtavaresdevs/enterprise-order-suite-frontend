@@ -1,8 +1,9 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { Layers, Settings, ChevronRight, User, Bell, Sliders, LogOut } from "lucide-react";
 import { NAVIGATION_ITEMS, ADMINISTRATION_ITEMS, type NavItem } from "./navigation";
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { usePreferencesContext } from "@/app/providers/PreferencesProvider";
 import type { Role } from "@/types/auth";
 
 const ACCOUNT_NAV = [
@@ -88,9 +89,10 @@ function UserChip({ onNavigate }: { onNavigate?: () => void }) {
 
 interface SidebarContentProps {
   onNavigate?: () => void;
+  collapsed?: boolean;
 }
 
-export function SidebarContent({ onNavigate }: SidebarContentProps) {
+export function SidebarContent({ onNavigate, collapsed = false }: SidebarContentProps) {
   const { user } = useAuth();
   
   const hasAccess = (roles?: Role[]) => {
@@ -99,7 +101,7 @@ export function SidebarContent({ onNavigate }: SidebarContentProps) {
     return roles.some((role) => user.roles.includes(role));
   };
 
-  const renderNavItem = ({ to, label, icon: Icon, end }: NavItem) => {
+  const renderNavItem = ({ to, label, icon: Icon, end }: NavItem, collapsed: boolean) => {
     if (!to) return null;
     return (
       <NavLink
@@ -107,6 +109,7 @@ export function SidebarContent({ onNavigate }: SidebarContentProps) {
         to={to}
         end={end}
         onClick={onNavigate}
+        title={collapsed ? label : undefined}
         className={({ isActive }) =>
           `flex items-center gap-2.5 px-3 py-2 rounded-[8px] text-sm font-medium transition-all group ${
             isActive
@@ -118,8 +121,8 @@ export function SidebarContent({ onNavigate }: SidebarContentProps) {
         {({ isActive }) => (
           <>
             <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? "text-slate-300" : "text-slate-400 group-hover:text-slate-600"}`} />
-            <span className="flex-1 truncate">{label}</span>
-            {isActive && <ChevronRight className="w-3 h-3 text-slate-500 flex-shrink-0" />}
+            <span className={`flex-1 truncate ${collapsed ? "sr-only" : ""}`}>{label}</span>
+            {isActive && !collapsed && <ChevronRight className="w-3 h-3 text-slate-500 flex-shrink-0" />}
           </>
         )}
       </NavLink>
@@ -134,29 +137,31 @@ export function SidebarContent({ onNavigate }: SidebarContentProps) {
           <div className="w-7 h-7 rounded-[8px] bg-slate-950 flex items-center justify-center flex-shrink-0">
             <Layers className="w-3.5 h-3.5 text-slate-100" />
           </div>
-          <div className="min-w-0">
-            <p className="text-sm font-semibold text-slate-900 leading-none truncate">Enterprise</p>
-            <p className="text-[10px] text-slate-400 mt-0.5 font-medium tracking-wide uppercase">Order Suite</p>
-          </div>
+          {!collapsed && (
+            <div className="min-w-0">
+              <p className="text-sm font-semibold text-slate-900 leading-none truncate">Enterprise</p>
+              <p className="text-[10px] text-slate-400 mt-0.5 font-medium tracking-wide uppercase">Order Suite</p>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Navigation Area */}
       <nav className="app-shell-padded flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
-        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mb-2">Navigation</p>
-        {NAVIGATION_ITEMS.map(renderNavItem)}
+        {!collapsed && <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mb-2">Navigation</p>}
+        {NAVIGATION_ITEMS.map((item) => renderNavItem(item, collapsed))}
 
         {/* Administration Section */}
         {ADMINISTRATION_ITEMS.filter(item => hasAccess(item.roles)).map(section => (
           <div key={section.label} className="pt-4">
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mb-2">{section.label}</p>
-            {section.children?.filter(child => hasAccess(child.roles)).map(renderNavItem)}
+            {!collapsed && <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mb-2">{section.label}</p>}
+            {section.children?.filter(child => hasAccess(child.roles)).map((item) => renderNavItem(item, collapsed))}
           </div>
         ))}
 
         {/* Account section */}
         <div className="pt-4">
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mb-2">Account</p>
+          {!collapsed && <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mb-2">Account</p>}
           {ACCOUNT_NAV.map(({ to, label, icon: Icon }) => (
             <NavLink
               key={to}
@@ -191,9 +196,25 @@ export function SidebarContent({ onNavigate }: SidebarContentProps) {
 }
 
 export function Sidebar() {
+  const { preferences } = usePreferencesContext();
+
+  const autoCollapsed = useSyncExternalStore(
+    (onStoreChange) => {
+      if (preferences.sidebarNavigation !== "auto") return () => {};
+      const media = window.matchMedia("(max-width: 1280px)");
+      media.addEventListener("change", onStoreChange);
+      return () => media.removeEventListener("change", onStoreChange);
+    },
+    () => preferences.sidebarNavigation === "auto" && window.matchMedia("(max-width: 1280px)").matches,
+    () => false
+  );
+
+  const collapsed = preferences.sidebarNavigation === "collapsed"
+    || (preferences.sidebarNavigation === "auto" && autoCollapsed);
+
   return (
-    <aside className="hidden lg:flex flex-col w-[220px] shrink-0 border-r border-border z-10 bg-card">
-      <SidebarContent />
+    <aside className={`hidden lg:flex flex-col shrink-0 border-r border-border z-10 bg-card transition-[width] duration-200 ${collapsed ? "w-[72px]" : "w-[220px]"}`}>
+      <SidebarContent collapsed={collapsed} />
     </aside>
   );
 }
