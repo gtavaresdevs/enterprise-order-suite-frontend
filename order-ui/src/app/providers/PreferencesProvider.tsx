@@ -35,6 +35,12 @@ interface PreferencesContextValue {
 
 const PreferencesContext = createContext<PreferencesContextValue | undefined>(undefined);
 
+const FONT_SIZE_PX: Record<string, string> = {
+    "Compact (13px)": "13px",
+    "Default (15px)": "15px",
+    "Comfortable (17px)": "17px",
+};
+
 export function PreferencesProvider({ children }: { children: ReactNode }) {
     const [preferences, setPreferences] = useState<PreferencesState>(DEFAULT_PREFERENCES);
     const [isSaved, setIsSaved] = useState(false);
@@ -62,6 +68,22 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
 
         applyTheme(preferences.theme === "dark");
     }, [preferences.theme]);
+
+    useEffect(() => {
+        document.documentElement.style.setProperty("--font-size", FONT_SIZE_PX[preferences.fontSize] ?? "15px");
+    }, [preferences.fontSize]);
+
+    useEffect(() => {
+        document.documentElement.toggleAttribute("data-compact", preferences.compactMode);
+    }, [preferences.compactMode]);
+
+    useEffect(() => {
+        document.documentElement.toggleAttribute("data-dense-tables", preferences.denseTable);
+    }, [preferences.denseTable]);
+
+    useEffect(() => {
+        document.documentElement.toggleAttribute("data-reduced-motion", preferences.reducedMotion);
+    }, [preferences.reducedMotion]);
 
     const updatePreference = useCallback(<K extends keyof PreferencesState>(
         key: K,

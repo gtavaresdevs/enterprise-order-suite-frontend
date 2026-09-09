@@ -142,7 +142,7 @@ export function SidebarContent({ onNavigate }: SidebarContentProps) {
       </div>
 
       {/* Navigation Area */}
-      <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
+      <nav className="app-shell-padded flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mb-2">Navigation</p>
         {NAVIGATION_ITEMS.map(renderNavItem)}
 

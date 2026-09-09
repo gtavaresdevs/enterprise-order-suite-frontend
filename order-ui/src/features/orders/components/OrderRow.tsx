@@ -7,7 +7,7 @@ import { ActionButton } from "./ActionButton";
 
 export function OrderRow({ order, onView, onEdit, onDelete }: { order: Order; onView: () => void; onEdit: () => void; onDelete: () => void }) {
     return (
-        <div className="grid grid-cols-[1fr_1.2fr_0.8fr_0.7fr_0.8fr_0.7fr_auto] gap-4 items-center px-5 py-3.5 hover:bg-slate-50/80 transition-colors group">
+        <div className="orders-table-row grid grid-cols-[1fr_1.2fr_0.8fr_0.7fr_0.8fr_0.7fr_auto] gap-4 items-center px-5 py-3.5 hover:bg-slate-50/80 transition-colors group">
             <span className="font-mono text-sm font-medium text-slate-700 truncate">{order.id}</span>
             <div className="min-w-0">
                 <p className="text-sm font-medium text-slate-800 truncate">{order.customer}</p>
