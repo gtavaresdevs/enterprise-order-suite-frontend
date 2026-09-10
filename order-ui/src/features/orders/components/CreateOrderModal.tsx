@@ -35,8 +35,8 @@ export function CreateOrderModal({ onClose, onSave }: { onClose: () => void; onS
         if (Object.keys(e).length > 0) return;
         const now = new Date();
         const id = `PHN-${now.getFullYear()}-${8000 + Math.floor(Math.random() * 999)}`;
-        const orderItems: OrderLine[] = items.map((p, i) => ({
-            menuItemId: `ITM-${String(i + 1).padStart(3, "0")}`,
+        const orderItems: OrderLine[] = items.map((p) => ({
+            menuItemId: `CUSTOM-${p._key}`,
             name: p.name.trim(),
             quantity: parseInt(p.quantity) || 1,
             unitPrice: parseFloat(p.unitPrice) || 0,

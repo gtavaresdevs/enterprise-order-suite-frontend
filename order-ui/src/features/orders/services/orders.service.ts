@@ -9,14 +9,14 @@ export const ORDERS: Order[] = [
     customerPhone: "+1 (415) 555-0182",
     items: [
       {
-        menuItemId: "ITM-001", name: "Double Smash Burger", quantity: 2, unitPrice: 14.99,
+        menuItemId: "m1", name: "Double Smash Burger", quantity: 2, unitPrice: 14.99,
         modifiers: [
           { label: "No Onion", price: 0 },
           { label: "Extra Bacon", price: 2.00 },
           { label: "Extra Cheese", price: 1.50 },
         ],
       },
-      { menuItemId: "ITM-002", name: "Loaded Fries", quantity: 1, unitPrice: 8.99, modifiers: [] },
+      { menuItemId: "m5", name: "Truffle Loaded Fries", quantity: 1, unitPrice: 8.99, modifiers: [] },
     ],
     createdAt: "2024-11-20",
     total: 42.47,
@@ -31,14 +31,14 @@ export const ORDERS: Order[] = [
     customerPhone: "+1 (628) 555-0294",
     items: [
       {
-        menuItemId: "ITM-003", name: "Margherita Pizza 12\"", quantity: 1, unitPrice: 18.99,
+        menuItemId: "m3", name: "Margherita Pizza 12\"", quantity: 1, unitPrice: 18.99,
         modifiers: [
           { label: "Extra Crispy Crust", price: 0 },
           { label: "No Basil", price: 0 },
         ],
       },
       {
-        menuItemId: "ITM-004", name: "Caramel Latte", quantity: 2, unitPrice: 5.99,
+        menuItemId: "m7", name: "Caramel Latte", quantity: 2, unitPrice: 5.99,
         modifiers: [
           { label: "Oat Milk", price: 0.80 },
           { label: "No Sugar", price: 0 },
@@ -58,13 +58,13 @@ export const ORDERS: Order[] = [
     customerPhone: "+1 (510) 555-0371",
     items: [
       {
-        menuItemId: "ITM-005", name: "Crispy Chicken Sandwich", quantity: 1, unitPrice: 13.49,
+        menuItemId: "m2", name: "Crispy Chicken Sandwich", quantity: 1, unitPrice: 13.49,
         modifiers: [
           { label: "Spicy Level 2", price: 0 },
           { label: "Add Avocado", price: 1.50 },
         ],
       },
-      { menuItemId: "ITM-006", name: "Strawberry Milkshake", quantity: 1, unitPrice: 7.49, modifiers: [] },
+      { menuItemId: "m6", name: "Strawberry Milkshake", quantity: 1, unitPrice: 7.49, modifiers: [] },
     ],
     createdAt: "2024-11-20",
     total: 23.48,
@@ -78,8 +78,8 @@ export const ORDERS: Order[] = [
     customerName: "Priya Nair",
     customerPhone: "+1 (415) 555-0449",
     items: [
-      { menuItemId: "ITM-007", name: "Caesar Salad", quantity: 2, unitPrice: 11.99, modifiers: [{ label: "No Croutons", price: 0 }] },
-      { menuItemId: "ITM-008", name: "Sparkling Water", quantity: 2, unitPrice: 2.49, modifiers: [] },
+      { menuItemId: "m4", name: "Caesar Salad", quantity: 2, unitPrice: 11.99, modifiers: [{ label: "No Croutons", price: 0 }] },
+      { menuItemId: "NM-SPARKLING-WATER", name: "Sparkling Water", quantity: 2, unitPrice: 2.49, modifiers: [] },
     ],
     createdAt: "2024-11-20",
     total: 29.94,
@@ -94,10 +94,10 @@ export const ORDERS: Order[] = [
     customerPhone: "+1 (408) 555-0512",
     items: [
       {
-        menuItemId: "ITM-009", name: "Truffle Fries", quantity: 1, unitPrice: 10.99,
+        menuItemId: "m5", name: "Truffle Loaded Fries", quantity: 1, unitPrice: 10.99,
         modifiers: [{ label: "Extra Truffle Oil", price: 1.50 }],
       },
-      { menuItemId: "ITM-010", name: "Chocolate Brownie", quantity: 2, unitPrice: 6.49, modifiers: [] },
+      { menuItemId: "m8", name: "Chocolate Brownie", quantity: 2, unitPrice: 6.49, modifiers: [] },
     ],
     createdAt: "2024-11-20",
     total: 25.47,
@@ -112,7 +112,7 @@ export const ORDERS: Order[] = [
     customerPhone: "+1 (650) 555-0673",
     items: [
       {
-        menuItemId: "ITM-011", name: "Double Smash Burger", quantity: 3, unitPrice: 14.99,
+        menuItemId: "m1", name: "Double Smash Burger", quantity: 3, unitPrice: 14.99,
         modifiers: [{ label: "No Pickles", price: 0 }, { label: "Truffle Mayo", price: 1.00 }],
       },
     ],
@@ -128,8 +128,8 @@ export const ORDERS: Order[] = [
     customerName: "Sophie Laurent",
     customerPhone: "+1 (415) 555-0821",
     items: [
-      { menuItemId: "ITM-012", name: "Margherita Pizza 12\"", quantity: 1, unitPrice: 18.99, modifiers: [] },
-      { menuItemId: "ITM-013", name: "Caramel Latte", quantity: 1, unitPrice: 5.99, modifiers: [{ label: "Almond Milk", price: 0.80 }] },
+      { menuItemId: "m3", name: "Margherita Pizza 12\"", quantity: 1, unitPrice: 18.99, modifiers: [] },
+      { menuItemId: "m7", name: "Caramel Latte", quantity: 1, unitPrice: 5.99, modifiers: [{ label: "Almond Milk", price: 0.80 }] },
     ],
     createdAt: "2024-11-19",
     total: 25.78,
@@ -143,8 +143,8 @@ export const ORDERS: Order[] = [
     customerName: "Kwame Asante",
     customerPhone: "+1 (415) 555-0934",
     items: [
-      { menuItemId: "ITM-014", name: "Crispy Chicken Sandwich", quantity: 2, unitPrice: 13.49, modifiers: [{ label: "BBQ Sauce", price: 0 }] },
-      { menuItemId: "ITM-015", name: "Loaded Fries", quantity: 2, unitPrice: 8.99, modifiers: [] },
+      { menuItemId: "m2", name: "Crispy Chicken Sandwich", quantity: 2, unitPrice: 13.49, modifiers: [{ label: "BBQ Sauce", price: 0 }] },
+      { menuItemId: "m5", name: "Truffle Loaded Fries", quantity: 2, unitPrice: 8.99, modifiers: [] },
     ],
     createdAt: "2024-11-20",
     total: 47.96,
