@@ -25,6 +25,7 @@ export function MenuItemModal({ item, onClose, onSubmit, isSubmitting }: MenuIte
     const [available, setAvailable] = useState(item?.available ?? true);
 
     const handleSubmit = () => {
+        if (!name.trim()) return;
         onSubmit({
             name,
             description: desc,
@@ -149,7 +150,7 @@ export function MenuItemModal({ item, onClose, onSubmit, isSubmitting }: MenuIte
                         </Button>
                         <Button
                             onClick={handleSubmit}
-                            disabled={isSubmitting}
+                            disabled={isSubmitting || !name.trim()}
                             className="rounded-[8px] h-9 bg-slate-950 text-slate-50 border-slate-800 shadow-inner hover:bg-slate-800 transition-all"
                         >
                             {isSubmitting ? "Saving..." : isEditing ? "Save Changes" : "Add to Menu"}

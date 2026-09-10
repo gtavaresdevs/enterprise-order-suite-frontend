@@ -13,7 +13,7 @@ export const tablesService = {
         // TODO: connect-backend — POST /api/v1/tables
         return new Promise((resolve) => {
             const id = `t-${Math.random().toString(36).slice(2, 9)}`;
-            const newTable: Table = { id, name, qrCodeUrl: `/menu?table=${id}` };
+            const newTable: Table = { id, name, qrCodeUrl: `/storefront?table=${id}` };
             tables = [...tables, newTable];
             setTimeout(() => resolve(newTable), 400);
         });
