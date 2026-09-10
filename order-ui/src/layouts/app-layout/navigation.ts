@@ -2,6 +2,7 @@ import {
   Home,
   ShoppingCart,
   Package,
+  UtensilsCrossed,
   BarChart3,
   Shield,
   Users,
@@ -24,6 +25,7 @@ export const NAVIGATION_ITEMS: NavItem[] = [
   { to: "/home", label: "Dashboard", icon: Home, end: true },
   { to: "/orders", label: "Orders", icon: ShoppingCart, end: false },
   { to: "/inventory", label: "Inventory", icon: Package, end: false },
+  { to: "/menu", label: "Menu", icon: UtensilsCrossed, end: false },
   { to: "/analytics", label: "Analytics", icon: BarChart3, end: false },
 ];
 

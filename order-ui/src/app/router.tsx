@@ -14,6 +14,7 @@ import ResetPasswordPage from '@/pages/ResetPassword';
 import HomePage from '@/pages/Home';
 import OrdersPage from '@/pages/Orders';
 import InventoryPage from '@/pages/Inventory';
+import MenuPage from '@/pages/Menu';
 import AnalyticsPage from '@/pages/Analytics';
 import ProfilePage from '@/pages/Profile';
 import NotificationsPage from '@/pages/Notifications';
@@ -78,6 +79,10 @@ export const router = createBrowserRouter([
           {
             path: '/inventory',
             element: <InventoryPage />,
+          },
+          {
+            path: '/menu',
+            element: <MenuPage />,
           },
           {
             path: '/analytics',
