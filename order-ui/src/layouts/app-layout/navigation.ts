@@ -25,7 +25,6 @@ export const NAVIGATION_ITEMS: NavItem[] = [
   { to: "/orders", label: "Orders", icon: ShoppingCart, end: false },
   { to: "/inventory", label: "Inventory", icon: Package, end: false },
   { to: "/analytics", label: "Analytics", icon: BarChart3, end: false },
-  { to: "/security", label: "Security", icon: Shield, end: false },
 ];
 
 export const ADMINISTRATION_ITEMS: NavItem[] = [
