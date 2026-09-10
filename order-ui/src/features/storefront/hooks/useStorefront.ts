@@ -1,5 +1,6 @@
 import { useState } from "react";
-import type { CartItem, FlowState, MenuItem } from "@/types/storefront";
+import type { CartItem, FlowState } from "@/types/storefront";
+import type { MenuItem } from "@/types/menu";
 
 export const useStorefront = () => {
     const [activeCategory, setActiveCategory] = useState("Burgers");

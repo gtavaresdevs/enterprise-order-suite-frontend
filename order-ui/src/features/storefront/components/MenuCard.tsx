@@ -1,5 +1,5 @@
-import { Star, Plus } from "lucide-react";
-import type { MenuItem } from "@/types/storefront";
+import { Plus } from "lucide-react";
+import type { MenuItem } from "@/types/menu";
 
 export const MenuCard = ({ item, onSelect }: { item: MenuItem; onSelect: () => void }) => {
     return (
@@ -12,9 +12,6 @@ export const MenuCard = ({ item, onSelect }: { item: MenuItem; onSelect: () => v
                 <p className="text-xs text-slate-400 mt-1 leading-relaxed line-clamp-2">{item.description}</p>
                 <div className="flex items-center gap-2 mt-3">
                     <span className="font-mono text-sm font-semibold text-slate-900">${item.price.toFixed(2)}</span>
-                    <span className="inline-flex items-center gap-0.5 text-[11px] text-amber-600 font-medium">
-                        <Star className="w-3 h-3 fill-amber-400 text-amber-400" />{item.rating}
-                    </span>
                 </div>
             </div>
             <div className="w-24 h-24 flex-shrink-0 relative self-center mr-3">
