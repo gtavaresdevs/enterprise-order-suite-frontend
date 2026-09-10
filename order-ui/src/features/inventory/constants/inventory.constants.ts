@@ -1,4 +1,4 @@
-import type { Product } from "@/types/inventory";
+import type { MenuItem } from "@/types/menu";
 
 export const CATEGORIES = [
     "All",
@@ -11,15 +11,16 @@ export const CATEGORIES = [
     "Desserts"
 ];
 
-export const MOCK_PRODUCTS: Product[] = [
+export const MOCK_PRODUCTS: MenuItem[] = [
     {
         id: "PRD-001",
         name: "Double Smash Burger",
         description: "Two smashed beef patties, cheddar, pickles, shredded lettuce, house sauce on a brioche bun.",
         category: "Burgers",
-        basePrice: 14.99,
+        price: 14.99,
+        stockQuantity: 18,
         image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=480&h=320&fit=crop&auto=format",
-        modifiers: [{ label: "Extra Patty", price: 4.00 }, { label: "Extra Bacon", price: 2.00 }, { label: "Avocado", price: 1.50 }],
+        addons: [{ id: "a1", label: "Extra Patty", price: 4.00 }, { id: "a2", label: "Extra Bacon", price: 2.00 }, { id: "a3", label: "Avocado", price: 1.50 }],
         available: true,
     },
     {
@@ -27,9 +28,10 @@ export const MOCK_PRODUCTS: Product[] = [
         name: "Crispy Chicken Sandwich",
         description: "Double-fried chicken thigh, spicy mayo, coleslaw, pickled jalapeños on a toasted potato roll.",
         category: "Chicken",
-        basePrice: 13.49,
+        price: 13.49,
+        stockQuantity: 22,
         image: "https://images.unsplash.com/photo-1562967914-608f82629710?w=480&h=320&fit=crop&auto=format",
-        modifiers: [{ label: "Spicy Upgrade", price: 0.50 }, { label: "Extra Sauce", price: 0.50 }],
+        addons: [{ id: "a1", label: "Spicy Upgrade", price: 0.50 }, { id: "a2", label: "Extra Sauce", price: 0.50 }],
         available: true,
     },
     {
@@ -37,9 +39,10 @@ export const MOCK_PRODUCTS: Product[] = [
         name: "Margherita Pizza 12\"",
         description: "San Marzano tomato, fresh mozzarella, basil, extra virgin olive oil on a hand-tossed crust.",
         category: "Pizza",
-        basePrice: 18.99,
+        price: 18.99,
+        stockQuantity: 9,
         image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=480&h=320&fit=crop&auto=format",
-        modifiers: [{ label: "Extra Cheese", price: 2.00 }, { label: "Truffle Oil", price: 2.50 }],
+        addons: [{ id: "a1", label: "Extra Cheese", price: 2.00 }, { id: "a2", label: "Truffle Oil", price: 2.50 }],
         available: true,
     },
     {
@@ -47,9 +50,10 @@ export const MOCK_PRODUCTS: Product[] = [
         name: "Caesar Salad",
         description: "Romaine hearts, house-made Caesar dressing, Parmigiano-Reggiano, anchovy croutons.",
         category: "Salads",
-        basePrice: 11.99,
+        price: 11.99,
+        stockQuantity: 25,
         image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=480&h=320&fit=crop&auto=format",
-        modifiers: [{ label: "Grilled Chicken", price: 4.00 }, { label: "Shrimp", price: 5.50 }],
+        addons: [{ id: "a1", label: "Grilled Chicken", price: 4.00 }, { id: "a2", label: "Shrimp", price: 5.50 }],
         available: true,
     },
     {
@@ -57,9 +61,10 @@ export const MOCK_PRODUCTS: Product[] = [
         name: "Truffle Loaded Fries",
         description: "Hand-cut fries, truffle oil, aged Parmesan, fresh herbs, garlic aioli dipping sauce.",
         category: "Sides",
-        basePrice: 10.99,
+        price: 10.99,
+        stockQuantity: 4,
         image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=480&h=320&fit=crop&auto=format",
-        modifiers: [{ label: "Extra Truffle", price: 1.50 }, { label: "Bacon Crumbles", price: 1.50 }],
+        addons: [{ id: "a1", label: "Extra Truffle", price: 1.50 }, { id: "a2", label: "Bacon Crumbles", price: 1.50 }],
         available: true,
     },
     {
@@ -67,9 +72,10 @@ export const MOCK_PRODUCTS: Product[] = [
         name: "Strawberry Milkshake",
         description: "House-churned vanilla ice cream, fresh strawberry compote, topped with whipped cream.",
         category: "Drinks",
-        basePrice: 7.49,
+        price: 7.49,
+        stockQuantity: 30,
         image: "https://images.unsplash.com/photo-1541658016709-82763f21784a?w=480&h=320&fit=crop&auto=format",
-        modifiers: [{ label: "Extra Scoop", price: 1.50 }],
+        addons: [{ id: "a1", label: "Extra Scoop", price: 1.50 }],
         available: true,
     },
     {
@@ -77,9 +83,10 @@ export const MOCK_PRODUCTS: Product[] = [
         name: "Caramel Latte",
         description: "Double-shot espresso, steamed whole milk, house caramel drizzle, served hot or iced.",
         category: "Drinks",
-        basePrice: 5.99,
+        price: 5.99,
+        stockQuantity: 28,
         image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=480&h=320&fit=crop&auto=format",
-        modifiers: [{ label: "Oat Milk", price: 0.80 }, { label: "Almond Milk", price: 0.80 }, { label: "Extra Shot", price: 1.00 }],
+        addons: [{ id: "a1", label: "Oat Milk", price: 0.80 }, { id: "a2", label: "Almond Milk", price: 0.80 }, { id: "a3", label: "Extra Shot", price: 1.00 }],
         available: true,
     },
     {
@@ -87,9 +94,10 @@ export const MOCK_PRODUCTS: Product[] = [
         name: "Chocolate Brownie",
         description: "Warm fudge brownie, single-origin chocolate, salted caramel swirl, vanilla bean ice cream.",
         category: "Desserts",
-        basePrice: 6.49,
+        price: 6.49,
+        stockQuantity: 12,
         image: "https://images.unsplash.com/photo-1564355808539-22fda35bed7e?w=480&h=320&fit=crop&auto=format",
-        modifiers: [{ label: "Extra Ice Cream", price: 1.50 }, { label: "Chocolate Sauce", price: 0.75 }],
+        addons: [{ id: "a1", label: "Extra Ice Cream", price: 1.50 }, { id: "a2", label: "Chocolate Sauce", price: 0.75 }],
         available: true,
     },
     {
@@ -97,9 +105,10 @@ export const MOCK_PRODUCTS: Product[] = [
         name: "Spicy Chicken Wings",
         description: "Crispy double-fried wings tossed in house buffalo or Korean gochujang glaze, 8 pieces.",
         category: "Chicken",
-        basePrice: 15.99,
+        price: 15.99,
+        stockQuantity: 0,
         image: "https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=480&h=320&fit=crop&auto=format",
-        modifiers: [{ label: "Extra Sauce", price: 0.50 }, { label: "Ranch Dip", price: 0.75 }, { label: "Blue Cheese Dip", price: 0.75 }],
+        addons: [{ id: "a1", label: "Extra Sauce", price: 0.50 }, { id: "a2", label: "Ranch Dip", price: 0.75 }, { id: "a3", label: "Blue Cheese Dip", price: 0.75 }],
         available: false,
     },
 ];

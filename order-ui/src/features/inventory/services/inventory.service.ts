@@ -1,8 +1,8 @@
-import type { Product } from "@/types/inventory";
+import type { MenuItem } from "@/types/menu";
 import { MOCK_PRODUCTS } from "../constants/inventory.constants";
 
 export const inventoryService = {
-    getProducts: async (): Promise<Product[]> => {
+    getProducts: async (): Promise<MenuItem[]> => {
         // TODO: Connect real backend endpoint when ready
         // const { data } = await api.get('/api/v1/products');
         // return data;
@@ -11,7 +11,7 @@ export const inventoryService = {
         return new Promise((resolve) => setTimeout(() => resolve([...MOCK_PRODUCTS]), 400));
     },
 
-    createProduct: async (product: Omit<Product, 'id'>): Promise<Product> => {
+    createProduct: async (product: Omit<MenuItem, 'id'>): Promise<MenuItem> => {
         // const { data } = await api.post('/api/v1/products', product);
         // return data;
 
@@ -19,7 +19,7 @@ export const inventoryService = {
             const newProduct = {
                 ...product,
                 id: `PRD-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`
-            } as Product;
+            } as MenuItem;
             setTimeout(() => resolve(newProduct), 500);
         });
     },

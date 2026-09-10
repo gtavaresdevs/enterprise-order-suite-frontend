@@ -22,10 +22,11 @@ export function AddProductModal({ onClose, onSubmit, isSubmitting }: AddProductM
         onSubmit({
             name,
             description: desc,
-            basePrice: parseFloat(price) || 0,
+            price: parseFloat(price) || 0,
             category,
             image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=480&h=320&fit=crop&auto=format", // Placeholder for actual upload
-            modifiers: [],
+            stockQuantity: 0,
+            addons: [],
             available: true
         });
     };

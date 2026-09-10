@@ -1,14 +1,14 @@
 import { Pencil, Trash2, SlidersHorizontal } from "lucide-react";
-import type { Product } from "@/types/inventory";
+import type { MenuItem } from "@/types/menu";
 
 interface ProductCardProps {
-    product: Product;
-    onEdit: (product: Product) => void;
+    product: MenuItem;
+    onEdit: (product: MenuItem) => void;
     onDelete: (id: string) => void;
 }
 
 export function ProductCard({ product, onEdit, onDelete }: ProductCardProps) {
-    const hasModifiers = product.modifiers && product.modifiers.length > 0;
+    const hasAddons = product.addons && product.addons.length > 0;
     const formatPrice = (n: number) => `$${n.toFixed(2)}`;
 
     return (
@@ -60,13 +60,13 @@ export function ProductCard({ product, onEdit, onDelete }: ProductCardProps) {
 
                 <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-100">
                     <span className="font-mono text-base font-semibold text-slate-900">
-                        {formatPrice(product.basePrice)}
+                        {formatPrice(product.price)}
                     </span>
                     <div className="flex items-center gap-1.5">
-                        {hasModifiers && (
+                        {hasAddons && (
                             <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-violet-700 bg-violet-50 border border-violet-100 px-1.5 py-0.5 rounded-[8px]">
                                 <SlidersHorizontal className="w-2.5 h-2.5" />
-                                {product.modifiers.length} mod{product.modifiers.length !== 1 ? "s" : ""}
+                                {product.addons!.length} addon{product.addons!.length !== 1 ? "s" : ""}
                             </span>
                         )}
                         <span className="font-mono text-[10px] text-slate-400">

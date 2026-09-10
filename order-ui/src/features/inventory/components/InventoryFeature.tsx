@@ -32,7 +32,7 @@ export function InventoryFeature() {
     });
 
     const availableCount = products.filter((p) => p.available).length;
-    const modifiersCount = products.filter((p) => p.modifiers && p.modifiers.length > 0).length;
+    const modifiersCount = products.filter((p) => p.addons && p.addons.length > 0).length;
 
     return (
         <div className="min-h-full">
