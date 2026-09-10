@@ -8,7 +8,7 @@ export function useOrderFilters(orders: Order[]) {
   const filteredOrders = useMemo(() => {
     const q = search.toLowerCase();
     return orders.filter((o) => {
-      const matchSearch = !q || o.id.toLowerCase().includes(q) || o.customer.toLowerCase().includes(q) || o.status.toLowerCase().includes(q);
+      const matchSearch = !q || o.id.toLowerCase().includes(q) || o.customerName.toLowerCase().includes(q) || o.status.toLowerCase().includes(q);
       const matchFilter = activeFilter === "All" || o.status === activeFilter;
       return matchSearch && matchFilter;
     });

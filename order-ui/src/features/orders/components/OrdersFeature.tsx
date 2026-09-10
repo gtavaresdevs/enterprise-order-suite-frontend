@@ -25,15 +25,15 @@ export function OrdersFeature() {
                     <div>
                         <div className="flex items-center gap-2 mb-1"><ShoppingCart className="w-4 h-4 text-slate-400" /><span className="text-xs font-medium text-slate-400 uppercase tracking-widest">Enterprise Order Suite</span></div>
                         <h1 className="text-2xl font-semibold text-slate-900">Order Operations</h1>
-                        <p className="text-sm text-slate-400 mt-1">Manage and track active delivery orders in real time.</p>
+                        <p className="text-sm text-slate-400 mt-1">Manage and track active orders across every channel in real time.</p>
                     </div>
                     <button onClick={() => setCreateOpen(true)} className="inline-flex items-center gap-2 h-9 px-4 rounded-[8px] bg-slate-950 text-slate-50 text-sm font-semibold border border-slate-800 shadow-inner hover:bg-slate-800 active:scale-[0.98] transition-all mt-1">
                         <Plus className="w-3.5 h-3.5" /> New Order
                     </button>
                 </div>
 
-                <div className="grid grid-cols-4 gap-3 mb-6">
-                    {(["New", "Preparing", "In Route", "Delivered"] as OrderStatus[]).map((s) => {
+                <div className="grid grid-cols-5 gap-3 mb-6">
+                    {(["New", "Preparing", "Ready", "Completed", "Cancelled"] as OrderStatus[]).map((s) => {
                         const cfg = STATUS_CONFIG[s];
                         return (
                             <div key={s} className="bg-white rounded-[8px] border border-slate-100 px-4 py-3.5 flex items-center justify-between">

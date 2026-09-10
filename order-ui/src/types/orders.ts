@@ -1,13 +1,15 @@
-export type OrderStatus = "New" | "Preparing" | "In Route" | "Delivered";
+export type OrderChannel = "Online" | "Dine-in" | "Phone";
+export type Fulfillment = "Pickup" | "Delivery";
+export type OrderStatus = "New" | "Preparing" | "Ready" | "Completed" | "Cancelled";
+export type PaymentStatus = "Paid" | "Pending" | "PayLater";
 
 export interface Modifier {
   label: string;
   price: number;
-  type: "remove" | "addon";
 }
 
-export interface ProductLine {
-  id: string;
+export interface OrderLine {
+  menuItemId: string;
   name: string;
   quantity: number;
   unitPrice: number;
@@ -16,21 +18,14 @@ export interface ProductLine {
 
 export interface Order {
   id: string;
-  customer: string;
-  company: string;
-  email: string;
-  phone: string;
-  deliveryAddress: string;
-  products: ProductLine[];
-  dateCreated: string;
-  estimatedDelivery: string;
-  total: number;
+  channel: OrderChannel;
+  fulfillment?: Fulfillment;
+  table?: string;
+  customerName: string;
+  customerPhone: string;
+  items: OrderLine[];
   status: OrderStatus;
-}
-
-export interface DraftProduct {
-  _key: string;
-  name: string;
-  quantity: string;
-  unitPrice: string;
+  paymentStatus: PaymentStatus;
+  createdAt: string;
+  total: number;
 }

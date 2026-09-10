@@ -1,29 +1,27 @@
 import { useState } from "react";
-import { User, Phone, MapPin, Package, Plus, DollarSign, Minus, X } from "lucide-react";
-import type { Order, OrderStatus, DraftProduct } from "@/types/orders";
+import { User, Phone, Package, Plus, DollarSign, Minus, X } from "lucide-react";
+import type { Order, OrderStatus, OrderLine } from "@/types/orders";
 import { useFormat } from "@/features/preferences/hooks/useFormat";
 
-const emptyDraftProduct = (): DraftProduct => ({ _key: Math.random().toString(36).slice(2), name: "", quantity: "1", unitPrice: "" });
+interface DraftItem { _key: string; name: string; quantity: string; unitPrice: string; }
+const emptyDraftItem = (): DraftItem => ({ _key: Math.random().toString(36).slice(2), name: "", quantity: "1", unitPrice: "" });
 
 export function CreateOrderModal({ onClose, onSave }: { onClose: () => void; onSave: (o: Order) => void }) {
     const { formatCurrency } = useFormat();
-    const [customer, setCustomer] = useState("");
-    const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
-    const [address, setAddress] = useState("");
+    const [customerName, setCustomerName] = useState("");
+    const [customerPhone, setCustomerPhone] = useState("");
     const [status, setStatus] = useState<OrderStatus>("New");
-    const [products, setProducts] = useState<DraftProduct[]>([emptyDraftProduct()]);
+    const [items, setItems] = useState<DraftItem[]>([emptyDraftItem()]);
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [submitted, setSubmitted] = useState(false);
 
-    const grandTotal = products.reduce((s, p) => s + (parseFloat(p.quantity) || 0) * (parseFloat(p.unitPrice) || 0), 0);
+    const grandTotal = items.reduce((s, p) => s + (parseFloat(p.quantity) || 0) * (parseFloat(p.unitPrice) || 0), 0);
 
     function validate() {
         const e: Record<string, string> = {};
-        if (!customer.trim()) e.customer = "Name required.";
-        if (!phone.trim()) e.phone = "Phone required.";
-        if (!address.trim()) e.address = "Address required.";
-        products.forEach((p, i) => {
+        if (!customerName.trim()) e.customerName = "Name required.";
+        if (!customerPhone.trim()) e.customerPhone = "Phone required.";
+        items.forEach((p, i) => {
             if (!p.name.trim()) e[`pname_${i}`] = "Item name required.";
             if (!p.unitPrice || parseFloat(p.unitPrice) <= 0) e[`pprice_${i}`] = "Price required.";
         });
@@ -36,21 +34,25 @@ export function CreateOrderModal({ onClose, onSave }: { onClose: () => void; onS
         setErrors(e);
         if (Object.keys(e).length > 0) return;
         const now = new Date();
-        const id = `DEL-${now.getFullYear()}-${8000 + Math.floor(Math.random() * 999)}`;
+        const id = `PHN-${now.getFullYear()}-${8000 + Math.floor(Math.random() * 999)}`;
+        const orderItems: OrderLine[] = items.map((p, i) => ({
+            menuItemId: `ITM-${String(i + 1).padStart(3, "0")}`,
+            name: p.name.trim(),
+            quantity: parseInt(p.quantity) || 1,
+            unitPrice: parseFloat(p.unitPrice) || 0,
+            modifiers: [],
+        }));
         onSave({
-            id, customer: customer.trim(), company: "Self",
-            email: email.trim(), phone: phone.trim(),
-            deliveryAddress: address.trim(), status,
-            dateCreated: now.toISOString().slice(0, 10),
-            estimatedDelivery: `${now.getHours()}:${String(now.getMinutes() + 30).padStart(2, "0")}`,
+            id,
+            channel: "Phone",
+            fulfillment: "Pickup",
+            customerName: customerName.trim(),
+            customerPhone: customerPhone.trim(),
+            status,
+            paymentStatus: "PayLater",
+            createdAt: now.toISOString().slice(0, 10),
             total: grandTotal,
-            products: products.map((p, i) => ({
-                id: `ITM-${String(i + 1).padStart(3, "0")}`,
-                name: p.name.trim(),
-                quantity: parseInt(p.quantity) || 1,
-                unitPrice: parseFloat(p.unitPrice) || 0,
-                modifiers: [],
-            })),
+            items: orderItems,
         });
         onClose();
     }
@@ -64,7 +66,7 @@ export function CreateOrderModal({ onClose, onSave }: { onClose: () => void; onS
                 <div className="w-full max-w-xl bg-white rounded-[8px] border border-slate-200 shadow-2xl flex flex-col max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
                     <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 flex-shrink-0">
                         <div>
-                            <h2 className="text-base font-semibold text-slate-900" style={{ fontFamily: "'Outfit', sans-serif" }}>New Delivery Order</h2>
+                            <h2 className="text-base font-semibold text-slate-900" style={{ fontFamily: "'Outfit', sans-serif" }}>New Order</h2>
                             <p className="text-xs text-slate-400 mt-0.5">Enter customer details and order items.</p>
                         </div>
                         <button onClick={onClose} className="w-8 h-8 rounded-[8px] flex items-center justify-center text-slate-400 hover:bg-slate-100 transition-colors"><X className="w-4 h-4" /></button>
@@ -75,24 +77,16 @@ export function CreateOrderModal({ onClose, onSave }: { onClose: () => void; onS
                             <div className="grid grid-cols-2 gap-3">
                                 <div>
                                     <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5">Name</label>
-                                    <input className={inputCls(submitted ? errors.customer : undefined)} placeholder="Customer name" value={customer} onChange={(e) => setCustomer(e.target.value)} />
+                                    <input className={inputCls(submitted ? errors.customerName : undefined)} placeholder="Customer name" value={customerName} onChange={(e) => setCustomerName(e.target.value)} />
                                 </div>
                                 <div>
                                     <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5">Phone</label>
-                                    <div className="relative"><Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" /><input className={`${inputCls(submitted ? errors.phone : undefined)} pl-8`} placeholder="+1 (555) 000-0000" value={phone} onChange={(e) => setPhone(e.target.value)} /></div>
-                                </div>
-                                <div className="col-span-2">
-                                    <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5">Delivery Address</label>
-                                    <div className="relative"><MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" /><input className={`${inputCls(submitted ? errors.address : undefined)} pl-8`} placeholder="Street address, Apt, City, ZIP" value={address} onChange={(e) => setAddress(e.target.value)} /></div>
-                                </div>
-                                <div>
-                                    <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5">Email</label>
-                                    <input className={inputCls()} type="email" placeholder="email@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+                                    <div className="relative"><Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" /><input className={`${inputCls(submitted ? errors.customerPhone : undefined)} pl-8`} placeholder="+1 (555) 000-0000" value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)} /></div>
                                 </div>
                                 <div>
                                     <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5">Initial Status</label>
                                     <select className={`${inputCls()} cursor-pointer`} value={status} onChange={(e) => setStatus(e.target.value as OrderStatus)}>
-                                        {(["New", "Preparing", "In Route", "Delivered"] as OrderStatus[]).map((s) => <option key={s}>{s}</option>)}
+                                        {(["New", "Preparing", "Ready", "Completed", "Cancelled"] as OrderStatus[]).map((s) => <option key={s}>{s}</option>)}
                                     </select>
                                 </div>
                             </div>
@@ -101,18 +95,18 @@ export function CreateOrderModal({ onClose, onSave }: { onClose: () => void; onS
                         <div>
                             <div className="flex items-center justify-between mb-3">
                                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5"><Package className="w-3 h-3" /> Items</p>
-                                <button onClick={() => setProducts((prev) => [...prev, emptyDraftProduct()])} className="inline-flex items-center gap-1.5 h-7 px-3 rounded-[8px] bg-slate-100 hover:bg-slate-200 text-xs font-medium text-slate-600 transition-colors"><Plus className="w-3 h-3" /> Add Item</button>
+                                <button onClick={() => setItems((prev) => [...prev, emptyDraftItem()])} className="inline-flex items-center gap-1.5 h-7 px-3 rounded-[8px] bg-slate-100 hover:bg-slate-200 text-xs font-medium text-slate-600 transition-colors"><Plus className="w-3 h-3" /> Add Item</button>
                             </div>
                             <div className="space-y-2">
                                 <div className="grid grid-cols-[1fr_0.5fr_0.6fr_auto] gap-2 px-2">
                                     {["Item Name", "Qty", "Price", ""].map((h) => <span key={h} className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">{h}</span>)}
                                 </div>
-                                {products.map((p, i) => (
+                                {items.map((p, i) => (
                                     <div key={p._key} className="grid grid-cols-[1fr_0.5fr_0.6fr_auto] gap-2 items-center bg-slate-50 border border-slate-100 rounded-[8px] px-2 py-2">
-                                        <input className={inputCls(submitted ? errors[`pname_${i}`] : undefined)} placeholder="e.g. Double Smash Burger" value={p.name} onChange={(e) => setProducts((prev) => prev.map((x) => x._key === p._key ? { ...x, name: e.target.value } : x))} />
-                                        <input className={`${inputCls()} font-mono`} placeholder="1" type="number" min="1" value={p.quantity} onChange={(e) => setProducts((prev) => prev.map((x) => x._key === p._key ? { ...x, quantity: e.target.value } : x))} />
-                                        <div className="relative"><DollarSign className="absolute left-2 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-400 pointer-events-none" /><input className={`${inputCls(submitted ? errors[`pprice_${i}`] : undefined)} pl-5 font-mono`} placeholder="0.00" type="number" min="0" step="0.01" value={p.unitPrice} onChange={(e) => setProducts((prev) => prev.map((x) => x._key === p._key ? { ...x, unitPrice: e.target.value } : x))} /></div>
-                                        <button onClick={() => setProducts((prev) => prev.filter((x) => x._key !== p._key))} disabled={products.length === 1} className="w-9 h-9 rounded-[8px] flex items-center justify-center text-slate-300 hover:text-red-500 hover:bg-red-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"><Minus className="w-3.5 h-3.5" /></button>
+                                        <input className={inputCls(submitted ? errors[`pname_${i}`] : undefined)} placeholder="e.g. Double Smash Burger" value={p.name} onChange={(e) => setItems((prev) => prev.map((x) => x._key === p._key ? { ...x, name: e.target.value } : x))} />
+                                        <input className={`${inputCls()} font-mono`} placeholder="1" type="number" min="1" value={p.quantity} onChange={(e) => setItems((prev) => prev.map((x) => x._key === p._key ? { ...x, quantity: e.target.value } : x))} />
+                                        <div className="relative"><DollarSign className="absolute left-2 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-400 pointer-events-none" /><input className={`${inputCls(submitted ? errors[`pprice_${i}`] : undefined)} pl-5 font-mono`} placeholder="0.00" type="number" min="0" step="0.01" value={p.unitPrice} onChange={(e) => setItems((prev) => prev.map((x) => x._key === p._key ? { ...x, unitPrice: e.target.value } : x))} /></div>
+                                        <button onClick={() => setItems((prev) => prev.filter((x) => x._key !== p._key))} disabled={items.length === 1} className="w-9 h-9 rounded-[8px] flex items-center justify-center text-slate-300 hover:text-red-500 hover:bg-red-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"><Minus className="w-3.5 h-3.5" /></button>
                                     </div>
                                 ))}
                             </div>
