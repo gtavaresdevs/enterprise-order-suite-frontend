@@ -13,7 +13,6 @@ import ResetPasswordPage from '@/pages/ResetPassword';
 // ── Protected Pages ─────────────────────────────────────────
 import HomePage from '@/pages/Home';
 import OrdersPage from '@/pages/Orders';
-import InventoryPage from '@/pages/Inventory';
 import MenuPage from '@/pages/Menu';
 import TablesPage from '@/pages/Tables';
 import AnalyticsPage from '@/pages/Analytics';
@@ -76,10 +75,6 @@ export const router = createBrowserRouter([
           {
             path: '/orders',
             element: <OrdersPage />,
-          },
-          {
-            path: '/inventory',
-            element: <InventoryPage />,
           },
           {
             path: '/menu',

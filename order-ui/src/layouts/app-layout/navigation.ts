@@ -1,7 +1,6 @@
 import {
   Home,
   ShoppingCart,
-  Package,
   UtensilsCrossed,
   QrCode,
   BarChart3,
@@ -25,7 +24,6 @@ export interface NavItem {
 export const NAVIGATION_ITEMS: NavItem[] = [
   { to: "/home", label: "Dashboard", icon: Home, end: true },
   { to: "/orders", label: "Orders", icon: ShoppingCart, end: false },
-  { to: "/inventory", label: "Inventory", icon: Package, end: false },
   { to: "/menu", label: "Menu", icon: UtensilsCrossed, end: false },
   { to: "/tables", label: "Tables", icon: QrCode, end: false },
   { to: "/analytics", label: "Analytics", icon: BarChart3, end: false },
