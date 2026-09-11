@@ -33,5 +33,6 @@ export const useTableMenu = () => {
         activeCategory,
         setActiveCategory,
         isLoading: isMenuLoading || (!!tableId && isTableLoading),
+        isTableLoading,
     };
 };

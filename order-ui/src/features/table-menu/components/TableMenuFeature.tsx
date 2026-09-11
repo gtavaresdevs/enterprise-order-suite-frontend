@@ -4,7 +4,7 @@ import { useTableMenu } from "../hooks/useTableMenu";
 import { PublicMenuItemCard } from "./PublicMenuItemCard";
 
 export const TableMenuFeature = () => {
-    const { table, tableId, categories, filteredItems, activeCategory, setActiveCategory, isLoading } = useTableMenu();
+    const { table, tableId, categories, filteredItems, activeCategory, setActiveCategory, isLoading, isTableLoading } = useTableMenu();
     const { preferences } = usePreferencesContext();
     const { storefrontLogo, storefrontCover, storefrontBrandColor } = preferences;
 
@@ -31,7 +31,7 @@ export const TableMenuFeature = () => {
                     <div className="absolute bottom-3 left-4 flex items-center gap-2">
                         <UtensilsCrossed className="w-3.5 h-3.5 text-white/80" />
                         <p className="text-sm font-bold text-white">
-                            {table ? table.name : tableId ? "Table not found" : "Menu"}
+                            {table ? table.name : tableId && !isTableLoading ? "Table not found" : "Menu"}
                         </p>
                     </div>
                 </div>
