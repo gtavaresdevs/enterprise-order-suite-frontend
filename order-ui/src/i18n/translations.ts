@@ -8,7 +8,6 @@ export const LOCALE_BY_LANGUAGE: Record<string, SupportedLocale> = {
 export const TRANSLATIONS: Record<string, Record<SupportedLocale, string>> = {
     "Dashboard": { "fr-FR": "Tableau de bord", "es-ES": "Panel" },
     "Orders": { "fr-FR": "Commandes", "es-ES": "Pedidos" },
-    "Inventory": { "fr-FR": "Inventaire", "es-ES": "Inventario" },
     "Analytics": { "fr-FR": "Analytique", "es-ES": "Analítica" },
     "Security": { "fr-FR": "Sécurité", "es-ES": "Seguridad" },
     "Administration": { "fr-FR": "Administration", "es-ES": "Administración" },

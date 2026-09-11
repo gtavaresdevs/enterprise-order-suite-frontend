@@ -11,8 +11,9 @@ export const useStorefront = () => {
     const [flowState, setFlowState] = useState<FlowState>("feed");
 
     const { data: menuItems = [], isLoading } = useQuery({
-        queryKey: ["storefrontMenu"],
+        queryKey: ["menuItems"],
         queryFn: storefrontService.getMenu,
+        select: (items) => items.filter((item) => item.available),
     });
 
     const cartTotal = cart.reduce((s, i) => s + i.price * i.quantity, 0);
