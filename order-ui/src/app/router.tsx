@@ -27,6 +27,7 @@ import AdministrationRolesPage from '@/pages/AdministrationRoles';
 // ── Standalone Pages ────────────────────────────────────────
 import StorefrontPage from '@/pages/Storefront';
 import KDSPage from '@/pages/Kds';
+import TableMenuPage from '@/pages/TableMenu';
 
 export const router = createBrowserRouter([
   // Public Auth Routes
@@ -59,6 +60,10 @@ export const router = createBrowserRouter([
   {
     path: '/kds',
     element: <KDSPage />,
+  },
+  {
+    path: '/table-menu',
+    element: <TableMenuPage />,
   },
 
   // Protected Application Routes
