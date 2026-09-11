@@ -7,18 +7,17 @@ import { BottomSheet } from "./BottomSheet";
 import { CartOverlay } from "./CartOverlay";
 import { CheckoutFlow } from "./CheckoutFlow";
 import { SuccessView } from "./SuccessView";
-import { MENU } from "../constants/storefront.constants";
 
 export const StorefrontFeature = () => {
     const {
-        activeCategory, setActiveCategory, selectedItem, setSelectedItem,
+        menuItems, isLoading, activeCategory, setActiveCategory, selectedItem, setSelectedItem,
         cart, setCart, cartTotal, cartCount, flowState, setFlowState, addToCart
     } = useStorefront();
 
     const { preferences } = usePreferencesContext();
     const { storefrontLogo, storefrontCover, storefrontBrandColor } = preferences;
 
-    const visibleMenu = MENU.filter((item) => item.category === activeCategory);
+    const visibleMenu = menuItems.filter((item) => item.category === activeCategory);
 
     return (
         <div className="min-h-screen flex items-start justify-center py-8 px-4 bg-[#f8fafc] [background-image:radial-gradient(#0f172a_1px,transparent_1px)] [background-size:32px_32px]">
@@ -61,7 +60,11 @@ export const StorefrontFeature = () => {
                 {/* Menu Items */}
                 <div className="flex-1 overflow-y-auto pb-24">
                     <div className="px-4 pt-4 space-y-3">
-                        {visibleMenu.map((item) => <MenuCard key={item.id} item={item} onSelect={() => setSelectedItem(item)} />)}
+                        {isLoading ? (
+                            <p className="text-xs text-slate-400 text-center py-8">Loading menu...</p>
+                        ) : (
+                            visibleMenu.map((item) => <MenuCard key={item.id} item={item} onSelect={() => setSelectedItem(item)} />)
+                        )}
                     </div>
                 </div>
 
