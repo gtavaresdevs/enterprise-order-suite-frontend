@@ -46,8 +46,8 @@ phase below unless told otherwise.
 | 2 — Retire duplicate Menu/Inventory data | ✅ Done | `2026-09-10-restaurant-ops-phase2-retire-duplicates.md` | `cb68b1c..167489f` |
 | 3 — Public read-only QR-tagged Menu view | ✅ Done | `2026-09-10-restaurant-ops-phase3-public-menu-view.md` | `d72f713..8c82c83` |
 | 4 — Orders/KDS repoint to shared Order model | ✅ Done | `2026-09-12-restaurant-ops-phase4-orders-kds-unified-model.md` | `f80b6b4..1c652f3` |
-| 5 — Administration real implementation (real backend) | 🔜 Next | *(not yet written)* | — |
-| 6 — Home rewrite + Analytics repoint | 📋 Planned | *(not yet written)* | — |
+| 5 — Administration real implementation (real backend) | ✅ Done | `2026-09-13-restaurant-ops-phase5-administration.md` | `1edfaf8..ec9dc08` |
+| 6 — Home rewrite + Analytics repoint | 🔜 Next | *(not yet written)* | — |
 | — Payment (card/PIX) + WhatsApp notifications | ⛔ Blocked | N/A | Backend/integration dependency — spec explicitly flags these as not frontend-actionable. Do not write a plan for these until that backend work exists. |
 
 ### Phase 0 summary (foundation types)
@@ -111,63 +111,50 @@ inline in the service file rather than in `constants/`, diverging from `menuServ
 established convention — fixed in the final wave. Browser-verified end-to-end: a status change made
 via KDS's "Start Preparing" button is reflected on the Orders admin page in the same session.
 
-## What's next: Phase 5 — Administration real implementation (against a REAL backend)
+### Phase 5 summary (Administration real implementation, against a REAL backend)
+Fetched the live OpenAPI spec directly from the running backend (`/api/v3/api-docs`) rather than
+trusting the spec doc's 2026-09-09 snapshot, and found it mostly matched with a few extra endpoints
+(`/admin/users/{id}/deactivate|reactivate|password-setup|status`) the spec doc hadn't itemized.
+Merged the old "Users"+"Administrators" Coming-Soon pages into one real **Team** page: paginated
+list (`GET /users` — note this endpoint's rows carry no name field, only `email`/`role`/`active`/
+dates; full name only appears via `GET /users/{id}` in the detail drawer), with invite/edit/
+role-change/deactivate/reactivate/resend-setup-email all wired to real endpoints. Added a read-only
+**Roles** reference page (`GET /roles`) and a new **Audit Log** page (`GET /admin/identity-audit`),
+neither previously surfaced in the frontend. Nav/routes now read Team/Roles/Audit Log
+(`/administration/team|roles|audit-log`), with the two old paths redirecting rather than 404ing.
+Final whole-branch review caught 4 cross-task defects invisible to `yarn build`/`yarn lint` (all
+runtime/UX, not type errors) that the per-task reviews couldn't see: unhandled-rejection silent
+failures on save/role-change, a Role `<select>` that rendered blank whenever the current role wasn't
+in the loaded options, a pagination control that unmounted (not just flickered) between page
+fetches, and a successful invite with no visible confirmation — all fixed in one consolidated fix
+wave, re-reviewed clean. Browser-verified end-to-end against the real backend (real login, not a
+synthetic JWT): Team pagination, detail drawer, role change repainting both list and drawer,
+deactivate/reactivate with a working double-submit guard, Invite User, Roles, and Audit Log
+(showing events matching the actions just performed) all passed with a clean console. One test
+artifact intentionally left in the real backend from this verification pass: user
+`phase5-verify-test-delete-me@example.com` — delete it via the Team page's deactivate/delete flow
+once the branch is deployed, or leave it since it's harmless.
 
-**Why this one next**: it's the first phase to touch a live backend rather than mock data — the
-spec explicitly notes `/users`, `/admin/users`, `/roles`, and `/admin/identity-audit` are already
-real and working, unlike everything built so far. Use the `connect-backend` skill (audits the live
-OpenAPI/swagger spec before writing any client code) rather than assuming endpoint shapes from the
-spec doc alone, since the spec was written from swagger observed on 2026-09-09 and the backend may
-have moved since.
+## What's next: Phase 6 — Home rewrite + Analytics repoint
 
-**Goal:** Per spec sections "Administration reshaped around the real backend" and
-"`features/administration` — real implementation, not 'Coming Soon'":
-1. Merge the current "Users" + "Administrators" pages into one **Team** page: paginated list from
-   `GET /users`, detail from `GET /users/{id}`; role-gated actions — invite
-   (`POST /admin/users`, with `sendPasswordSetupEmail`), edit (`PATCH /admin/users/{id}`), change
-   role (`PATCH /admin/users/{id}/role` using `GET /roles` for the options), deactivate/reactivate,
-   resend setup email.
-2. **Roles**: lightweight reference list from `GET /roles`. No custom permission-authoring UI —
-   the backend only exposes role names, not permission sets; note that as a future gap, don't build
-   a fake one.
-3. **Audit Log** (new page, not in current nav): `GET /admin/identity-audit` — who did what to
-   whom, when. A real, already-working endpoint not currently surfaced anywhere in the frontend.
-4. Nav update: Administration becomes Team / Roles / Audit Log (role-gated), replacing the current
-   Users/Administrators/Roles "Coming Soon" pages.
+**Why this one next**: it's the last planned phase before the explicitly-blocked Payment/WhatsApp
+work (which needs backend/integration dependencies this initiative doesn't control), and Phase 3
+already produced a reusable read-only-data-view pattern (the public Table Menu) worth revisiting
+for Home's dashboard.
 
-Then continue to Phase 6 (Home rewrite + Analytics repoint) — the last planned phase before the
-explicitly-blocked Payment/WhatsApp work, which needs backend/integration dependencies this
-initiative doesn't control.
+**Goal:** Per the spec's "Home" and "Analytics" sections (read those sections before writing this
+phase's plan — don't re-derive from the current pre-redesign `features/home`/`features/analytics`
+code, which is exactly what's being replaced):
+1. Rewrite `features/home` as a real operational dashboard reading from the unified `Order` model
+   (via `ordersService`/the `["orders"]` cache key established in Phase 4) instead of whatever
+   placeholder/mock data it currently shows.
+2. Repoint `features/analytics` onto the same unified `Order` model so its figures are computed
+   from real (mock-backed, per this repo's mock-vs-real convention outside `auth`/`profile`/
+   `administration`) order data rather than a disconnected fixture.
+3. Confirm whether Phase 5's real Administration data (e.g. team size, audit activity) belongs on
+   the Home dashboard per the spec — don't invent a cross-feature dependency the spec doesn't call
+   for.
 
-**Why this one next** (over Administration or Home/Analytics): Orders and KDS are the two features
-still running on the pre-redesign per-feature types (`types/orders.ts`'s `Order`/`ProductLine`/
-`Modifier`, `types/kds.ts`'s `KdsTicket`/`TicketItem`/`Modifier`) that Phase 0 already superseded
-with the unified `Order` model — this phase is the migration that actually retires those old types,
-closing the gap Phase 0 opened. It's also a prerequisite for Phase 6 (Analytics needs real,
-unified order data to repoint against) and doesn't require a real backend yet (that's Phase 5).
-
-**Goal:** Retarget both `features/orders` and `features/kds` onto the single shared `Order` model
-from `src/types/orders.ts` (Phase 0 — `channel: OrderChannel`, `fulfillment?: Fulfillment`,
-`table?: string`, 5-value `OrderStatus`), per spec sections "Order model", "`features/orders` —
-retarget to the unified Order model", and "`features/kds` — becomes the canonical status-change
-surface":
-1. `features/kds` keeps its existing ticket-board UX and channel badges (`DELIVERY|DINE-IN|PICKUP`
-   already exists there) but retargets its internal type to the shared `Order`/`OrderStatus`
-   instead of its own `KdsTicket`/`TicketItem` — delete those once nothing references them.
-2. `features/orders`' back-office list/search/filter works over the unified `Order` model
-   regardless of channel. `CreateOrderModal` (already exists for phone-style entry) gets a channel
-   picker: `Dine-in` adds a table select sourced from `features/tables`' `tablesService`/`useTables`,
-   `Phone`/`Online` add a fulfillment picker (`Pickup`/`Delivery`).
-3. Status changes must write to the same record whether made from Orders or KDS — both are views
-   over one data source, not two.
-4. WhatsApp notification-on-status-change is explicitly OUT of scope here (spec flags it as a
-   backend/integration dependency, not frontend-fakeable) — don't build a fake notification UI for it.
-5. Mock data in both features' `constants/` needs reshaping to the unified `Order` type; check
-   `orders.service.ts`'s mock order lines still reference real `MenuItem` ids (`m1`-`m8`, per the
-   Standing Constraints above) after the reshape.
-
-Then continue to Phase 5 (Administration — first phase against a REAL backend, use the
-`connect-backend` skill), Phase 6 (Home/Analytics) in that order, writing each phase's plan only
-once the prior phase is merged (later-phase specifics may shift based on decisions made in earlier
-phases — e.g. Phase 3 already produced a reusable read-only-menu pattern worth revisiting for
-Phase 6's Home dashboard).
+Write this phase's plan (`superpowers:writing-plans`) only once ready to execute it — this
+roadmap entry is deliberately high-level per this project's established pattern of writing detailed
+phase plans just-in-time.
