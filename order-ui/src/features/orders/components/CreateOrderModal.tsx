@@ -1,16 +1,21 @@
 import { useState } from "react";
-import { User, Phone, Package, Plus, DollarSign, Minus, X } from "lucide-react";
-import type { Order, OrderStatus, OrderLine } from "@/types/orders";
+import { User, Phone, Package, Plus, DollarSign, Minus, X, MapPin } from "lucide-react";
+import type { Order, OrderStatus, OrderLine, OrderChannel, Fulfillment } from "@/types/orders";
 import { useFormat } from "@/features/preferences/hooks/useFormat";
+import { useTables } from "@/features/tables/hooks/useTables";
 
 interface DraftItem { _key: string; name: string; quantity: string; unitPrice: string; }
 const emptyDraftItem = (): DraftItem => ({ _key: Math.random().toString(36).slice(2), name: "", quantity: "1", unitPrice: "" });
 
-export function CreateOrderModal({ onClose, onSave }: { onClose: () => void; onSave: (o: Order) => void }) {
+export function CreateOrderModal({ onClose, onSave }: { onClose: () => void; onSave: (o: Omit<Order, "id">) => void }) {
     const { formatCurrency } = useFormat();
+    const { tables } = useTables();
     const [customerName, setCustomerName] = useState("");
     const [customerPhone, setCustomerPhone] = useState("");
     const [status, setStatus] = useState<OrderStatus>("New");
+    const [channel, setChannel] = useState<OrderChannel>("Phone");
+    const [fulfillment, setFulfillment] = useState<Fulfillment>("Pickup");
+    const [tableId, setTableId] = useState("");
     const [items, setItems] = useState<DraftItem[]>([emptyDraftItem()]);
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [submitted, setSubmitted] = useState(false);
@@ -21,6 +26,7 @@ export function CreateOrderModal({ onClose, onSave }: { onClose: () => void; onS
         const e: Record<string, string> = {};
         if (!customerName.trim()) e.customerName = "Name required.";
         if (!customerPhone.trim()) e.customerPhone = "Phone required.";
+        if (channel === "Dine-in" && !tableId) e.table = "Table required.";
         items.forEach((p, i) => {
             if (!p.name.trim()) e[`pname_${i}`] = "Item name required.";
             if (!p.unitPrice || parseFloat(p.unitPrice) <= 0) e[`pprice_${i}`] = "Price required.";
@@ -34,7 +40,6 @@ export function CreateOrderModal({ onClose, onSave }: { onClose: () => void; onS
         setErrors(e);
         if (Object.keys(e).length > 0) return;
         const now = new Date();
-        const id = `PHN-${now.getFullYear()}-${8000 + Math.floor(Math.random() * 999)}`;
         const orderItems: OrderLine[] = items.map((p) => ({
             menuItemId: `CUSTOM-${p._key}`,
             name: p.name.trim(),
@@ -42,10 +47,11 @@ export function CreateOrderModal({ onClose, onSave }: { onClose: () => void; onS
             unitPrice: parseFloat(p.unitPrice) || 0,
             modifiers: [],
         }));
+        const selectedTable = tables.find((t) => t.id === tableId);
         onSave({
-            id,
-            channel: "Phone",
-            fulfillment: "Pickup",
+            channel,
+            fulfillment: channel === "Phone" ? fulfillment : undefined,
+            table: channel === "Dine-in" ? selectedTable?.name : undefined,
             customerName: customerName.trim(),
             customerPhone: customerPhone.trim(),
             status,
@@ -84,11 +90,38 @@ export function CreateOrderModal({ onClose, onSave }: { onClose: () => void; onS
                                     <div className="relative"><Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" /><input className={`${inputCls(submitted ? errors.customerPhone : undefined)} pl-8`} placeholder="+1 (555) 000-0000" value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)} /></div>
                                 </div>
                                 <div>
+                                    <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5">Channel</label>
+                                    <select className={`${inputCls()} cursor-pointer`} value={channel} onChange={(e) => setChannel(e.target.value as OrderChannel)}>
+                                        <option value="Phone">Phone</option>
+                                        <option value="Dine-in">Dine-in</option>
+                                    </select>
+                                </div>
+                                <div>
                                     <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5">Initial Status</label>
                                     <select className={`${inputCls()} cursor-pointer`} value={status} onChange={(e) => setStatus(e.target.value as OrderStatus)}>
                                         {(["New", "Preparing", "Ready", "Completed", "Cancelled"] as OrderStatus[]).map((s) => <option key={s}>{s}</option>)}
                                     </select>
                                 </div>
+                                {channel === "Dine-in" ? (
+                                    <div className="col-span-2">
+                                        <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5">Table</label>
+                                        <div className="relative">
+                                            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
+                                            <select className={`${inputCls(submitted ? errors.table : undefined)} pl-8 cursor-pointer`} value={tableId} onChange={(e) => setTableId(e.target.value)}>
+                                                <option value="">Select a table...</option>
+                                                {tables.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
+                                            </select>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="col-span-2">
+                                        <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5">Fulfillment</label>
+                                        <select className={`${inputCls()} cursor-pointer`} value={fulfillment} onChange={(e) => setFulfillment(e.target.value as Fulfillment)}>
+                                            <option value="Pickup">Pickup</option>
+                                            <option value="Delivery">Delivery</option>
+                                        </select>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className="border-t border-slate-100" />
