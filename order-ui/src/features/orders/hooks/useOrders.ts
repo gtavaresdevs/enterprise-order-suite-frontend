@@ -1,21 +1,35 @@
-import { useState } from "react";
-import type { Order } from "@/types/orders";
-import { ORDERS } from "@/features/orders/services/orders.service";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { Order, OrderStatus } from "@/types/orders";
+import { ordersService } from "@/features/orders/services/orders.service";
 
 export function useOrders() {
-  const [orders, setOrders] = useState<Order[]>(ORDERS);
+  const queryClient = useQueryClient();
 
-  const deleteOrder = (id: string) => {
-    setOrders((prev) => prev.filter((o) => o.id !== id));
-  };
+  const { data: orders = [], isLoading } = useQuery({
+    queryKey: ["orders"],
+    queryFn: ordersService.getOrders,
+  });
 
-  const createOrder = (order: Order) => {
-    setOrders((prev) => [order, ...prev]);
-  };
+  const createMutation = useMutation({
+    mutationFn: (input: Omit<Order, "id">) => ordersService.createOrder(input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+    },
+  });
+
+  const updateStatusMutation = useMutation({
+    mutationFn: ({ id, status }: { id: string; status: OrderStatus }) => ordersService.updateOrderStatus(id, status),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+    },
+  });
 
   return {
     orders,
-    deleteOrder,
-    createOrder,
+    isLoading,
+    createOrder: createMutation.mutate,
+    isCreating: createMutation.isPending,
+    updateOrderStatus: (id: string, status: OrderStatus) => updateStatusMutation.mutate({ id, status }),
+    isUpdatingStatus: updateStatusMutation.isPending,
   };
 }
