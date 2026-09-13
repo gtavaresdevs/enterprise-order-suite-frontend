@@ -44,8 +44,8 @@ phase below unless told otherwise.
 | 0 — Foundation types | ✅ Done | `2026-09-10-restaurant-ops-phase0-foundation-types.md` | `8d3181e..fe3b0b0` |
 | 1 — Menu & Tables features | ✅ Done | `2026-09-10-restaurant-ops-phase1-menu-tables.md` | `50594ff..07bb82f` |
 | 2 — Retire duplicate Menu/Inventory data | ✅ Done | `2026-09-10-restaurant-ops-phase2-retire-duplicates.md` | `cb68b1c..167489f` |
-| 3 — Public read-only QR-tagged Menu view | 🔜 Next | *(not yet written)* | — |
-| 4 — Orders/KDS repoint to shared Order model | 📋 Planned | *(not yet written)* | — |
+| 3 — Public read-only QR-tagged Menu view | ✅ Done | `2026-09-10-restaurant-ops-phase3-public-menu-view.md` | `d72f713..8c82c83` |
+| 4 — Orders/KDS repoint to shared Order model | 🔜 Next | *(not yet written)* | — |
 | 5 — Administration real implementation (real backend) | 📋 Planned | *(not yet written)* | — |
 | 6 — Home rewrite + Analytics repoint | 📋 Planned | *(not yet written)* | — |
 | — Payment (card/PIX) + WhatsApp notifications | ⛔ Blocked | N/A | Backend/integration dependency — spec explicitly flags these as not frontend-actionable. Do not write a plan for these until that backend work exists. |
@@ -75,29 +75,53 @@ entirely — per the spec, Inventory "disappears as a standalone item (folds int
 Browser-verified: storefront renders live canonical data, category filters work, unavailable items
 never leak into the customer feed.
 
-## What's next: Phase 3 — Public read-only QR-tagged Menu view
+### Phase 3 summary (public read-only QR-tagged Menu view)
+New `features/table-menu` module (service composing `menuService`+`tablesService`,
+hook, two components) serving a public, unauthenticated route at
+`/table-menu?table=<id>` — registered outside `ProtectedLayout`/`AppLayout`
+alongside `/storefront`/`/kds`. No cart/checkout UI; filters to `available`
+`MenuItem`s only; reads the `table` query param and displays the scanned
+table's name. `features/tables`' QR seed data and `createTable` retargeted
+from the Phase 1 interim `/storefront?table=` destination to this new route.
+Final whole-branch review caught and fixed one cross-task interaction bug the
+per-task reviews couldn't see: the table-name banner briefly flashed "Table
+not found" during the ~300ms mock table-lookup latency on every valid QR
+scan — fixed by exposing a distinct `isTableLoading` flag from the hook.
+Also added a `connect-backend` TODO flagging that `getTable`'s current
+implementation (fetching the full table roster) must not later be wired to
+an admin-scoped endpoint, since this route is unauthenticated.
 
-**Why this one next** (over Orders/KDS or Administration): self-contained, no migration risk to
-existing live features, and it closes out a known gap Phase 1 explicitly left as an interim fix
-(QR codes → `/storefront` instead of a real read-only menu view).
+## What's next: Phase 4 — Orders/KDS repoint to shared Order model
 
-**Goal:** `features/tables`' QR codes currently point at `/storefront?table=<id>` — the full
-cart/checkout flow, not the lightweight "scan and see the menu for this table" view the spec
-describes (see spec section "Tables model (minimal)" and "New `features/tables`"). Build a real
-public, read-only route that:
-1. Is NOT `/menu` (that's the authenticated admin CRUD page from Phase 1 — reusing it was Phase 1's
-   original QR bug, already caught once).
-2. Renders `MenuItem` cards from `menuService.getMenuItems()`, filtered to `available` only,
-   grouped/filterable by category — no cart, no add-to-cart, no checkout UI.
-3. Reads a `?table=<id>` query param and displays that table's name (via `features/tables`'
-   `tablesService`/`useTables`).
-4. Is registered in `src/app/router.tsx` outside `ProtectedLayout`/`AppLayout` (same pattern as
-   `/storefront` and `/kds`).
-5. Retargets `features/tables`' QR generation (`tables.constants.ts` seed data +
-   `tables.service.ts`'s `createTable`) to the new route.
+**Why this one next** (over Administration or Home/Analytics): Orders and KDS are the two features
+still running on the pre-redesign per-feature types (`types/orders.ts`'s `Order`/`ProductLine`/
+`Modifier`, `types/kds.ts`'s `KdsTicket`/`TicketItem`/`Modifier`) that Phase 0 already superseded
+with the unified `Order` model — this phase is the migration that actually retires those old types,
+closing the gap Phase 0 opened. It's also a prerequisite for Phase 6 (Analytics needs real,
+unified order data to repoint against) and doesn't require a real backend yet (that's Phase 5).
 
-Then continue to Phase 4 (Orders/KDS), Phase 5 (Administration — first phase against a REAL
-backend, use the `connect-backend` skill), Phase 6 (Home/Analytics) in that order, writing each
-phase's plan only once the prior phase is merged (later-phase specifics may shift based on
-decisions made in earlier phases — e.g. Phase 3 might produce a reusable read-only-menu component
-worth reusing in Phase 6's Home dashboard).
+**Goal:** Retarget both `features/orders` and `features/kds` onto the single shared `Order` model
+from `src/types/orders.ts` (Phase 0 — `channel: OrderChannel`, `fulfillment?: Fulfillment`,
+`table?: string`, 5-value `OrderStatus`), per spec sections "Order model", "`features/orders` —
+retarget to the unified Order model", and "`features/kds` — becomes the canonical status-change
+surface":
+1. `features/kds` keeps its existing ticket-board UX and channel badges (`DELIVERY|DINE-IN|PICKUP`
+   already exists there) but retargets its internal type to the shared `Order`/`OrderStatus`
+   instead of its own `KdsTicket`/`TicketItem` — delete those once nothing references them.
+2. `features/orders`' back-office list/search/filter works over the unified `Order` model
+   regardless of channel. `CreateOrderModal` (already exists for phone-style entry) gets a channel
+   picker: `Dine-in` adds a table select sourced from `features/tables`' `tablesService`/`useTables`,
+   `Phone`/`Online` add a fulfillment picker (`Pickup`/`Delivery`).
+3. Status changes must write to the same record whether made from Orders or KDS — both are views
+   over one data source, not two.
+4. WhatsApp notification-on-status-change is explicitly OUT of scope here (spec flags it as a
+   backend/integration dependency, not frontend-fakeable) — don't build a fake notification UI for it.
+5. Mock data in both features' `constants/` needs reshaping to the unified `Order` type; check
+   `orders.service.ts`'s mock order lines still reference real `MenuItem` ids (`m1`-`m8`, per the
+   Standing Constraints above) after the reshape.
+
+Then continue to Phase 5 (Administration — first phase against a REAL backend, use the
+`connect-backend` skill), Phase 6 (Home/Analytics) in that order, writing each phase's plan only
+once the prior phase is merged (later-phase specifics may shift based on decisions made in earlier
+phases — e.g. Phase 3 already produced a reusable read-only-menu pattern worth revisiting for
+Phase 6's Home dashboard).
