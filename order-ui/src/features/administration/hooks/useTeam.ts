@@ -1,16 +1,16 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import { teamService } from "../services/team.service";
+import { ADMINISTRATION_PAGE_SIZE } from "../constants/administration.constants";
 import type { CreateUserRequest, UpdateUserRequest, SetUserRoleRequest } from "@/types/administration";
-
-export const PAGE_SIZE = 20;
 
 export function useTeam(page: number) {
     const queryClient = useQueryClient();
-    const queryKey = ["users", page, PAGE_SIZE] as const;
+    const queryKey = ["users", page, ADMINISTRATION_PAGE_SIZE] as const;
 
     const { data, isLoading, isError } = useQuery({
         queryKey,
-        queryFn: () => teamService.listUsers(page, PAGE_SIZE),
+        queryFn: () => teamService.listUsers(page, ADMINISTRATION_PAGE_SIZE),
+        placeholderData: keepPreviousData,
     });
 
     const invalidateUsers = () => queryClient.invalidateQueries({ queryKey: ["users"] });

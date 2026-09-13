@@ -2,10 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { rolesService } from "../services/roles.service";
 
 export function useRoles() {
-    const { data: roles = [], isLoading } = useQuery({
+    const { data: roles = [], isLoading, isError } = useQuery({
         queryKey: ["roles"],
         queryFn: rolesService.listRoles,
     });
 
-    return { roles, isLoading };
+    return { roles, isLoading, isError };
 }

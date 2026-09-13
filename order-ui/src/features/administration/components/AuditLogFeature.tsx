@@ -49,7 +49,7 @@ export function AuditLogFeature() {
                     )}
 
                     {data && (
-                        <Pagination page={data.page} totalPages={data.totalPages} onPageChange={setPage} />
+                        <Pagination page={page} totalPages={data.totalPages} onPageChange={setPage} />
                     )}
                 </div>
             </div>

@@ -22,9 +22,19 @@ export function UserDetailDrawer({ userId, onClose }: { userId: number; onClose:
         queryKey: ["users", "detail", userId],
         queryFn: () => teamService.getUser(userId),
     });
-    const { roles } = useRoles();
-    const { update, isUpdating, setRole, isSettingRole, deactivate, reactivate, resendSetup } =
-        useTeam(0);
+    const { roles, isError: rolesError } = useRoles();
+    const {
+        update,
+        isUpdating,
+        setRole,
+        isSettingRole,
+        deactivate,
+        isDeactivating,
+        reactivate,
+        isReactivating,
+        resendSetup,
+        isResendingSetup,
+    } = useTeam(0);
 
     if (isLoading || !user) {
         return (
@@ -43,14 +53,18 @@ export function UserDetailDrawer({ userId, onClose }: { userId: number; onClose:
             user={user}
             userId={userId}
             roles={roles}
+            rolesError={rolesError}
             onClose={onClose}
             update={update}
             isUpdating={isUpdating}
             setRole={setRole}
             isSettingRole={isSettingRole}
             deactivate={deactivate}
+            isDeactivating={isDeactivating}
             reactivate={reactivate}
+            isReactivating={isReactivating}
             resendSetup={resendSetup}
+            isResendingSetup={isResendingSetup}
         />
     );
 }
@@ -59,14 +73,18 @@ interface UserDetailContentProps {
     user: UserDetail;
     userId: number;
     roles: RoleOption[];
+    rolesError: boolean;
     onClose: () => void;
     update: ReturnType<typeof useTeam>["update"];
     isUpdating: boolean;
     setRole: ReturnType<typeof useTeam>["setRole"];
     isSettingRole: boolean;
     deactivate: ReturnType<typeof useTeam>["deactivate"];
+    isDeactivating: boolean;
     reactivate: ReturnType<typeof useTeam>["reactivate"];
+    isReactivating: boolean;
     resendSetup: ReturnType<typeof useTeam>["resendSetup"];
+    isResendingSetup: boolean;
 }
 
 // Mounted only once `user` is available, so local form state can be seeded
@@ -75,18 +93,42 @@ function UserDetailContent({
     user,
     userId,
     roles,
+    rolesError,
     onClose,
     update,
     isUpdating,
     setRole,
     isSettingRole,
     deactivate,
+    isDeactivating,
     reactivate,
+    isReactivating,
     resendSetup,
+    isResendingSetup,
 }: UserDetailContentProps) {
     const [firstName, setFirstName] = useState(user.firstName);
     const [lastName, setLastName] = useState(user.lastName);
     const [email, setEmail] = useState(user.email);
+    const [saveError, setSaveError] = useState("");
+    const [roleError, setRoleError] = useState("");
+
+    async function handleSave() {
+        setSaveError("");
+        try {
+            await update({ id: userId, request: { email, firstName, lastName } });
+        } catch {
+            setSaveError("Couldn't save changes. Check the email isn't already in use.");
+        }
+    }
+
+    async function handleRoleChange(role: string) {
+        setRoleError("");
+        try {
+            await setRole({ id: userId, request: { role } });
+        } catch {
+            setRoleError("Couldn't update the role.");
+        }
+    }
 
     return (
         <>
@@ -126,12 +168,13 @@ function UserDetailContent({
                         </div>
                     </div>
                     <Button
-                        onClick={() => update({ id: userId, request: { email, firstName, lastName } })}
+                        onClick={handleSave}
                         disabled={isUpdating || !email.trim()}
                         className="h-9 rounded-[8px] bg-slate-950 text-slate-50 border-slate-800 shadow-inner hover:bg-slate-800"
                     >
                         {isUpdating ? "Saving..." : "Save changes"}
                     </Button>
+                    {saveError && <p className="text-xs text-red-600">{saveError}</p>}
 
                     <div className="h-px bg-slate-100" />
 
@@ -141,11 +184,11 @@ function UserDetailContent({
                         </Label>
                         <Select
                             value={user.role}
-                            onValueChange={(role) => setRole({ id: userId, request: { role } })}
+                            onValueChange={handleRoleChange}
                             disabled={isSettingRole}
                         >
                             <SelectTrigger className="h-9 rounded-[8px] bg-slate-50 border-slate-200">
-                                <SelectValue />
+                                <SelectValue placeholder={user.role} />
                             </SelectTrigger>
                             <SelectContent>
                                 {roles.map((r) => (
@@ -153,22 +196,41 @@ function UserDetailContent({
                                 ))}
                             </SelectContent>
                         </Select>
+                        {rolesError && (
+                            <p className="text-xs text-amber-600">Couldn't load role options.</p>
+                        )}
+                        {roleError && <p className="text-xs text-red-600">{roleError}</p>}
                     </div>
 
                     <div className="h-px bg-slate-100" />
 
                     <div className="flex flex-col gap-2">
                         {user.active ? (
-                            <Button variant="outline" onClick={() => deactivate(userId)} className="h-9 rounded-[8px] border-red-200 text-red-600 hover:bg-red-50">
-                                Deactivate
+                            <Button
+                                variant="outline"
+                                onClick={() => deactivate(userId)}
+                                disabled={isDeactivating}
+                                className="h-9 rounded-[8px] border-red-200 text-red-600 hover:bg-red-50"
+                            >
+                                {isDeactivating ? "Deactivating..." : "Deactivate"}
                             </Button>
                         ) : (
-                            <Button variant="outline" onClick={() => reactivate(userId)} className="h-9 rounded-[8px] border-emerald-200 text-emerald-600 hover:bg-emerald-50">
-                                Reactivate
+                            <Button
+                                variant="outline"
+                                onClick={() => reactivate(userId)}
+                                disabled={isReactivating}
+                                className="h-9 rounded-[8px] border-emerald-200 text-emerald-600 hover:bg-emerald-50"
+                            >
+                                {isReactivating ? "Reactivating..." : "Reactivate"}
                             </Button>
                         )}
-                        <Button variant="outline" onClick={() => resendSetup(userId)} className="h-9 rounded-[8px] border-slate-200 text-slate-600 hover:bg-slate-100">
-                            Resend password setup email
+                        <Button
+                            variant="outline"
+                            onClick={() => resendSetup(userId)}
+                            disabled={isResendingSetup}
+                            className="h-9 rounded-[8px] border-slate-200 text-slate-600 hover:bg-slate-100"
+                        >
+                            {isResendingSetup ? "Sending..." : "Resend password setup email"}
                         </Button>
                     </div>
                 </div>

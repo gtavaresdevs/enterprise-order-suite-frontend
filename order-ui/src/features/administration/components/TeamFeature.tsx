@@ -69,13 +69,18 @@ export function TeamFeature() {
                     )}
 
                     {data && (
-                        <Pagination page={data.page} totalPages={data.totalPages} onPageChange={setPage} />
+                        <Pagination page={page} totalPages={data.totalPages} onPageChange={setPage} />
                     )}
                 </div>
             </div>
 
             {selected && <UserDetailDrawer userId={selected.id} onClose={() => setSelected(null)} />}
-            {inviteOpen && <InviteUserModal onClose={() => setInviteOpen(false)} />}
+            {inviteOpen && (
+                <InviteUserModal
+                    onClose={() => setInviteOpen(false)}
+                    onInvited={() => setPage(0)}
+                />
+            )}
         </div>
     );
 }

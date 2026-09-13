@@ -14,9 +14,9 @@ import {
 import { useTeam } from "@/features/administration/hooks/useTeam";
 import { useRoles } from "@/features/administration/hooks/useRoles";
 
-export function InviteUserModal({ onClose }: { onClose: () => void }) {
+export function InviteUserModal({ onClose, onInvited }: { onClose: () => void; onInvited?: () => void }) {
     const { invite, isInviting } = useTeam(0);
-    const { roles } = useRoles();
+    const { roles, isError: rolesError } = useRoles();
     const [email, setEmail] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -38,6 +38,7 @@ export function InviteUserModal({ onClose }: { onClose: () => void }) {
                 role: role || undefined,
                 sendPasswordSetupEmail,
             });
+            onInvited?.();
             onClose();
         } catch {
             setError("Couldn't invite this user. Check the email isn't already in use.");
@@ -88,6 +89,9 @@ export function InviteUserModal({ onClose }: { onClose: () => void }) {
                                     ))}
                                 </SelectContent>
                             </Select>
+                            {rolesError && (
+                                <p className="text-xs text-amber-600">Couldn't load role options.</p>
+                            )}
                         </div>
                         <label className="flex items-center gap-2 text-sm text-slate-600 mt-1">
                             <Checkbox checked={sendPasswordSetupEmail} onCheckedChange={(v) => setSendPasswordSetupEmail(!!v)} />

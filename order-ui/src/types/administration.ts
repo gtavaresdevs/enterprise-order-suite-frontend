@@ -1,17 +1,3 @@
-import type { LucideIcon } from "lucide-react";
-import type { Role } from "@/types/auth";
-
-export type AdministrationPageId = "team" | "roles" | "audit-log";
-
-export interface AdministrationPageConfig {
-    id: AdministrationPageId;
-    title: string;
-    description: string;
-    icon: LucideIcon;
-    roles: Role[];
-    route: string;
-}
-
 export interface PagedResponse<T> {
     items: T[];
     page: number;
