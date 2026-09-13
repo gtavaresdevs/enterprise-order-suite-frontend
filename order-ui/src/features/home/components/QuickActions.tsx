@@ -1,12 +1,23 @@
+import { useState } from "react";
 import { useNavigate } from "react-router";
-import { ArrowRight, ChevronRight } from "lucide-react";
+import { ArrowRight, ChevronRight, Check, Copy } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { useHomeData } from "../hooks/useHomeData";
+import { ACTION_CARDS } from "../constants/home.constants";
 
 export function QuickActions() {
     const navigate = useNavigate();
-    const { actions } = useHomeData();
+    const [copiedLabel, setCopiedLabel] = useState<string | null>(null);
+
+    const handleCopy = async (label: string, path: string) => {
+        const url = `${window.location.origin}${path}`;
+        try {
+            await navigator.clipboard.writeText(url);
+            setCopiedLabel(label);
+            setTimeout(() => setCopiedLabel((current) => (current === label ? null : current)), 2000);
+        } catch {
+            // Clipboard permission denied by the browser — nothing to recover here.
+        }
+    };
 
     return (
         <section className="space-y-4">
@@ -17,24 +28,20 @@ export function QuickActions() {
                 </h2>
 
                 <span className="text-xs text-slate-400 font-mono">
-                    {actions.length} pathways
+                    {ACTION_CARDS.length} pathways
                 </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-stretch">
-                {actions.map((card) => {
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
+                {ACTION_CARDS.map((card) => {
                     const Icon = card.icon;
-                    const isRouted = !!card.to;
+                    const isCopied = copiedLabel === card.label;
 
                     return (
                         <Card
                             key={card.label}
-                            onClick={() => isRouted && navigate(card.to as string)}
-                            className={`group text-left rounded-[8px] border border-slate-100 bg-white shadow-none hover:shadow-md hover:shadow-slate-900/5 transition-all h-full ${card.accent
-                                } ${isRouted
-                                    ? "cursor-pointer"
-                                    : "opacity-70 cursor-default"
-                                }`}
+                            onClick={() => (card.to ? navigate(card.to) : card.copyValue && handleCopy(card.label, card.copyValue))}
+                            className={`group text-left rounded-[8px] border border-slate-100 bg-white shadow-none hover:shadow-md hover:shadow-slate-900/5 transition-all h-full cursor-pointer ${card.accent}`}
                         >
                             <CardContent className="p-4 flex flex-col justify-between h-full gap-4">
 
@@ -45,16 +52,15 @@ export function QuickActions() {
                                         <Icon className="w-5 h-5" />
                                     </div>
 
-                                    {card.badge ? (
-                                        <Badge
-                                            variant="secondary"
-                                            className="text-[11px] font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded-[8px] font-mono border-none"
-                                        >
-                                            {card.badge}
-                                        </Badge>
-                                    ) : isRouted ? (
+                                    {card.copyValue ? (
+                                        isCopied ? (
+                                            <Check className="w-4 h-4 text-emerald-500" />
+                                        ) : (
+                                            <Copy className="w-4 h-4 text-slate-300 group-hover:text-slate-500 transition-all" />
+                                        )
+                                    ) : (
                                         <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-slate-500 group-hover:translate-x-0.5 transition-all" />
-                                    ) : null}
+                                    )}
                                 </div>
 
                                 <div className="space-y-1.5">
@@ -67,11 +73,13 @@ export function QuickActions() {
                                     </p>
                                 </div>
 
-                                {isRouted && (
-                                    <div className="flex items-center gap-1 text-xs font-medium text-slate-500 group-hover:text-slate-700 transition-colors">
-                                        Navigate <ChevronRight className="w-3 h-3" />
-                                    </div>
-                                )}
+                                <div className="flex items-center gap-1 text-xs font-medium text-slate-500 group-hover:text-slate-700 transition-colors">
+                                    {card.copyValue ? (
+                                        isCopied ? "Copied!" : "Copy link"
+                                    ) : (
+                                        <>Navigate <ChevronRight className="w-3 h-3" /></>
+                                    )}
+                                </div>
 
                             </CardContent>
                         </Card>

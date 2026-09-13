@@ -1,8 +1,11 @@
 import { Layers } from "lucide-react";
 import { useTimestamp } from "../hooks/useTimestamp";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 
 export function HomeHeader() {
     const { greeting, dateStr, timeStr } = useTimestamp();
+    const { user } = useAuth();
+    const displayName = [user?.firstName, user?.lastName].filter(Boolean).join(" ") || user?.email || "there";
 
     return (
         <div className="flex items-start justify-between mb-8">
@@ -19,7 +22,7 @@ export function HomeHeader() {
                 </div>
 
                 <h1 className="text-2xl font-semibold text-slate-900 leading-tight">
-                    {greeting}, <span className="text-slate-500">Alex Watson</span>
+                    {greeting}, <span className="text-slate-500">{displayName}</span>
                 </h1>
 
                 <div className="flex items-center gap-2">
