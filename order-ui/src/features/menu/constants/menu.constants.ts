@@ -1,5 +1,7 @@
 import type { MenuItem } from "@/types/menu";
 
+export const LOW_STOCK_THRESHOLD = 5;
+
 export const CATEGORIES = ["All", "Burgers", "Chicken", "Pizza", "Salads", "Sides", "Drinks", "Desserts"];
 
 export const MENU_ITEMS: MenuItem[] = [

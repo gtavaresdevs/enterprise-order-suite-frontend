@@ -1,5 +1,6 @@
 import { Pencil, Trash2, SlidersHorizontal, Boxes } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
+import { LOW_STOCK_THRESHOLD } from "../constants/menu.constants";
 import type { MenuItem } from "@/types/menu";
 
 interface MenuItemCardProps {
@@ -12,7 +13,7 @@ interface MenuItemCardProps {
 export function MenuItemCard({ item, onEdit, onDelete, onToggleAvailable }: MenuItemCardProps) {
     const hasAddons = item.addons && item.addons.length > 0;
     const formatPrice = (n: number) => `$${n.toFixed(2)}`;
-    const lowStock = item.stockQuantity > 0 && item.stockQuantity <= 5;
+    const lowStock = item.stockQuantity > 0 && item.stockQuantity <= LOW_STOCK_THRESHOLD;
 
     return (
         <div className={`group bg-white rounded-[8px] border overflow-hidden flex flex-col transition-all hover:shadow-lg hover:shadow-slate-900/8 hover:-translate-y-0.5 ${item.available ? "border-slate-100" : "border-slate-100 opacity-70"}`}>

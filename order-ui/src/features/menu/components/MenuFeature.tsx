@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Plus, Search, UtensilsCrossed } from "lucide-react";
-import { CATEGORIES } from "../constants/menu.constants";
+import { CATEGORIES, LOW_STOCK_THRESHOLD } from "../constants/menu.constants";
 import { useMenu } from "../hooks/useMenu";
 import { MenuItemCard } from "./MenuItemCard";
 import { MenuItemModal } from "./MenuItemModal";
@@ -33,7 +33,7 @@ export function MenuFeature() {
     });
 
     const availableCount = menuItems.filter((item) => item.available).length;
-    const lowStockCount = menuItems.filter((item) => item.available && item.stockQuantity > 0 && item.stockQuantity <= 5).length;
+    const lowStockCount = menuItems.filter((item) => item.available && item.stockQuantity > 0 && item.stockQuantity <= LOW_STOCK_THRESHOLD).length;
 
     return (
         <div className="min-h-full">
