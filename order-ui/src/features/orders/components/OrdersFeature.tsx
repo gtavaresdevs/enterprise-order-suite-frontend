@@ -10,7 +10,7 @@ import { DeleteOrderModal } from "./DeleteOrderModal";
 import { CreateOrderModal } from "./CreateOrderModal";
 
 export function OrdersFeature() {
-    const { orders, deleteOrder, createOrder } = useOrders();
+    const { orders, isLoading, createOrder, updateOrderStatus } = useOrders();
     const { search, setSearch, activeFilter, setActiveFilter, filteredOrders, counts } = useOrderFilters(orders);
 
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -72,7 +72,11 @@ export function OrdersFeature() {
                             <span key={i} className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">{col}</span>
                         ))}
                     </div>
-                    {filteredOrders.length === 0 ? (
+                    {isLoading ? (
+                        <div className="py-16 flex justify-center">
+                            <p className="text-sm text-slate-400 font-mono animate-pulse">Loading orders...</p>
+                        </div>
+                    ) : filteredOrders.length === 0 ? (
                         <div className="py-16 flex flex-col items-center gap-3">
                             <Package className="w-8 h-8 text-slate-200" />
                             <div className="text-center"><p className="text-sm font-medium text-slate-500">No orders found</p><p className="text-xs text-slate-400 mt-0.5">Try adjusting your search or filter.</p></div>
@@ -91,7 +95,7 @@ export function OrdersFeature() {
                 </div>
             </div>
             {selectedOrder && <OrderDrawer order={selectedOrder} onClose={() => setSelectedOrder(null)} />}
-            {deleteTarget && <DeleteOrderModal order={deleteTarget} onConfirm={() => { deleteOrder(deleteTarget.id); setDeleteTarget(null); }} onCancel={() => setDeleteTarget(null)} />}
+            {deleteTarget && <DeleteOrderModal order={deleteTarget} onConfirm={() => { updateOrderStatus(deleteTarget.id, "Cancelled"); setDeleteTarget(null); }} onCancel={() => setDeleteTarget(null)} />}
             {createOpen && <CreateOrderModal onClose={() => setCreateOpen(false)} onSave={createOrder} />}
         </div>
     );

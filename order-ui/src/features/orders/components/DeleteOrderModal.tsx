@@ -14,7 +14,7 @@ export function DeleteOrderModal({ order, onConfirm, onCancel }: { order: Order;
                             </div>
                             <div>
                                 <h3 className="text-sm font-semibold text-slate-900">Cancel Order</h3>
-                                <p className="text-xs text-slate-500 mt-0.5">This will remove the order from the queue.</p>
+                                <p className="text-xs text-slate-500 mt-0.5">This will mark the order as Cancelled.</p>
                             </div>
                         </div>
                     </div>
