@@ -6,8 +6,8 @@ import {
   BarChart3,
   Shield,
   Users,
-  UserCog,
   KeySquare,
+  ScrollText,
   type LucideIcon
 } from "lucide-react";
 import type { Role } from "@/types/auth";
@@ -35,9 +35,9 @@ export const ADMINISTRATION_ITEMS: NavItem[] = [
     icon: Shield,
     roles: ["ADMIN", "SUPER_ADMIN"],
     children: [
-      { to: "/administration/users", label: "Users", icon: Users, roles: ["ADMIN", "SUPER_ADMIN"] },
-      { to: "/administration/administrators", label: "Administrators", icon: UserCog, roles: ["SUPER_ADMIN"] },
-      { to: "/administration/roles", label: "Roles & Permissions", icon: KeySquare, roles: ["SUPER_ADMIN"] },
+      { to: "/administration/team", label: "Team", icon: Users, roles: ["ADMIN", "SUPER_ADMIN"] },
+      { to: "/administration/roles", label: "Roles", icon: KeySquare, roles: ["SUPER_ADMIN"] },
+      { to: "/administration/audit-log", label: "Audit Log", icon: ScrollText, roles: ["SUPER_ADMIN"] },
     ],
   },
 ];

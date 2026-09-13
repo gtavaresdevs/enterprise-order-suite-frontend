@@ -20,9 +20,9 @@ import ProfilePage from '@/pages/Profile';
 import NotificationsPage from '@/pages/Notifications';
 import PreferencesPage from '@/pages/Preferences';
 import SettingsPage from '@/pages/Settings';
-import AdministrationUsersPage from '@/pages/AdministrationUsers';
-import AdministrationAdministratorsPage from '@/pages/AdministrationAdministrators';
+import AdministrationTeamPage from '@/pages/AdministrationTeam';
 import AdministrationRolesPage from '@/pages/AdministrationRoles';
+import AdministrationAuditLogPage from '@/pages/AdministrationAuditLog';
 
 // ── Standalone Pages ────────────────────────────────────────
 import StorefrontPage from '@/pages/Storefront';
@@ -110,18 +110,10 @@ export const router = createBrowserRouter([
             element: <SettingsPage />,
           },
           {
-            path: '/administration/users',
+            path: '/administration/team',
             element: (
               <RoleGuard allowedRoles={['ADMIN', 'SUPER_ADMIN']}>
-                <AdministrationUsersPage />
-              </RoleGuard>
-            ),
-          },
-          {
-            path: '/administration/administrators',
-            element: (
-              <RoleGuard allowedRoles={['SUPER_ADMIN']}>
-                <AdministrationAdministratorsPage />
+                <AdministrationTeamPage />
               </RoleGuard>
             ),
           },
@@ -133,12 +125,28 @@ export const router = createBrowserRouter([
               </RoleGuard>
             ),
           },
+          {
+            path: '/administration/audit-log',
+            element: (
+              <RoleGuard allowedRoles={['SUPER_ADMIN']}>
+                <AdministrationAuditLogPage />
+              </RoleGuard>
+            ),
+          },
         ],
       },
       // Redirects for unbuilt or legacy-mapped paths
       {
         path: '/security',
         element: <Navigate to="/settings" replace />,
+      },
+      {
+        path: '/administration/users',
+        element: <Navigate to="/administration/team" replace />,
+      },
+      {
+        path: '/administration/administrators',
+        element: <Navigate to="/administration/team" replace />,
       },
     ],
   },
