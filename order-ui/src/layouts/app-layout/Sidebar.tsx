@@ -5,6 +5,7 @@ import { useState, useSyncExternalStore } from "react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { usePreferencesContext } from "@/app/providers/PreferencesProvider";
 import { useTranslation } from "@/features/preferences/hooks/useTranslation";
+import { useProfileSummary } from "@/features/profile/hooks/useProfileSummary";
 import type { Role } from "@/types/auth";
 
 const ACCOUNT_NAV = [
@@ -19,6 +20,7 @@ function UserChip({ onNavigate }: { onNavigate?: () => void }) {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { t } = useTranslation();
+  const { displayName, email, role, initials } = useProfileSummary();
 
   function go(path: string) {
     setOpen(false);
@@ -27,9 +29,6 @@ function UserChip({ onNavigate }: { onNavigate?: () => void }) {
   }
 
   if (!user) return null;
-
-  const initials = (user.firstName?.[0] || "") + (user.lastName?.[0] || "");
-  const displayName = `${user.firstName || ""} ${user.lastName || ""}`.trim();
 
   return (
     <div className="relative">
@@ -42,18 +41,18 @@ function UserChip({ onNavigate }: { onNavigate?: () => void }) {
         </div>
         <div className="min-w-0 flex-1 text-left">
           <p className="text-xs font-semibold text-slate-700 truncate leading-none">{displayName}</p>
-          <p className="text-[10px] text-slate-400 mt-0.5 truncate">Enterprise · {user.roles[0] || "USER"}</p>
+          <p className="text-[10px] text-slate-400 mt-0.5 truncate">Enterprise · {role}</p>
         </div>
         <ChevronRight className={`w-3 h-3 text-slate-400 flex-shrink-0 transition-transform ${open ? "-rotate-90" : "rotate-90"}`} />
       </button>
 
       {open && (
         <>
-          <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-          <div className="absolute left-0 bottom-full mb-1.5 w-full bg-white rounded-[8px] border border-slate-200 shadow-lg shadow-slate-900/10 z-20 overflow-hidden">
+          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
+          <div className="absolute left-0 bottom-full mb-1.5 w-full bg-white rounded-[8px] border border-slate-200 shadow-lg shadow-slate-900/10 z-50 overflow-hidden">
             <div className="px-3 py-2.5 border-b border-slate-100 bg-slate-50/60">
               <p className="text-xs font-semibold text-slate-700">{displayName}</p>
-              <p className="text-[11px] text-slate-400 mt-0.5 font-mono">{user.email}</p>
+              <p className="text-[11px] text-slate-400 mt-0.5 font-mono">{email}</p>
             </div>
             <div className="py-1">
               {ACCOUNT_NAV.map(({ to, label, icon: Icon }) => (

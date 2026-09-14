@@ -1,0 +1,123 @@
+- generic [ref=f1e2]:
+  - generic [ref=f1e3]:
+    - complementary [ref=f1e4]:
+      - generic [ref=f1e5]:
+        - generic [ref=f1e13]:
+          - paragraph [ref=f1e14]: Enterprise
+          - paragraph [ref=f1e15]: Order Suite
+        - navigation [ref=f1e16]:
+          - paragraph [ref=f1e17]: Navigation
+          - link "Dashboard" [ref=f1e18] [cursor=pointer]:
+            - /url: /home
+          - link "Orders" [ref=f1e25] [cursor=pointer]:
+            - /url: /orders
+          - link "Inventory" [ref=f1e31] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f1e37] [cursor=pointer]:
+            - /url: /analytics
+          - link "Security" [ref=f1e41] [cursor=pointer]:
+            - /url: /security
+          - generic [ref=f1e45]:
+            - paragraph [ref=f1e46]: Administration
+            - link "Users" [ref=f1e47] [cursor=pointer]:
+              - /url: /administration/users
+          - generic [ref=f1e54]:
+            - paragraph [ref=f1e55]: Account
+            - link "View Profile" [ref=f1e56] [cursor=pointer]:
+              - /url: /profile
+            - link "Notifications" [ref=f1e61] [cursor=pointer]:
+              - /url: /notifications
+            - link "Preferences" [ref=f1e66] [cursor=pointer]:
+              - /url: /preferences
+            - link "Settings" [ref=f1e69] [cursor=pointer]:
+              - /url: /settings
+        - button "AW Alex Watson Enterprise · ADMIN" [ref=f1e76]:
+          - generic [ref=f1e77]: AW
+          - generic [ref=f1e79]:
+            - paragraph [ref=f1e80]: Alex Watson
+            - paragraph [ref=f1e81]: Enterprise · ADMIN
+    - generic [ref=f1e84]:
+      - banner [ref=f1e85]:
+        - generic [ref=f1e86]:
+          - button [active] [ref=f1e87]
+          - button "JD Jane Doe Enterprise · USER" [ref=f1e89]:
+            - generic [ref=f1e90]: JD
+            - generic [ref=f1e92]:
+              - paragraph [ref=f1e93]: Jane Doe
+              - paragraph [ref=f1e94]: Enterprise · USER
+      - main [ref=f1e97]:
+        - generic [ref=f1e99]:
+          - generic [ref=f1e101]:
+            - generic [ref=f1e102]: Enterprise Order Suite
+            - heading "Good morning, Alex Watson" [level=1] [ref=f1e109]
+            - generic [ref=f1e110]:
+              - generic [ref=f1e111]: Wednesday, September 9
+              - generic [ref=f1e113]: 10:58 AM
+          - generic [ref=f1e114]:
+            - generic [ref=f1e115]:
+              - heading "Quick Actions" [level=2] [ref=f1e116]
+              - generic [ref=f1e117]: 3 pathways
+            - generic [ref=f1e118]:
+              - generic [ref=f1e120] [cursor=pointer]:
+                - generic [ref=f1e121]: 8 active
+                - generic [ref=f1e128]:
+                  - heading "Order Management Hub" [level=3] [ref=f1e129]
+                  - paragraph [ref=f1e130]: View historical purchases, modify statuses, and track active logistical fulfillment pipelines.
+                - generic [ref=f1e131]: Navigate
+              - generic [ref=f1e140]:
+                - heading "Account & Security Profile" [level=3] [ref=f1e141]
+                - paragraph [ref=f1e142]: Update corporate billing variables, configure access credentials, and adjust notification preferences.
+              - generic [ref=f1e151]:
+                - heading "Product Procurement Inventory" [level=3] [ref=f1e152]
+                - paragraph [ref=f1e153]: Discover company catalogs and examine current line item quantities across all fulfillment centers.
+          - generic [ref=f1e154]:
+            - generic [ref=f1e156]:
+              - generic [ref=f1e157]:
+                - heading "Overview Snapshot" [level=2] [ref=f1e158]
+                - generic [ref=f1e159]: live · 1m refresh
+              - generic [ref=f1e160]:
+                - generic [ref=f1e167]:
+                  - paragraph [ref=f1e168]: Active Procurement Count
+                  - paragraph [ref=f1e169]: "23"
+                  - paragraph [ref=f1e170]: ↑ 4 since last week
+                - generic [ref=f1e177]:
+                  - paragraph [ref=f1e178]: Last Transaction ID
+                  - paragraph [ref=f1e179]: ORD-2024-9048
+                  - paragraph [ref=f1e180]: Nov 20, 2024 · Kyoto Data Systems
+                - generic [ref=f1e187]:
+                  - paragraph [ref=f1e188]: Account Tier Status
+                  - paragraph [ref=f1e189]: Enterprise
+                  - paragraph [ref=f1e190]: All features unlocked · SLA active
+                - button [ref=f1e191]:
+                  - generic [ref=f1e192]:
+                    - paragraph [ref=f1e193]: Go to Order Operations
+                    - paragraph [ref=f1e194]: Manage all active fulfillment
+            - generic [ref=f1e196]:
+              - generic [ref=f1e198]:
+                - heading "Setup Assistant" [level=2] [ref=f1e199]
+                - generic [ref=f1e200]: Active
+              - generic [ref=f1e205]:
+                - generic [ref=f1e212]:
+                  - paragraph [ref=f1e213]: Claude Code Assistant
+                  - paragraph [ref=f1e214]: Routing & page configuration engine
+                - generic [ref=f1e219]:
+                  - generic [ref=f1e220]:
+                    - generic [ref=f1e221]: AW
+                    - generic [ref=f1e223]:
+                      - paragraph [ref=f1e224]: Let's enable pages for my project. Create a new Landing Home Page at /home and move the existing Order Management to /orders.
+                      - paragraph [ref=f1e225]: 14:02
+                  - generic [ref=f1e232]:
+                    - paragraph [ref=f1e233]: Got it. I'll set up React Router, scaffold a post-login home portal at /home, and relocate the full order management screen to /orders with a persistent sidebar layout.
+                    - paragraph [ref=f1e234]: 14:02
+                  - generic [ref=f1e235]:
+                    - generic [ref=f1e236]: AW
+                    - generic [ref=f1e238]:
+                      - paragraph [ref=f1e239]: Include a personalized header, quick action cards, stat snapshots, and this embedded chat block.
+                      - paragraph [ref=f1e240]: 14:03
+                  - generic [ref=f1e247]:
+                    - paragraph [ref=f1e248]: Building now — all four sections with live timestamp, avatar dropdown, routed action cards, metric tiles derived from order data, and a self-referential assistant dialogue embedded in the layout.
+                    - paragraph [ref=f1e249]: 14:03
+                - generic [ref=f1e261]:
+                  - textbox "Send a message..." [ref=f1e262]
+                  - button [ref=f1e263]
+  - button "Open Tanstack query devtools" [ref=f1e314] [cursor=pointer]

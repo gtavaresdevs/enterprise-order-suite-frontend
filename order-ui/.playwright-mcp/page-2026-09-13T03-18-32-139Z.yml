@@ -1,0 +1,189 @@
+- generic [ref=f2e2]:
+  - generic [ref=f2e3]:
+    - banner [ref=f2e4]:
+      - generic [ref=f2e5]:
+        - button "Grill Station" [ref=f2e6]
+        - generic [ref=f2e10]: 12:18 AM
+      - generic [ref=f2e12]:
+        - button "All Tickets (6)" [ref=f2e13]
+        - button "Dine-In (0)" [ref=f2e14]
+        - button "Delivery (6)" [ref=f2e15]
+        - button "Pickup (0)" [ref=f2e16]
+      - generic [ref=f2e17]:
+        - button "Recall Last Ticket" [ref=f2e18]
+        - button "Pause Station" [ref=f2e23]
+    - generic [ref=f2e26]:
+      - main [ref=f2e27]:
+        - generic [ref=f2e28]:
+          - generic [ref=f2e29]:
+            - generic [ref=f2e31]:
+              - generic [ref=f2e32]:
+                - text: DEL-2024-8801
+                - paragraph [ref=f2e33]: Marcus Chen
+              - generic [ref=f2e34]:
+                - generic [ref=f2e35]: DELIVERY
+                - generic [ref=f2e36]: PREPARING
+            - generic [ref=f2e38]:
+              - generic [ref=f2e39]:
+                - paragraph [ref=f2e40]:
+                  - generic [ref=f2e41]: 2x
+                  - generic [ref=f2e42]: Double Smash Burger
+                - list [ref=f2e43]:
+                  - listitem [ref=f2e44]:
+                    - generic [ref=f2e45]: ↳
+                    - text: No Onion
+                  - listitem [ref=f2e46]:
+                    - generic [ref=f2e47]: ↳
+                    - text: Extra Bacon
+                  - listitem [ref=f2e48]:
+                    - generic [ref=f2e49]: ↳
+                    - text: Extra Cheese
+              - paragraph [ref=f2e51]:
+                - generic [ref=f2e52]: 1x
+                - generic [ref=f2e53]: Truffle Loaded Fries
+            - button "Mark Ready" [ref=f2e55]
+          - generic [ref=f2e56]:
+            - generic [ref=f2e58]:
+              - generic [ref=f2e59]:
+                - text: DEL-2024-8802
+                - paragraph [ref=f2e60]: Alicia Torres
+              - generic [ref=f2e61]:
+                - generic [ref=f2e62]: DELIVERY
+                - generic [ref=f2e63]: NEW
+            - generic [ref=f2e65]:
+              - generic [ref=f2e66]:
+                - paragraph [ref=f2e67]:
+                  - generic [ref=f2e68]: 1x
+                  - generic [ref=f2e69]: Margherita Pizza 12"
+                - list [ref=f2e70]:
+                  - listitem [ref=f2e71]:
+                    - generic [ref=f2e72]: ↳
+                    - text: Extra Crispy Crust
+                  - listitem [ref=f2e73]:
+                    - generic [ref=f2e74]: ↳
+                    - text: No Basil
+              - generic [ref=f2e75]:
+                - paragraph [ref=f2e76]:
+                  - generic [ref=f2e77]: 2x
+                  - generic [ref=f2e78]: Caramel Latte
+                - list [ref=f2e79]:
+                  - listitem [ref=f2e80]:
+                    - generic [ref=f2e81]: ↳
+                    - text: Oat Milk
+                  - listitem [ref=f2e82]:
+                    - generic [ref=f2e83]: ↳
+                    - text: No Sugar
+            - button "Start Preparing" [active] [ref=f2e85]
+          - generic [ref=f2e86]:
+            - generic [ref=f2e88]:
+              - generic [ref=f2e89]:
+                - text: DEL-2024-8803
+                - paragraph [ref=f2e90]: Jordan Webb
+              - generic [ref=f2e91]:
+                - generic [ref=f2e92]: DELIVERY
+                - generic [ref=f2e93]: READY
+            - generic [ref=f2e95]:
+              - generic [ref=f2e96]:
+                - paragraph [ref=f2e97]:
+                  - generic [ref=f2e98]: 1x
+                  - generic [ref=f2e99]: Crispy Chicken Sandwich
+                - list [ref=f2e100]:
+                  - listitem [ref=f2e101]:
+                    - generic [ref=f2e102]: ↳
+                    - text: Spicy Level 2
+                  - listitem [ref=f2e103]:
+                    - generic [ref=f2e104]: ↳
+                    - text: Add Avocado
+              - paragraph [ref=f2e106]:
+                - generic [ref=f2e107]: 1x
+                - generic [ref=f2e108]: Strawberry Milkshake
+            - button "Complete Order" [ref=f2e110]
+          - generic [ref=f2e111]:
+            - generic [ref=f2e113]:
+              - generic [ref=f2e114]:
+                - text: DEL-2024-8805
+                - paragraph [ref=f2e115]: Lena Fischer
+              - generic [ref=f2e116]:
+                - generic [ref=f2e117]: DELIVERY
+                - generic [ref=f2e118]: NEW
+            - generic [ref=f2e120]:
+              - generic [ref=f2e121]:
+                - paragraph [ref=f2e122]:
+                  - generic [ref=f2e123]: 1x
+                  - generic [ref=f2e124]: Truffle Loaded Fries
+                - list [ref=f2e125]:
+                  - listitem [ref=f2e126]:
+                    - generic [ref=f2e127]: ↳
+                    - text: Extra Truffle Oil
+              - paragraph [ref=f2e129]:
+                - generic [ref=f2e130]: 2x
+                - generic [ref=f2e131]: Chocolate Brownie
+            - button "Start Preparing" [ref=f2e133]
+          - generic [ref=f2e134]:
+            - generic [ref=f2e136]:
+              - generic [ref=f2e137]:
+                - text: DEL-2024-8806
+                - paragraph [ref=f2e138]: Mateo Rivera
+              - generic [ref=f2e139]:
+                - generic [ref=f2e140]: DELIVERY
+                - generic [ref=f2e141]: READY
+            - generic [ref=f2e144]:
+              - paragraph [ref=f2e145]:
+                - generic [ref=f2e146]: 3x
+                - generic [ref=f2e147]: Double Smash Burger
+              - list [ref=f2e148]:
+                - listitem [ref=f2e149]:
+                  - generic [ref=f2e150]: ↳
+                  - text: No Pickles
+                - listitem [ref=f2e151]:
+                  - generic [ref=f2e152]: ↳
+                  - text: Truffle Mayo
+            - button "Complete Order" [ref=f2e154]
+          - generic [ref=f2e155]:
+            - generic [ref=f2e157]:
+              - generic [ref=f2e158]:
+                - text: DEL-2024-8808
+                - paragraph [ref=f2e159]: Kwame Asante
+              - generic [ref=f2e160]:
+                - generic [ref=f2e161]: DELIVERY
+                - generic [ref=f2e162]: PREPARING
+            - generic [ref=f2e164]:
+              - generic [ref=f2e165]:
+                - paragraph [ref=f2e166]:
+                  - generic [ref=f2e167]: 2x
+                  - generic [ref=f2e168]: Crispy Chicken Sandwich
+                - list [ref=f2e169]:
+                  - listitem [ref=f2e170]:
+                    - generic [ref=f2e171]: ↳
+                    - text: BBQ Sauce
+              - paragraph [ref=f2e173]:
+                - generic [ref=f2e174]: 2x
+                - generic [ref=f2e175]: Truffle Loaded Fries
+            - button "Mark Ready" [ref=f2e177]
+      - complementary [ref=f2e178]:
+        - generic [ref=f2e179]:
+          - heading "Production Summary" [level=2] [ref=f2e180]
+          - paragraph [ref=f2e181]: All Day (Active Tickets)
+        - generic [ref=f2e182]:
+          - generic [ref=f2e183]:
+            - generic [ref=f2e184]: 5x
+            - generic [ref=f2e186]: Double Smash Burger
+          - generic [ref=f2e187]:
+            - generic [ref=f2e188]: 4x
+            - generic [ref=f2e190]: Truffle Loaded Fries
+          - generic [ref=f2e191]:
+            - generic [ref=f2e192]: 3x
+            - generic [ref=f2e194]: Crispy Chicken Sandwich
+          - generic [ref=f2e195]:
+            - generic [ref=f2e196]: 2x
+            - generic [ref=f2e198]: Caramel Latte
+          - generic [ref=f2e199]:
+            - generic [ref=f2e200]: 2x
+            - generic [ref=f2e202]: Chocolate Brownie
+          - generic [ref=f2e203]:
+            - generic [ref=f2e204]: 1x
+            - generic [ref=f2e206]: Margherita Pizza 12"
+          - generic [ref=f2e207]:
+            - generic [ref=f2e208]: 1x
+            - generic [ref=f2e210]: Strawberry Milkshake
+  - button "Open Tanstack query devtools" [ref=f2e261] [cursor=pointer]

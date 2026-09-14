@@ -1,0 +1,138 @@
+- generic [ref=f4e2]:
+  - generic [ref=f4e141]:
+    - complementary [ref=f4e142]:
+      - generic [ref=f4e143]:
+        - generic [ref=f4e151]:
+          - paragraph [ref=f4e152]: Enterprise
+          - paragraph [ref=f4e153]: Order Suite
+        - navigation [ref=f4e154]:
+          - paragraph [ref=f4e155]: Navigation
+          - link "Dashboard" [ref=f4e156] [cursor=pointer]:
+            - /url: /home
+          - link "Orders" [ref=f4e163] [cursor=pointer]:
+            - /url: /orders
+          - link "Inventory" [ref=f4e169] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f4e175] [cursor=pointer]:
+            - /url: /analytics
+          - link "Security" [ref=f4e179] [cursor=pointer]:
+            - /url: /security
+          - generic [ref=f4e183]:
+            - paragraph [ref=f4e184]: Administration
+            - link "Users" [ref=f4e185] [cursor=pointer]:
+              - /url: /administration/users
+            - link "Administrators" [ref=f4e192] [cursor=pointer]:
+              - /url: /administration/administrators
+            - link "Roles & Permissions" [ref=f4e206] [cursor=pointer]:
+              - /url: /administration/roles
+          - generic [ref=f4e212]:
+            - paragraph [ref=f4e213]: Account
+            - link "View Profile" [ref=f4e214] [cursor=pointer]:
+              - /url: /profile
+            - link "Notifications" [ref=f4e219] [cursor=pointer]:
+              - /url: /notifications
+            - link "Preferences" [ref=f4e224] [cursor=pointer]:
+              - /url: /preferences
+            - link "Settings" [ref=f4e227] [cursor=pointer]:
+              - /url: /settings
+        - generic [ref=f4e233]:
+          - button "GT Gabriel Tavares Almeida Enterprise · SUPER_ADMIN" [active] [ref=f4e234]:
+            - generic [ref=f4e235]: GT
+            - generic [ref=f4e237]:
+              - paragraph [ref=f4e238]: Gabriel Tavares Almeida
+              - paragraph [ref=f4e239]: Enterprise · SUPER_ADMIN
+          - generic [ref=f4e423]:
+            - generic [ref=f4e424]:
+              - paragraph [ref=f4e425]: Gabriel Tavares Almeida
+              - paragraph [ref=f4e426]: gtavaresdev@gmail.com
+            - generic [ref=f4e427]:
+              - button "View Profile" [ref=f4e428]
+              - button "Notifications" [ref=f4e432]
+              - button "Preferences" [ref=f4e436]
+              - button "Settings" [ref=f4e438]
+            - button "Sign out" [ref=f4e443]
+    - generic [ref=f4e242]:
+      - banner [ref=f4e243]:
+        - generic [ref=f4e244]:
+          - button [ref=f4e245]
+          - button "GT Gabriel Tavares Almeida Enterprise · SUPER_ADMIN" [ref=f4e247]:
+            - generic [ref=f4e248]: GT
+            - generic [ref=f4e250]:
+              - paragraph [ref=f4e251]: Gabriel Tavares Almeida
+              - paragraph [ref=f4e252]: Enterprise · SUPER_ADMIN
+      - main [ref=f4e255]:
+        - generic [ref=f4e257]:
+          - generic [ref=f4e259]:
+            - generic [ref=f4e260]: Enterprise Order Suite
+            - heading "Good morning, Alex Watson" [level=1] [ref=f4e267]
+            - generic [ref=f4e268]:
+              - generic [ref=f4e269]: Wednesday, September 9
+              - generic [ref=f4e271]: 11:36 AM
+          - generic [ref=f4e272]:
+            - generic [ref=f4e273]:
+              - heading "Quick Actions" [level=2] [ref=f4e274]
+              - generic [ref=f4e275]: 3 pathways
+            - generic [ref=f4e276]:
+              - generic [ref=f4e278] [cursor=pointer]:
+                - generic [ref=f4e279]: 8 active
+                - generic [ref=f4e286]:
+                  - heading "Order Management Hub" [level=3] [ref=f4e287]
+                  - paragraph [ref=f4e288]: View historical purchases, modify statuses, and track active logistical fulfillment pipelines.
+                - generic [ref=f4e289]: Navigate
+              - generic [ref=f4e298]:
+                - heading "Account & Security Profile" [level=3] [ref=f4e299]
+                - paragraph [ref=f4e300]: Update corporate billing variables, configure access credentials, and adjust notification preferences.
+              - generic [ref=f4e309]:
+                - heading "Product Procurement Inventory" [level=3] [ref=f4e310]
+                - paragraph [ref=f4e311]: Discover company catalogs and examine current line item quantities across all fulfillment centers.
+          - generic [ref=f4e312]:
+            - generic [ref=f4e314]:
+              - generic [ref=f4e315]:
+                - heading "Overview Snapshot" [level=2] [ref=f4e316]
+                - generic [ref=f4e317]: live · 1m refresh
+              - generic [ref=f4e318]:
+                - generic [ref=f4e325]:
+                  - paragraph [ref=f4e326]: Active Procurement Count
+                  - paragraph [ref=f4e327]: "23"
+                  - paragraph [ref=f4e328]: ↑ 4 since last week
+                - generic [ref=f4e335]:
+                  - paragraph [ref=f4e336]: Last Transaction ID
+                  - paragraph [ref=f4e337]: ORD-2024-9048
+                  - paragraph [ref=f4e338]: Nov 20, 2024 · Kyoto Data Systems
+                - generic [ref=f4e345]:
+                  - paragraph [ref=f4e346]: Account Tier Status
+                  - paragraph [ref=f4e347]: Enterprise
+                  - paragraph [ref=f4e348]: All features unlocked · SLA active
+                - button [ref=f4e349]:
+                  - generic [ref=f4e350]:
+                    - paragraph [ref=f4e351]: Go to Order Operations
+                    - paragraph [ref=f4e352]: Manage all active fulfillment
+            - generic [ref=f4e354]:
+              - generic [ref=f4e356]:
+                - heading "Setup Assistant" [level=2] [ref=f4e357]
+                - generic [ref=f4e358]: Active
+              - generic [ref=f4e363]:
+                - generic [ref=f4e370]:
+                  - paragraph [ref=f4e371]: Claude Code Assistant
+                  - paragraph [ref=f4e372]: Routing & page configuration engine
+                - generic [ref=f4e377]:
+                  - generic [ref=f4e378]:
+                    - generic [ref=f4e379]: AW
+                    - generic [ref=f4e381]:
+                      - paragraph [ref=f4e382]: Let's enable pages for my project. Create a new Landing Home Page at /home and move the existing Order Management to /orders.
+                      - paragraph [ref=f4e383]: 14:02
+                  - generic [ref=f4e390]:
+                    - paragraph [ref=f4e391]: Got it. I'll set up React Router, scaffold a post-login home portal at /home, and relocate the full order management screen to /orders with a persistent sidebar layout.
+                    - paragraph [ref=f4e392]: 14:02
+                  - generic [ref=f4e393]:
+                    - generic [ref=f4e394]: AW
+                    - generic [ref=f4e396]:
+                      - paragraph [ref=f4e397]: Include a personalized header, quick action cards, stat snapshots, and this embedded chat block.
+                      - paragraph [ref=f4e398]: 14:03
+                  - generic [ref=f4e405]:
+                    - paragraph [ref=f4e406]: Building now — all four sections with live timestamp, avatar dropdown, routed action cards, metric tiles derived from order data, and a self-referential assistant dialogue embedded in the layout.
+                    - paragraph [ref=f4e407]: 14:03
+                - generic [ref=f4e419]:
+                  - textbox "Send a message..." [ref=f4e420]
+                  - button [ref=f4e421]
+  - button "Open Tanstack query devtools" [ref=f4e92] [cursor=pointer]

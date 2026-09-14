@@ -13,6 +13,9 @@ dist/
 dist-ssr/
 coverage/
 
+# Claude Code hook build cache
+.claude/.tsc-hook-cache
+
 # Environment files
 .env
 .env.*

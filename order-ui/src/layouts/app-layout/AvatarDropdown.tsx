@@ -10,20 +10,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useLogout } from "@/features/auth/hooks/useLogout";
-import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useTranslation } from "@/features/preferences/hooks/useTranslation";
+import { useProfileSummary } from "@/features/profile/hooks/useProfileSummary";
 
 export function AvatarDropdown() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { mutate: logout, isPending: isLoggingOut } = useLogout();
-  const { user } = useAuth();
   const { t } = useTranslation();
-
-  const role = user?.roles[0] || (localStorage.getItem("role") as string) || "USER";
-  const initials = user ? ((user.firstName?.[0] || "") + (user.lastName?.[0] || "")).toUpperCase() || "U" : "U";
-  const displayName = user ? `${user.firstName || ""} ${user.lastName || ""}`.trim() || user.email : "Account";
-  const email = user?.email || "";
+  const { role, initials, displayName, email } = useProfileSummary();
 
   const handleNavigate = (path: string) => {
     setOpen(false);

@@ -1,0 +1,154 @@
+- generic [ref=f11e2]:
+  - generic [ref=f11e3]:
+    - complementary [ref=f11e4]:
+      - generic [ref=f11e5]:
+        - generic [ref=f11e13]:
+          - paragraph [ref=f11e14]: Enterprise
+          - paragraph [ref=f11e15]: Order Suite
+        - navigation [ref=f11e16]:
+          - paragraph [ref=f11e17]: Navigation
+          - link "Dashboard" [ref=f11e18] [cursor=pointer]:
+            - /url: /home
+          - link "Orders" [ref=f11e23] [cursor=pointer]:
+            - /url: /orders
+          - link "Inventory" [ref=f11e29] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f11e35] [cursor=pointer]:
+            - /url: /analytics
+          - link "Security" [ref=f11e39] [cursor=pointer]:
+            - /url: /security
+          - generic [ref=f11e43]:
+            - paragraph [ref=f11e44]: Account
+            - link "View Profile" [ref=f11e45] [cursor=pointer]:
+              - /url: /profile
+            - link "Notifications" [ref=f11e50] [cursor=pointer]:
+              - /url: /notifications
+            - link "Preferences" [ref=f11e55] [cursor=pointer]:
+              - /url: /preferences
+            - link "Settings" [ref=f11e60] [cursor=pointer]:
+              - /url: /settings
+        - button "AW Alex Watson Enterprise · USER" [ref=f11e67]:
+          - generic [ref=f11e68]: AW
+          - generic [ref=f11e70]:
+            - paragraph [ref=f11e71]: Alex Watson
+            - paragraph [ref=f11e72]: Enterprise · USER
+    - generic [ref=f11e75]:
+      - banner [ref=f11e76]:
+        - generic [ref=f11e77]:
+          - button [ref=f11e78]
+          - button "AW Alex Watson Enterprise · USER" [ref=f11e80]:
+            - generic [ref=f11e81]: AW
+            - generic [ref=f11e83]:
+              - paragraph [ref=f11e84]: Alex Watson
+              - paragraph [ref=f11e85]: Enterprise · USER
+      - main [ref=f11e88]:
+        - generic [ref=f11e90]:
+          - generic [ref=f11e92]:
+            - heading "Preferences" [level=1] [ref=f11e93]
+            - paragraph [ref=f11e94]: Customize your interface, regional settings, and display behavior.
+          - generic [ref=f11e95]:
+            - generic [ref=f11e96]:
+              - generic [ref=f11e97]:
+                - generic [ref=f11e104]:
+                  - paragraph [ref=f11e105]: Storefront & White-label
+                  - paragraph [ref=f11e106]: Configure your public customer-facing store identity.
+                - button "Preview Store" [ref=f11e107]
+              - generic [ref=f11e112]:
+                - generic [ref=f11e113]:
+                  - generic [ref=f11e114]:
+                    - generic [ref=f11e115]: Store Logo
+                    - generic [ref=f11e116] [cursor=pointer]: Upload
+                    - paragraph [ref=f11e123]: PNG · 1:1
+                  - generic [ref=f11e124]:
+                    - generic [ref=f11e125]: Cover Banner
+                    - generic [ref=f11e126] [cursor=pointer]: Click to upload cover image
+                    - paragraph [ref=f11e133]: JPG or PNG · min 800×200px
+                - generic [ref=f11e135]:
+                  - generic [ref=f11e136]: Brand Primary Color
+                  - generic [ref=f11e137]:
+                    - textbox [ref=f11e138] [cursor=pointer]: "#0f172a"
+                    - textbox [ref=f11e139]: "#0f172a"
+            - generic [ref=f11e140]:
+              - generic [ref=f11e145]:
+                - paragraph [ref=f11e146]: Interface
+                - paragraph [ref=f11e147]: Visual theme and display density options.
+              - generic [ref=f11e148]:
+                - generic [ref=f11e149]:
+                  - generic [ref=f11e150]:
+                    - generic [ref=f11e151]: Color Theme
+                    - paragraph [ref=f11e152]: Controls the global visual mode of the dashboard.
+                  - generic [ref=f11e154]:
+                    - button "Light" [ref=f11e155]
+                    - button "Dark" [ref=f11e162]
+                    - button "System" [ref=f11e165]
+                - generic [ref=f11e168]:
+                  - generic [ref=f11e169]:
+                    - generic [ref=f11e170]: Font Size
+                    - paragraph [ref=f11e171]: Base text size for all UI elements.
+                  - combobox [ref=f11e174]:
+                    - generic [ref=f11e175]: Compact (13px)
+                - generic [ref=f11e176]:
+                  - generic [ref=f11e177]:
+                    - generic [ref=f11e178]: Compact Mode
+                    - paragraph [ref=f11e179]: Reduce padding and spacing for higher information density.
+                  - switch [ref=f11e181]
+                - generic [ref=f11e182]:
+                  - generic [ref=f11e183]:
+                    - generic [ref=f11e184]: Dense Table Rows
+                    - paragraph [ref=f11e185]: Show more order rows per screen in the data table.
+                  - switch [checked] [ref=f11e187]
+                - generic [ref=f11e188]:
+                  - generic [ref=f11e189]:
+                    - generic [ref=f11e190]: Reduce Motion
+                    - paragraph [ref=f11e191]: Disable non-essential transitions and animations.
+                  - switch [ref=f11e193]
+            - generic [ref=f11e194]:
+              - generic [ref=f11e200]:
+                - paragraph [ref=f11e201]: Regional
+                - paragraph [ref=f11e202]: Time zone, language, and localization preferences.
+              - generic [ref=f11e203]:
+                - generic [ref=f11e204]:
+                  - generic [ref=f11e205]:
+                    - generic [ref=f11e206]: Language
+                    - paragraph [ref=f11e207]: Interface text and content language.
+                  - combobox [ref=f11e210]:
+                    - generic [ref=f11e211]: English (US)
+                - generic [ref=f11e212]:
+                  - generic [ref=f11e213]:
+                    - generic [ref=f11e214]: Time Zone
+                    - paragraph [ref=f11e215]: Used for order timestamps and scheduling displays.
+                  - combobox [ref=f11e218]:
+                    - generic [ref=f11e219]: UTC-08:00 — Pacific Time (US)
+            - generic [ref=f11e220]:
+              - generic [ref=f11e225]:
+                - paragraph [ref=f11e226]: Data Formatting
+                - paragraph [ref=f11e227]: Date, currency, and numerical display conventions.
+              - generic [ref=f11e228]:
+                - generic [ref=f11e229]:
+                  - generic [ref=f11e230]:
+                    - generic [ref=f11e231]: Date Format
+                    - paragraph [ref=f11e232]: How dates are displayed across order and transaction records.
+                  - combobox [ref=f11e235]:
+                    - generic [ref=f11e236]: MM/DD/YYYY
+                - generic [ref=f11e237]:
+                  - generic [ref=f11e238]:
+                    - generic [ref=f11e239]: Currency
+                    - paragraph [ref=f11e240]: Default currency for pricing, invoices, and totals.
+                  - combobox [ref=f11e243]:
+                    - generic [ref=f11e244]: USD — US Dollar
+            - generic [ref=f11e245]:
+              - generic [ref=f11e250]:
+                - paragraph [ref=f11e251]: Layout
+                - paragraph [ref=f11e252]: Configure dashboard panel and sidebar behavior.
+              - generic [ref=f11e254]:
+                - generic [ref=f11e255]:
+                  - generic [ref=f11e256]: Sidebar Navigation
+                  - paragraph [ref=f11e257]: Pin the sidebar or collapse to icon-only mode.
+                - generic [ref=f11e259]:
+                  - button "Expanded" [ref=f11e260]
+                  - button "Icons only" [ref=f11e261]
+                  - button "Auto" [ref=f11e262]
+          - generic [ref=f11e263]:
+            - paragraph [ref=f11e264]: Preferences are applied immediately after saving.
+            - button "Saved!" [active] [ref=f11e376]
+  - button "Open Tanstack query devtools" [ref=f11e316] [cursor=pointer]

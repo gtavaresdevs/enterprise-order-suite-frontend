@@ -1,0 +1,213 @@
+- generic [ref=f6e2]:
+  - generic [ref=f6e3]:
+    - complementary [ref=f6e4]:
+      - generic [ref=f6e5]:
+        - generic [ref=f6e13]:
+          - paragraph [ref=f6e14]: Enterprise
+          - paragraph [ref=f6e15]: Order Suite
+        - navigation [ref=f6e16]:
+          - paragraph [ref=f6e17]: Navigation
+          - link "Dashboard" [ref=f6e18] [cursor=pointer]:
+            - /url: /home
+          - link "Orders" [ref=f6e23] [cursor=pointer]:
+            - /url: /orders
+          - link "Inventory" [ref=f6e31] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f6e37] [cursor=pointer]:
+            - /url: /analytics
+          - link "Security" [ref=f6e41] [cursor=pointer]:
+            - /url: /security
+          - generic [ref=f6e45]:
+            - paragraph [ref=f6e46]: Administration
+            - link "Users" [ref=f6e47] [cursor=pointer]:
+              - /url: /administration/users
+            - link "Administrators" [ref=f6e54] [cursor=pointer]:
+              - /url: /administration/administrators
+            - link "Roles & Permissions" [ref=f6e68] [cursor=pointer]:
+              - /url: /administration/roles
+          - generic [ref=f6e74]:
+            - paragraph [ref=f6e75]: Account
+            - link "View Profile" [ref=f6e76] [cursor=pointer]:
+              - /url: /profile
+            - link "Notifications" [ref=f6e81] [cursor=pointer]:
+              - /url: /notifications
+            - link "Preferences" [ref=f6e86] [cursor=pointer]:
+              - /url: /preferences
+            - link "Settings" [ref=f6e89] [cursor=pointer]:
+              - /url: /settings
+        - button "GT Gabriel Tavares Almeida Enterprise · SUPER_ADMIN" [ref=f6e96]:
+          - generic [ref=f6e97]: GT
+          - generic [ref=f6e99]:
+            - paragraph [ref=f6e100]: Gabriel Tavares Almeida
+            - paragraph [ref=f6e101]: Enterprise · SUPER_ADMIN
+    - generic [ref=f6e104]:
+      - banner [ref=f6e105]:
+        - generic [ref=f6e106]:
+          - button [ref=f6e107]
+          - button "AW Alex Watson Enterprise · SUPER_ADMIN" [ref=f6e109]:
+            - generic [ref=f6e110]: AW
+            - generic [ref=f6e112]:
+              - paragraph [ref=f6e113]: Alex Watson
+              - paragraph [ref=f6e114]: Enterprise · SUPER_ADMIN
+      - main [ref=f6e117]:
+        - generic [ref=f6e119]:
+          - generic [ref=f6e120]:
+            - generic [ref=f6e121]:
+              - generic [ref=f6e122]: Enterprise Order Suite
+              - heading "Order Operations" [level=1] [ref=f6e128]
+              - paragraph [ref=f6e129]: Manage and track active delivery orders in real time.
+            - button "New Order" [ref=f6e130]
+          - generic [ref=f6e132]:
+            - generic [ref=f6e134]:
+              - paragraph [ref=f6e135]: New
+              - paragraph [ref=f6e136]: "2"
+            - generic [ref=f6e142]:
+              - paragraph [ref=f6e143]: Preparing
+              - paragraph [ref=f6e144]: "2"
+            - generic [ref=f6e149]:
+              - paragraph [ref=f6e150]: In Route
+              - paragraph [ref=f6e151]: "2"
+            - generic [ref=f6e159]:
+              - paragraph [ref=f6e160]: Delivered
+              - paragraph [ref=f6e161]: "2"
+          - generic [ref=f6e167]:
+            - textbox "Search by order ID, customer name, or status..." [ref=f6e169]
+            - generic [ref=f6e171]:
+              - button "All8" [ref=f6e172]
+              - button "New2" [ref=f6e173]
+              - button "Preparing2" [ref=f6e174]
+              - button "In Route2" [ref=f6e175]
+              - button "Delivered2" [ref=f6e176]
+          - generic [ref=f6e177]:
+            - generic [ref=f6e178]:
+              - generic [ref=f6e179]: Order ID
+              - generic [ref=f6e180]: Customer
+              - generic [ref=f6e181]: Items
+              - generic [ref=f6e182]: Date
+              - generic [ref=f6e183]: Total
+              - generic [ref=f6e184]: Status
+            - generic [ref=f6e185]:
+              - generic [ref=f6e186]:
+                - generic [ref=f6e187]: DEL-2024-8801
+                - generic [ref=f6e188]:
+                  - paragraph [ref=f6e189]: Marcus Chen
+                  - paragraph [ref=f6e190]: +1 (415) 555-0182
+                - generic [ref=f6e191]:
+                  - generic [ref=f6e192]: 2 items
+                  - generic [ref=f6e193]: 3 units
+                - generic [ref=f6e194]: Nov 19, 2024
+                - generic [ref=f6e195]: $42.47
+                - generic [ref=f6e196]: Preparing
+                - generic [ref=f6e198]:
+                  - button "View" [ref=f6e199]
+                  - button "Edit" [ref=f6e203]
+                  - button "Cancel" [ref=f6e207]
+              - generic [ref=f6e211]:
+                - generic [ref=f6e212]: DEL-2024-8802
+                - generic [ref=f6e213]:
+                  - paragraph [ref=f6e214]: Alicia Torres
+                  - paragraph [ref=f6e215]: +1 (628) 555-0294
+                - generic [ref=f6e216]:
+                  - generic [ref=f6e217]: 2 items
+                  - generic [ref=f6e218]: 3 units
+                - generic [ref=f6e219]: Nov 19, 2024
+                - generic [ref=f6e220]: $43.56
+                - generic [ref=f6e221]: New
+                - generic [ref=f6e223]:
+                  - button "View" [ref=f6e224]
+                  - button "Edit" [ref=f6e228]
+                  - button "Cancel" [ref=f6e232]
+              - generic [ref=f6e236]:
+                - generic [ref=f6e237]: DEL-2024-8803
+                - generic [ref=f6e238]:
+                  - paragraph [ref=f6e239]: Jordan Webb
+                  - paragraph [ref=f6e240]: +1 (510) 555-0371
+                - generic [ref=f6e241]:
+                  - generic [ref=f6e242]: 2 items
+                  - generic [ref=f6e243]: 2 units
+                - generic [ref=f6e244]: Nov 19, 2024
+                - generic [ref=f6e245]: $23.48
+                - generic [ref=f6e246]: In Route
+                - generic [ref=f6e248]:
+                  - button "View" [ref=f6e249]
+                  - button "Edit" [ref=f6e253]
+                  - button "Cancel" [ref=f6e257]
+              - generic [ref=f6e261]:
+                - generic [ref=f6e262]: DEL-2024-8804
+                - generic [ref=f6e263]:
+                  - paragraph [ref=f6e264]: Priya Nair
+                  - paragraph [ref=f6e265]: +1 (415) 555-0449
+                - generic [ref=f6e266]:
+                  - generic [ref=f6e267]: 2 items
+                  - generic [ref=f6e268]: 4 units
+                - generic [ref=f6e269]: Nov 19, 2024
+                - generic [ref=f6e270]: $29.94
+                - generic [ref=f6e271]: Delivered
+                - generic [ref=f6e273]:
+                  - button "View" [ref=f6e274]
+                  - button "Edit" [ref=f6e278]
+                  - button "Cancel" [ref=f6e282]
+              - generic [ref=f6e286]:
+                - generic [ref=f6e287]: DEL-2024-8805
+                - generic [ref=f6e288]:
+                  - paragraph [ref=f6e289]: Lena Fischer
+                  - paragraph [ref=f6e290]: +1 (408) 555-0512
+                - generic [ref=f6e291]:
+                  - generic [ref=f6e292]: 2 items
+                  - generic [ref=f6e293]: 3 units
+                - generic [ref=f6e294]: Nov 19, 2024
+                - generic [ref=f6e295]: $25.47
+                - generic [ref=f6e296]: New
+                - generic [ref=f6e298]:
+                  - button "View" [ref=f6e299]
+                  - button "Edit" [ref=f6e303]
+                  - button "Cancel" [ref=f6e307]
+              - generic [ref=f6e311]:
+                - generic [ref=f6e312]: DEL-2024-8806
+                - generic [ref=f6e313]:
+                  - paragraph [ref=f6e314]: Mateo Rivera
+                  - paragraph [ref=f6e315]: +1 (650) 555-0673
+                - generic [ref=f6e316]:
+                  - generic [ref=f6e317]: 1 item
+                  - generic [ref=f6e318]: 3 units
+                - generic [ref=f6e319]: Nov 19, 2024
+                - generic [ref=f6e320]: $50.97
+                - generic [ref=f6e321]: In Route
+                - generic [ref=f6e323]:
+                  - button "View" [ref=f6e324]
+                  - button "Edit" [ref=f6e328]
+                  - button "Cancel" [ref=f6e332]
+              - generic [ref=f6e336]:
+                - generic [ref=f6e337]: DEL-2024-8807
+                - generic [ref=f6e338]:
+                  - paragraph [ref=f6e339]: Sophie Laurent
+                  - paragraph [ref=f6e340]: +1 (415) 555-0821
+                - generic [ref=f6e341]:
+                  - generic [ref=f6e342]: 2 items
+                  - generic [ref=f6e343]: 2 units
+                - generic [ref=f6e344]: Nov 18, 2024
+                - generic [ref=f6e345]: $25.78
+                - generic [ref=f6e346]: Delivered
+                - generic [ref=f6e348]:
+                  - button "View" [ref=f6e349]
+                  - button "Edit" [ref=f6e353]
+                  - button "Cancel" [ref=f6e357]
+              - generic [ref=f6e361]:
+                - generic [ref=f6e362]: DEL-2024-8808
+                - generic [ref=f6e363]:
+                  - paragraph [ref=f6e364]: Kwame Asante
+                  - paragraph [ref=f6e365]: +1 (415) 555-0934
+                - generic [ref=f6e366]:
+                  - generic [ref=f6e367]: 2 items
+                  - generic [ref=f6e368]: 4 units
+                - generic [ref=f6e369]: Nov 19, 2024
+                - generic [ref=f6e370]: $47.96
+                - generic [ref=f6e371]: Preparing
+                - generic [ref=f6e373]:
+                  - button "View" [ref=f6e374]
+                  - button "Edit" [ref=f6e378]
+                  - button "Cancel" [ref=f6e382]
+            - generic [ref=f6e386]:
+              - generic [ref=f6e387]: Showing 8 of 8 orders
+              - generic [ref=f6e388]: GET /api/v1/orders
+  - button "Open Tanstack query devtools" [ref=f6e439] [cursor=pointer]

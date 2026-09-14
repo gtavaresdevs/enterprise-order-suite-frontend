@@ -1,0 +1,59 @@
+- generic [ref=f2e2]:
+  - generic [ref=f2e3]:
+    - complementary [ref=f2e4]:
+      - generic [ref=f2e5]:
+        - generic [ref=f2e13]:
+          - paragraph [ref=f2e14]: Enterprise
+          - paragraph [ref=f2e15]: Order Suite
+        - navigation [ref=f2e16]:
+          - paragraph [ref=f2e17]: Navigation
+          - link "Dashboard" [ref=f2e18] [cursor=pointer]:
+            - /url: /home
+          - link "Orders" [ref=f2e23] [cursor=pointer]:
+            - /url: /orders
+          - link "Inventory" [ref=f2e29] [cursor=pointer]:
+            - /url: /inventory
+          - link "Menu" [ref=f2e35] [cursor=pointer]:
+            - /url: /menu
+          - link "Tables" [ref=f2e42] [cursor=pointer]:
+            - /url: /tables
+          - link "Analytics" [ref=f2e52] [cursor=pointer]:
+            - /url: /analytics
+          - generic [ref=f2e56]:
+            - paragraph [ref=f2e57]: Administration
+            - link "Users" [ref=f2e58] [cursor=pointer]:
+              - /url: /administration/users
+          - generic [ref=f2e65]:
+            - paragraph [ref=f2e66]: Account
+            - link "View Profile" [ref=f2e67] [cursor=pointer]:
+              - /url: /profile
+            - link "Notifications" [ref=f2e72] [cursor=pointer]:
+              - /url: /notifications
+            - link "Preferences" [ref=f2e77] [cursor=pointer]:
+              - /url: /preferences
+            - link "Settings" [ref=f2e80] [cursor=pointer]:
+              - /url: /settings
+        - button "AW Alex Watson Enterprise · ADMIN" [ref=f2e87]:
+          - generic [ref=f2e88]: AW
+          - generic [ref=f2e90]:
+            - paragraph [ref=f2e91]: Alex Watson
+            - paragraph [ref=f2e92]: Enterprise · ADMIN
+    - generic [ref=f2e95]:
+      - banner [ref=f2e96]:
+        - generic [ref=f2e97]:
+          - button [ref=f2e98]
+          - button "AW Alex Watson Enterprise · ADMIN" [ref=f2e100]:
+            - generic [ref=f2e101]: AW
+            - generic [ref=f2e103]:
+              - paragraph [ref=f2e104]: Alex Watson
+              - paragraph [ref=f2e105]: Enterprise · ADMIN
+      - main [ref=f2e108]:
+        - generic [ref=f2e110]:
+          - generic [ref=f2e111]:
+            - generic [ref=f2e112]:
+              - generic [ref=f2e113]: Enterprise Order Suite
+              - heading "Tables" [level=1] [ref=f2e121]
+              - paragraph [ref=f2e122]: Print-and-place QR codes linking each table to the read-only menu view.
+            - button "Add Table" [ref=f2e123]
+          - paragraph [ref=f2e125]: Loading tables...
+  - button "Open Tanstack query devtools" [ref=f2e176] [cursor=pointer]

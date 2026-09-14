@@ -1,0 +1,196 @@
+- generic:
+  - generic [aria-hidden]:
+    - generic:
+      - complementary:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - paragraph: Enterprise
+                - paragraph: Order Suite
+          - navigation:
+            - paragraph: Navigation
+            - link:
+              - /url: /home
+              - generic: Dashboard
+            - link:
+              - /url: /orders
+              - generic: Orders
+            - link:
+              - /url: /inventory
+              - generic: Inventory
+            - link:
+              - /url: /analytics
+              - generic: Analytics
+            - link:
+              - /url: /security
+              - generic: Security
+            - generic:
+              - paragraph: Account
+              - link:
+                - /url: /profile
+                - generic: View Profile
+              - link:
+                - /url: /notifications
+                - generic: Notifications
+              - link:
+                - /url: /preferences
+                - generic: Preferences
+              - link:
+                - /url: /settings
+                - generic: Settings
+          - generic:
+            - generic:
+              - button:
+                - generic: AW
+                - generic:
+                  - paragraph: Alex Watson
+                  - paragraph: Enterprise · USER
+      - generic:
+        - banner:
+          - generic:
+            - button
+            - button:
+              - generic: AW
+              - generic:
+                - paragraph: Alex Watson
+                - paragraph: Enterprise · USER
+        - main:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - heading [level=1]: Preferences
+                  - paragraph: Customize your interface, regional settings, and display behavior.
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - paragraph: Storefront & White-label
+                        - paragraph: Configure your public customer-facing store identity.
+                    - button: Preview Store
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic: Store Logo
+                        - generic: Upload
+                        - paragraph: PNG · 1:1
+                      - generic:
+                        - generic: Cover Banner
+                        - generic: Click to upload cover image
+                        - paragraph: JPG or PNG · min 800×200px
+                    - generic:
+                      - generic: Brand Primary Color
+                      - generic:
+                        - textbox: "#0f172a"
+                        - textbox: "#0f172a"
+                - generic:
+                  - generic:
+                    - generic:
+                      - paragraph: Interface
+                      - paragraph: Visual theme and display density options.
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic: Color Theme
+                        - paragraph: Controls the global visual mode of the dashboard.
+                      - generic:
+                        - generic:
+                          - button: Light
+                          - button: Dark
+                          - button: System
+                    - generic:
+                      - generic:
+                        - generic: Font Size
+                        - paragraph: Base text size for all UI elements.
+                      - generic:
+                        - generic:
+                          - combobox [expanded]:
+                            - generic: Default (15px)
+                    - generic:
+                      - generic:
+                        - generic: Compact Mode
+                        - paragraph: Reduce padding and spacing for higher information density.
+                      - generic:
+                        - switch
+                    - generic:
+                      - generic:
+                        - generic: Dense Table Rows
+                        - paragraph: Show more order rows per screen in the data table.
+                      - generic:
+                        - switch [checked]
+                    - generic:
+                      - generic:
+                        - generic: Reduce Motion
+                        - paragraph: Disable non-essential transitions and animations.
+                      - generic:
+                        - switch
+                - generic:
+                  - generic:
+                    - generic:
+                      - paragraph: Regional
+                      - paragraph: Time zone, language, and localization preferences.
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic: Language
+                        - paragraph: Interface text and content language.
+                      - generic:
+                        - generic:
+                          - combobox:
+                            - generic: English (US)
+                    - generic:
+                      - generic:
+                        - generic: Time Zone
+                        - paragraph: Used for order timestamps and scheduling displays.
+                      - generic:
+                        - generic:
+                          - combobox:
+                            - generic: UTC-08:00 — Pacific Time (US)
+                - generic:
+                  - generic:
+                    - generic:
+                      - paragraph: Data Formatting
+                      - paragraph: Date, currency, and numerical display conventions.
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic: Date Format
+                        - paragraph: How dates are displayed across order and transaction records.
+                      - generic:
+                        - generic:
+                          - combobox:
+                            - generic: MM/DD/YYYY
+                    - generic:
+                      - generic:
+                        - generic: Currency
+                        - paragraph: Default currency for pricing, invoices, and totals.
+                      - generic:
+                        - generic:
+                          - combobox:
+                            - generic: USD — US Dollar
+                - generic:
+                  - generic:
+                    - generic:
+                      - paragraph: Layout
+                      - paragraph: Configure dashboard panel and sidebar behavior.
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic: Sidebar Navigation
+                        - paragraph: Pin the sidebar or collapse to icon-only mode.
+                      - generic:
+                        - generic:
+                          - button: Expanded
+                          - button: Icons only
+                          - button: Auto
+              - generic:
+                - paragraph: Preferences are applied immediately after saving.
+                - button: Save Preferences
+    - generic:
+      - button
+  - listbox [ref=f11e365]:
+    - option "Compact (13px)" [ref=f11e366]
+    - option "Default (15px)" [active] [selected] [ref=f11e369]
+    - option "Comfortable (17px)" [ref=f11e373]

@@ -1,0 +1,36 @@
+- generic [ref=f4e2]:
+  - generic [ref=f4e4]:
+    - generic [ref=f4e5]:
+      - generic [ref=f4e6]:
+        - heading "Order Processing System" [level=1] [ref=f4e12]
+        - paragraph [ref=f4e13]: Access your order operations dashboard
+      - generic [ref=f4e14]:
+        - generic [ref=f4e15]:
+          - generic [ref=f4e16]: Email Address
+          - textbox "Email Address" [ref=f4e21]:
+            - /placeholder: you@company.com
+        - generic [ref=f4e22]:
+          - generic [ref=f4e23]:
+            - generic [ref=f4e24]: Password
+            - link "Forgot password?" [ref=f4e25] [cursor=pointer]:
+              - /url: /forgot-password
+          - textbox "Password" [ref=f4e30]:
+            - /placeholder: Enter your password
+        - generic [ref=f4e31]:
+          - checkbox "Remember me" [ref=f4e32]
+          - checkbox [aria-hidden]
+          - generic [ref=f4e33]: Remember me
+        - button "Sign In" [ref=f4e34]
+      - paragraph [ref=f4e35]:
+        - text: Don't have an account?
+        - link "Create account" [ref=f4e36] [cursor=pointer]:
+          - /url: /register
+    - generic [ref=f4e37]:
+      - paragraph [ref=f4e38]:
+        - link "Privacy Policy" [ref=f4e39] [cursor=pointer]:
+          - /url: "#"
+        - text: •
+        - link "Terms of Service" [ref=f4e40] [cursor=pointer]:
+          - /url: "#"
+      - paragraph [ref=f4e41]: © 2026 Order Processing System. All rights reserved.
+  - button "Open Tanstack query devtools" [ref=f4e92] [cursor=pointer]

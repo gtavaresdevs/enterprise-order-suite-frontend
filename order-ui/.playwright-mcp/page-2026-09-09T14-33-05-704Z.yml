@@ -1,0 +1,125 @@
+- generic [ref=f1e2]:
+  - generic [ref=f1e3]:
+    - complementary [ref=f1e4]:
+      - generic [ref=f1e5]:
+        - generic [ref=f1e13]:
+          - paragraph [ref=f1e14]: Enterprise
+          - paragraph [ref=f1e15]: Order Suite
+        - navigation [ref=f1e16]:
+          - paragraph [ref=f1e17]: Navigation
+          - link "Dashboard" [ref=f1e18] [cursor=pointer]:
+            - /url: /home
+          - link "Orders" [ref=f1e25] [cursor=pointer]:
+            - /url: /orders
+          - link "Inventory" [ref=f1e31] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f1e37] [cursor=pointer]:
+            - /url: /analytics
+          - link "Security" [ref=f1e41] [cursor=pointer]:
+            - /url: /security
+          - generic [ref=f1e45]:
+            - paragraph [ref=f1e46]: Administration
+            - link "Users" [ref=f1e47] [cursor=pointer]:
+              - /url: /administration/users
+            - link "Administrators" [ref=f1e54] [cursor=pointer]:
+              - /url: /administration/administrators
+            - link "Roles & Permissions" [ref=f1e68] [cursor=pointer]:
+              - /url: /administration/roles
+          - generic [ref=f1e74]:
+            - paragraph [ref=f1e75]: Account
+            - link "View Profile" [ref=f1e76] [cursor=pointer]:
+              - /url: /profile
+            - link "Notifications" [ref=f1e81] [cursor=pointer]:
+              - /url: /notifications
+            - link "Preferences" [ref=f1e86] [cursor=pointer]:
+              - /url: /preferences
+            - link "Settings" [ref=f1e89] [cursor=pointer]:
+              - /url: /settings
+        - button "GT Gabriel Tavares Almeida Enterprise · SUPER_ADMIN" [ref=f1e284]:
+          - generic [ref=f1e97]: GT
+          - generic [ref=f1e99]:
+            - paragraph [ref=f1e100]: Gabriel Tavares Almeida
+            - paragraph [ref=f1e101]: Enterprise · SUPER_ADMIN
+    - generic [ref=f1e104]:
+      - banner [ref=f1e105]:
+        - generic [ref=f1e106]:
+          - button [ref=f1e107]
+          - button "GT Gabriel Tavares Almeida Enterprise · SUPER_ADMIN" [ref=f1e285]:
+            - generic [ref=f1e110]: GT
+            - generic [ref=f1e112]:
+              - paragraph [ref=f1e113]: Gabriel Tavares Almeida
+              - paragraph [ref=f1e114]: Enterprise · SUPER_ADMIN
+      - main [ref=f1e117]:
+        - generic [ref=f1e413]:
+          - generic [ref=f1e414]:
+            - heading "Profile" [level=1] [ref=f1e415]
+            - paragraph [ref=f1e416]: Manage your personal information and public account details.
+          - generic [ref=f1e417]:
+            - generic [ref=f1e418]:
+              - generic [ref=f1e420]:
+                - generic [ref=f1e421]: GT
+                - generic [ref=f1e424]:
+                  - paragraph [ref=f1e425]: Gabriel Tavares Almeida
+                  - paragraph [ref=f1e426]: SUPER_ADMIN
+                  - generic [ref=f1e427]: Active
+                - generic [ref=f1e429]:
+                  - button "Upload Photo" [ref=f1e430]
+                  - paragraph [ref=f1e431]: JPG, PNG, or GIF · max 4MB
+              - generic [ref=f1e432]:
+                - paragraph [ref=f1e434]: Account Info
+                - generic [ref=f1e435]:
+                  - generic [ref=f1e437]:
+                    - generic [ref=f1e438]: Member Since
+                    - generic [ref=f1e443]: Aug 2026
+                  - generic [ref=f1e445]:
+                    - generic [ref=f1e446]: Account Tier
+                    - generic [ref=f1e450]: SUPER_ADMIN
+                  - generic [ref=f1e452]:
+                    - generic [ref=f1e453]: Security
+                    - generic [ref=f1e457]: 2FA Enabled
+                  - generic [ref=f1e459]:
+                    - generic [ref=f1e460]: User ID
+                    - generic [ref=f1e465]: USR-00001
+            - generic [ref=f1e467]:
+              - paragraph [ref=f1e469]: Personal Information
+              - generic [ref=f1e470]:
+                - generic [ref=f1e471]:
+                  - paragraph [ref=f1e472]: Identity
+                  - generic [ref=f1e473]:
+                    - generic [ref=f1e474]:
+                      - generic [ref=f1e475]: First Name
+                      - paragraph [ref=f1e476]: Gabriel
+                    - generic [ref=f1e477]:
+                      - generic [ref=f1e478]: Last Name
+                      - paragraph [ref=f1e479]: Tavares Almeida
+                    - generic [ref=f1e480]:
+                      - generic [ref=f1e481]: Email
+                      - paragraph [ref=f1e482]: gtavaresdev@gmail.com
+                    - generic [ref=f1e483]:
+                      - generic [ref=f1e484]: Role
+                      - paragraph [ref=f1e485]: SUPER_ADMIN
+                - generic [ref=f1e487]:
+                  - paragraph [ref=f1e488]: Details & Contact
+                  - generic [ref=f1e489]:
+                    - generic [ref=f1e490]:
+                      - generic [ref=f1e491]: Department
+                      - textbox "e.g. Supply Chain & Logistics" [ref=f1e493]: IT
+                    - generic [ref=f1e494]:
+                      - generic [ref=f1e495]: Phone
+                      - textbox "+1 (555) 000-0000" [ref=f1e497]: "+5562981998712"
+                    - generic [ref=f1e498]:
+                      - generic [ref=f1e499]: Country
+                      - textbox "e.g. United States" [ref=f1e501]: Brazil
+                    - generic [ref=f1e502]:
+                      - generic [ref=f1e503]: Timezone
+                      - textbox "e.g. America/Los_Angeles" [ref=f1e505]: BRT
+                    - generic [ref=f1e506]:
+                      - generic [ref=f1e507]: Office Location
+                      - textbox "e.g. San Francisco HQ" [ref=f1e509]: Goianira, Brazil
+                - generic [ref=f1e510]:
+                  - generic [ref=f1e511]: Bio
+                  - textbox "Short professional bio..." [ref=f1e512]: I am just testing
+              - generic [ref=f1e513]:
+                - paragraph [ref=f1e514]: Last updated · Aug 25, 2026
+                - button "Save Changes" [disabled]
+  - button "Open Tanstack query devtools" [ref=f1e336] [cursor=pointer]

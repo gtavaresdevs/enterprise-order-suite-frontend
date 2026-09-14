@@ -1,0 +1,20 @@
+- generic [ref=e4]:
+  - generic [ref=e5]:
+    - img "Banner" [ref=e6]
+    - generic [ref=e8]:
+      - paragraph [ref=e9]: The Urban Grill
+      - generic [ref=e10]: "4.8"
+  - generic [ref=e15]:
+    - button "Burgers" [ref=e16]
+    - button "Chicken" [ref=e17]
+    - button "Pizza" [ref=e18]
+    - button "Salads" [ref=e19]
+    - button "Sides" [ref=e20]
+    - button "Drinks" [ref=e21]
+    - button "Desserts" [ref=e22]
+  - button "Double Smash Burger Two smashed beef patties, cheddar, pickles, shredded lettuce, house sauce on a brioche bun. $14.99 Double Smash Burger" [ref=e25]:
+    - generic [ref=e26]:
+      - heading "Double Smash Burger" [level=3] [ref=e27]
+      - paragraph [ref=e28]: Two smashed beef patties, cheddar, pickles, shredded lettuce, house sauce on a brioche bun.
+      - generic [ref=e29]: $14.99
+    - img "Double Smash Burger" [ref=e32]
