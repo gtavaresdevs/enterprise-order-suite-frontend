@@ -13,8 +13,9 @@ dist/
 dist-ssr/
 coverage/
 
-# Claude Code hook build cache
-.claude/.tsc-hook-cache
+# Claude Code local state
+.claude/
+.playwright-mcp/
 
 # Environment files
 .env
