@@ -47,8 +47,10 @@ phase below unless told otherwise.
 | 3 — Public read-only QR-tagged Menu view | ✅ Done | `2026-09-10-restaurant-ops-phase3-public-menu-view.md` | `d72f713..8c82c83` |
 | 4 — Orders/KDS repoint to shared Order model | ✅ Done | `2026-09-12-restaurant-ops-phase4-orders-kds-unified-model.md` | `f80b6b4..1c652f3` |
 | 5 — Administration real implementation (real backend) | ✅ Done | `2026-09-13-restaurant-ops-phase5-administration.md` | `1edfaf8..ec9dc08` |
-| 6 — Home rewrite + Analytics repoint | 🔜 Next | *(not yet written)* | — |
+| 6 — Home rewrite + Analytics repoint | ✅ Done | `2026-09-13-restaurant-ops-phase6-home-analytics.md` | `587a160..abaed9e` |
 | — Payment (card/PIX) + WhatsApp notifications | ⛔ Blocked | N/A | Backend/integration dependency — spec explicitly flags these as not frontend-actionable. Do not write a plan for these until that backend work exists. |
+
+This was the last planned phase before the explicitly-blocked Payment/WhatsApp work above — there is no Phase 7 to write next. Any further frontend work on this initiative waits on the backend/integration dependency for payment and WhatsApp notifications.
 
 ### Phase 0 summary (foundation types)
 Unified `Order` type (`channel`/`fulfillment`/`table`, 5-value `OrderStatus`), created shared
@@ -135,26 +137,36 @@ artifact intentionally left in the real backend from this verification pass: use
 `phase5-verify-test-delete-me@example.com` — delete it via the Team page's deactivate/delete flow
 once the branch is deployed, or leave it since it's harmless.
 
-## What's next: Phase 6 — Home rewrite + Analytics repoint
+### Phase 6 summary (Home rewrite + Analytics repoint)
+Rewrote `features/home` from static procurement-demo copy into a real dashboard composing
+`ordersService`/`menuService` at the service layer (same cross-feature composition pattern as
+Phase 3's `table-menu`): today's snapshot (revenue/order count/avg order value + channel
+breakdown), a kitchen backlog counter, a low-stock alert list sharing the exact
+`LOW_STOCK_THRESHOLD` constant the Menu feature already used (extracted from two independent
+hardcoded `5`s), and 4 real quick actions (new order, open KDS, view menu, copy the public
+ordering link to the clipboard). Dropped the "Setup Assistant" chat widget the spec called out by
+name (its own mock dialogue narrated building `/home`/`/orders`) and the hardcoded "Alex Watson"
+greeting (now the real logged-in user). Repointed `features/analytics`'s KPIs, revenue-over-time,
+channel split, and top items onto the same real order/menu data, replacing a fictional
+"WhatsApp Orders/Web Storefront/POS" channel split and stock-photo top items. Two spec-literal
+stats proved uncomputable from the real data model and were adapted rather than faked, mirroring
+Phase 4's precedent of never backing a UI element with a fabricated field: "avg prep time" →
+**avg order value** (`Order.createdAt` is date-only, no timer data exists), and the "peak-hours
+heatmap" → **order volume by day** (same reason — no hour-of-day data exists). Fabricated
+trend/`isPositive` percentage badges on KPIs and Top Items were dropped outright (no prior-period
+baseline exists in the mock dataset to compare against). Also deleted two dead, unreferenced
+duplicate components (`PeakOrderHeatmap.tsx`, `SalesByChannel.tsx`). Task-level reviews surfaced
+one out-of-scope finding — the repo carries ~28 pre-existing lint errors in `profile`/`settings`/
+`auth` files dating from before this entire initiative (commit `9eff1f2`, predates Phase 0) — ruled
+not this phase's responsibility since no Phase 6 commit touches those files; `yarn lint` is zero
+errors within every home/analytics file touched. Browser-verified end-to-end: personalized
+greeting, all 4 quick actions (including clipboard copy with "Copied!" feedback), kitchen backlog
+count cross-checked against `/orders`' New+Preparing rows, low-stock list cross-checked against
+`/menu`'s "Low stock" badges (correctly excluding the 86'd, zero-stock item), and Analytics'
+channel pie/top-items/order-volume panels all showing real data with a clean console.
 
-**Why this one next**: it's the last planned phase before the explicitly-blocked Payment/WhatsApp
-work (which needs backend/integration dependencies this initiative doesn't control), and Phase 3
-already produced a reusable read-only-data-view pattern (the public Table Menu) worth revisiting
-for Home's dashboard.
+## What's next
 
-**Goal:** Per the spec's "Home" and "Analytics" sections (read those sections before writing this
-phase's plan — don't re-derive from the current pre-redesign `features/home`/`features/analytics`
-code, which is exactly what's being replaced):
-1. Rewrite `features/home` as a real operational dashboard reading from the unified `Order` model
-   (via `ordersService`/the `["orders"]` cache key established in Phase 4) instead of whatever
-   placeholder/mock data it currently shows.
-2. Repoint `features/analytics` onto the same unified `Order` model so its figures are computed
-   from real (mock-backed, per this repo's mock-vs-real convention outside `auth`/`profile`/
-   `administration`) order data rather than a disconnected fixture.
-3. Confirm whether Phase 5's real Administration data (e.g. team size, audit activity) belongs on
-   the Home dashboard per the spec — don't invent a cross-feature dependency the spec doesn't call
-   for.
-
-Write this phase's plan (`superpowers:writing-plans`) only once ready to execute it — this
-roadmap entry is deliberately high-level per this project's established pattern of writing detailed
-phase plans just-in-time.
+Phase 6 was the last planned phase before the explicitly-blocked Payment (card/PIX) + WhatsApp
+notifications work above — there is no Phase 7 to write. Further frontend work on this initiative
+waits on that backend/integration dependency; don't invent a next phase in the meantime.
