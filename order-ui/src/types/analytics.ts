@@ -1,9 +1,10 @@
+import type { ElementType } from "react";
+import type { OrderChannel } from "@/types/orders";
+
 export type AnalyticsKPI = {
   label: string;
   value: string;
-  trend: string;
-  isPositive: boolean;
-  icon: React.ElementType;
+  icon: ElementType;
 };
 
 export type RevenueData = {
@@ -12,20 +13,19 @@ export type RevenueData = {
 };
 
 export type ChannelData = {
-  name: string;
+  name: OrderChannel;
   value: number;
   color: string;
 };
 
 export type TopItem = {
-  id: number;
+  id: string;
   name: string;
   units: number;
-  trend: string;
   image: string;
 };
 
 export type HeatmapData = {
-  time: string;
+  label: string;
   intensity: number;
 };

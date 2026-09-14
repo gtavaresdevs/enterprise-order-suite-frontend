@@ -1,5 +1,5 @@
-import { AdministrationFeature } from "@/features/administration";
+import { RolesFeature } from "@/features/administration";
 
 export default function AdministrationRolesPage() {
-    return <AdministrationFeature pageId="roles" />;
+    return <RolesFeature />;
 }

@@ -13,19 +13,21 @@ import ResetPasswordPage from '@/pages/ResetPassword';
 // ── Protected Pages ─────────────────────────────────────────
 import HomePage from '@/pages/Home';
 import OrdersPage from '@/pages/Orders';
-import InventoryPage from '@/pages/Inventory';
+import MenuPage from '@/pages/Menu';
+import TablesPage from '@/pages/Tables';
 import AnalyticsPage from '@/pages/Analytics';
 import ProfilePage from '@/pages/Profile';
 import NotificationsPage from '@/pages/Notifications';
 import PreferencesPage from '@/pages/Preferences';
 import SettingsPage from '@/pages/Settings';
-import AdministrationUsersPage from '@/pages/AdministrationUsers';
-import AdministrationAdministratorsPage from '@/pages/AdministrationAdministrators';
+import AdministrationTeamPage from '@/pages/AdministrationTeam';
 import AdministrationRolesPage from '@/pages/AdministrationRoles';
+import AdministrationAuditLogPage from '@/pages/AdministrationAuditLog';
 
 // ── Standalone Pages ────────────────────────────────────────
 import StorefrontPage from '@/pages/Storefront';
 import KDSPage from '@/pages/Kds';
+import TableMenuPage from '@/pages/TableMenu';
 
 export const router = createBrowserRouter([
   // Public Auth Routes
@@ -59,6 +61,10 @@ export const router = createBrowserRouter([
     path: '/kds',
     element: <KDSPage />,
   },
+  {
+    path: '/table-menu',
+    element: <TableMenuPage />,
+  },
 
   // Protected Application Routes
   {
@@ -76,8 +82,12 @@ export const router = createBrowserRouter([
             element: <OrdersPage />,
           },
           {
-            path: '/inventory',
-            element: <InventoryPage />,
+            path: '/menu',
+            element: <MenuPage />,
+          },
+          {
+            path: '/tables',
+            element: <TablesPage />,
           },
           {
             path: '/analytics',
@@ -100,18 +110,10 @@ export const router = createBrowserRouter([
             element: <SettingsPage />,
           },
           {
-            path: '/administration/users',
+            path: '/administration/team',
             element: (
               <RoleGuard allowedRoles={['ADMIN', 'SUPER_ADMIN']}>
-                <AdministrationUsersPage />
-              </RoleGuard>
-            ),
-          },
-          {
-            path: '/administration/administrators',
-            element: (
-              <RoleGuard allowedRoles={['SUPER_ADMIN']}>
-                <AdministrationAdministratorsPage />
+                <AdministrationTeamPage />
               </RoleGuard>
             ),
           },
@@ -123,12 +125,28 @@ export const router = createBrowserRouter([
               </RoleGuard>
             ),
           },
+          {
+            path: '/administration/audit-log',
+            element: (
+              <RoleGuard allowedRoles={['SUPER_ADMIN']}>
+                <AdministrationAuditLogPage />
+              </RoleGuard>
+            ),
+          },
         ],
       },
       // Redirects for unbuilt or legacy-mapped paths
       {
         path: '/security',
         element: <Navigate to="/settings" replace />,
+      },
+      {
+        path: '/administration/users',
+        element: <Navigate to="/administration/team" replace />,
+      },
+      {
+        path: '/administration/administrators',
+        element: <Navigate to="/administration/team" replace />,
       },
     ],
   },

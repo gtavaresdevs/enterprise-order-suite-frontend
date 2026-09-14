@@ -14,3 +14,11 @@ export interface NotificationGroup {
 }
 
 export type NotificationPreferencesState = Record<string, boolean>;
+
+export interface NotificationFeedItem {
+    id: string;
+    title: string;
+    description: string;
+    timestamp: string;
+    read: boolean;
+}

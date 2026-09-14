@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ChevronLeft, Minus, Plus } from "lucide-react";
-import type { CartItem, MenuItem } from "@/types/storefront";
+import type { CartItem } from "@/types/storefront";
+import type { MenuItem } from "@/types/menu";
 
 export const BottomSheet = ({
     item,

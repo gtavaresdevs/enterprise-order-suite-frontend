@@ -1,66 +1,77 @@
-import type { AnalyticsKPI, RevenueData, ChannelData, TopItem, HeatmapData } from '@/types/analytics';
-import { DollarSign, BarChart3, Clock, Percent } from "lucide-react";
+import { DollarSign, BarChart3, Calculator, Percent } from "lucide-react";
+import { ordersService } from "@/features/orders/services/orders.service";
+import { menuService } from "@/features/menu/services/menu.service";
+import { CHANNEL_COLORS } from "../constants/analytics.constants";
+import type { AnalyticsKPI, RevenueData, ChannelData, TopItem, HeatmapData } from "@/types/analytics";
+import type { Order, OrderChannel } from "@/types/orders";
+
+const CHANNELS: OrderChannel[] = ["Online", "Dine-in", "Phone"];
+
+function billable(orders: Order[]): Order[] {
+    return orders.filter((o) => o.status !== "Cancelled");
+}
 
 export const analyticsService = {
     getKPIs: async (): Promise<AnalyticsKPI[]> => {
+        const orders = await ordersService.getOrders();
+        const billableOrders = billable(orders);
+        const revenue = billableOrders.reduce((sum, o) => sum + o.total, 0);
+        const avgOrderValue = billableOrders.length > 0 ? revenue / billableOrders.length : 0;
+        const cancelledCount = orders.length - billableOrders.length;
+        const cancellationRate = orders.length > 0 ? (cancelledCount / orders.length) * 100 : 0;
+
         return [
-            { label: "Total Revenue", value: "$24,850.00", trend: "12.5%", isPositive: true, icon: DollarSign as any },
-            { label: "Total Orders", value: "1,204", trend: "8.2%", isPositive: true, icon: BarChart3 as any },
-            { label: "Avg Delivery Time", value: "32 mins", trend: "4 mins", isPositive: false, icon: Clock as any },
-            { label: "Cancellation Rate", value: "1.2%", trend: "Stable", isPositive: true, icon: Percent as any }
+            { label: "Total Revenue", value: `$${revenue.toFixed(2)}`, icon: DollarSign },
+            { label: "Total Orders", value: String(orders.length), icon: BarChart3 },
+            { label: "Avg Order Value", value: `$${avgOrderValue.toFixed(2)}`, icon: Calculator },
+            { label: "Cancellation Rate", value: `${cancellationRate.toFixed(1)}%`, icon: Percent },
         ];
     },
     getRevenue: async (): Promise<RevenueData[]> => {
-        return [
-            { day: "Mon", revenue: 1200 },
-            { day: "Tue", revenue: 2100 },
-            { day: "Wed", revenue: 1800 },
-            { day: "Thu", revenue: 2400 },
-            { day: "Fri", revenue: 3800 },
-            { day: "Sat", revenue: 4500 },
-            { day: "Sun", revenue: 4100 },
-        ];
+        const orders = await ordersService.getOrders();
+        const byDate = new Map<string, number>();
+        for (const order of billable(orders)) {
+            byDate.set(order.createdAt, (byDate.get(order.createdAt) ?? 0) + order.total);
+        }
+        return Array.from(byDate.entries())
+            .sort(([a], [b]) => a.localeCompare(b))
+            .map(([day, revenue]) => ({ day, revenue }));
     },
     getChannels: async (): Promise<ChannelData[]> => {
-        return [
-            { name: "WhatsApp Orders", value: 45, color: "#10b981" },
-            { name: "Web Storefront", value: 35, color: "#3b82f6" },
-            { name: "POS/Walk-in", value: 20, color: "#f59e0b" },
-        ];
+        const orders = await ordersService.getOrders();
+        const total = orders.length;
+        return CHANNELS.map((channel) => ({
+            name: channel,
+            value: total > 0 ? Math.round((orders.filter((o) => o.channel === channel).length / total) * 100) : 0,
+            color: CHANNEL_COLORS[channel],
+        }));
     },
     getTopItems: async (): Promise<TopItem[]> => {
-        return [
-            {
-                id: 1,
-                name: "Truffle Burger",
-                units: 342,
-                trend: "+12%",
-                image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&q=80&w=150&h=150"
-            },
-            {
-                id: 2,
-                name: "Spicy Chicken Sandwich",
-                units: 280,
-                trend: "+5%",
-                image: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&q=80&w=150&h=150"
-            },
-            {
-                id: 3,
-                name: "Sweet Potato Fries",
-                units: 210,
-                trend: "-2%",
-                image: "https://images.unsplash.com/photo-1576107248386-b4850ce721c5?auto=format&fit=crop&q=80&w=150&h=150"
+        const [orders, menuItems] = await Promise.all([ordersService.getOrders(), menuService.getMenuItems()]);
+        const unitsByMenuItemId = new Map<string, number>();
+        for (const order of billable(orders)) {
+            for (const line of order.items) {
+                unitsByMenuItemId.set(line.menuItemId, (unitsByMenuItemId.get(line.menuItemId) ?? 0) + line.quantity);
             }
-        ];
+        }
+        return Array.from(unitsByMenuItemId.entries())
+            .map(([menuItemId, units]) => {
+                const menuItem = menuItems.find((m) => m.id === menuItemId);
+                return menuItem ? { id: menuItem.id, name: menuItem.name, image: menuItem.image, units } : null;
+            })
+            .filter((item): item is TopItem => item !== null)
+            .sort((a, b) => b.units - a.units)
+            .slice(0, 5);
     },
     getHeatmap: async (): Promise<HeatmapData[]> => {
-        return [
-            { time: "11 AM", intensity: 30 },
-            { time: "12 PM", intensity: 90 },
-            { time: "1 PM", intensity: 75 },
-            { time: "6 PM", intensity: 60 },
-            { time: "7 PM", intensity: 100 },
-            { time: "8 PM", intensity: 85 },
-        ];
-    }
+        const orders = await ordersService.getOrders();
+        const byDate = new Map<string, number>();
+        for (const order of orders) {
+            byDate.set(order.createdAt, (byDate.get(order.createdAt) ?? 0) + 1);
+        }
+        const maxCount = Math.max(1, ...byDate.values());
+        return Array.from(byDate.entries())
+            .sort(([a], [b]) => a.localeCompare(b))
+            .map(([label, count]) => ({ label, intensity: Math.round((count / maxCount) * 100) }));
+    },
 };

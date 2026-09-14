@@ -1,12 +1,14 @@
+import type { Order, OrderStatus } from "@/types/orders";
+
 export const KDS_POLLING_INTERVAL = 5000;
 
-export const STATUS_COLORS: Record<string, string> = {
-    good: 'bg-emerald-500 text-emerald-50',
-    late: 'bg-rose-500 text-rose-50 animate-pulse',
-};
+export function getTicketChannelLabel(order: Pick<Order, "channel" | "fulfillment">): "DINE-IN" | "DELIVERY" | "PICKUP" {
+    if (order.channel === "Dine-in") return "DINE-IN";
+    return (order.fulfillment ?? "Pickup").toUpperCase() as "DELIVERY" | "PICKUP";
+}
 
-export const TICKET_STATUS_CONFIG: Record<string, { pill: string; dot: string }> = {
-    pending: { pill: "bg-slate-100 text-slate-600", dot: "bg-slate-400" },
-    preparing: { pill: "bg-blue-50 text-blue-700", dot: "bg-blue-500" },
-    ready: { pill: "bg-emerald-50 text-emerald-700", dot: "bg-emerald-500" },
+export const NEXT_STATUS: Partial<Record<OrderStatus, { label: string; next: OrderStatus }>> = {
+    New: { label: "Start Preparing", next: "Preparing" },
+    Preparing: { label: "Mark Ready", next: "Ready" },
+    Ready: { label: "Complete Order", next: "Completed" },
 };

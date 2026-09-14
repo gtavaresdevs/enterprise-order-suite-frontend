@@ -1,14 +1,43 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import { useNavigate } from "react-router";
 import { Store, Camera, ImagePlus, ExternalLink } from "lucide-react";
+import { usePreferencesContext } from "@/app/providers/PreferencesProvider";
+
+function readFileAsDataUrl(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
 
 export function StorefrontSection() {
     const navigate = useNavigate();
     const logoRef = useRef<HTMLInputElement>(null);
     const coverRef = useRef<HTMLInputElement>(null);
-    const [logoSrc, _setLogoSrc] = useState<string | null>(null);
-    const [coverSrc, _setCoverSrc] = useState<string | null>(null);
-    const [brandColor, setBrandColor] = useState("#0f172a");
+    const { preferences, updatePreference } = usePreferencesContext();
+    const { storefrontLogo: logoSrc, storefrontCover: coverSrc, storefrontBrandColor: brandColor } = preferences;
+
+    const handleLogoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        try {
+            updatePreference("storefrontLogo", await readFileAsDataUrl(file));
+        } catch (err) {
+            console.error("Failed to read logo file", err);
+        }
+    };
+
+    const handleCoverChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        try {
+            updatePreference("storefrontCover", await readFileAsDataUrl(file));
+        } catch (err) {
+            console.error("Failed to read cover file", err);
+        }
+    };
 
     const inputCls = "w-full h-9 px-3 rounded-[8px] border border-slate-200 bg-slate-50 text-sm text-slate-800 placeholder-slate-400 outline-none focus:ring-2 focus:ring-slate-950/10 focus:border-slate-400 transition-all";
 
@@ -44,7 +73,7 @@ export function StorefrontSection() {
                                     <div className="flex flex-col items-center gap-1"><Camera className="w-5 h-5 text-slate-300" /><span className="text-[10px] text-slate-400">Upload</span></div>
                                 )}
                             </div>
-                            <input ref={logoRef} type="file" accept="image/*" className="hidden" />
+                            <input ref={logoRef} type="file" accept="image/*" className="hidden" onChange={handleLogoChange} />
                         </div>
                         <p className="text-[10px] text-slate-400 mt-1 w-20 text-center">PNG · 1:1</p>
                     </div>
@@ -61,7 +90,7 @@ export function StorefrontSection() {
                                 <div className="flex flex-col items-center gap-1.5"><ImagePlus className="w-5 h-5 text-slate-300" /><span className="text-xs text-slate-400">Click to upload cover image</span></div>
                             )}
                         </div>
-                        <input ref={coverRef} type="file" accept="image/*" className="hidden" />
+                        <input ref={coverRef} type="file" accept="image/*" className="hidden" onChange={handleCoverChange} />
                         <p className="text-[10px] text-slate-400 mt-1">JPG or PNG · min 800×200px</p>
                     </div>
                 </div>
@@ -74,7 +103,7 @@ export function StorefrontSection() {
                         <input
                             type="color"
                             value={brandColor}
-                            onChange={(e) => setBrandColor(e.target.value)}
+                            onChange={(e) => updatePreference("storefrontBrandColor", e.target.value)}
                             className="w-10 h-9 rounded-[8px] border border-slate-200 cursor-pointer p-0.5 bg-slate-50 flex-shrink-0"
                         />
                         <input

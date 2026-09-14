@@ -10,7 +10,7 @@ import { DeleteOrderModal } from "./DeleteOrderModal";
 import { CreateOrderModal } from "./CreateOrderModal";
 
 export function OrdersFeature() {
-    const { orders, deleteOrder, createOrder } = useOrders();
+    const { orders, isLoading, createOrder, updateOrderStatus } = useOrders();
     const { search, setSearch, activeFilter, setActiveFilter, filteredOrders, counts } = useOrderFilters(orders);
 
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -25,15 +25,15 @@ export function OrdersFeature() {
                     <div>
                         <div className="flex items-center gap-2 mb-1"><ShoppingCart className="w-4 h-4 text-slate-400" /><span className="text-xs font-medium text-slate-400 uppercase tracking-widest">Enterprise Order Suite</span></div>
                         <h1 className="text-2xl font-semibold text-slate-900">Order Operations</h1>
-                        <p className="text-sm text-slate-400 mt-1">Manage and track active delivery orders in real time.</p>
+                        <p className="text-sm text-slate-400 mt-1">Manage and track active orders across every channel in real time.</p>
                     </div>
                     <button onClick={() => setCreateOpen(true)} className="inline-flex items-center gap-2 h-9 px-4 rounded-[8px] bg-slate-950 text-slate-50 text-sm font-semibold border border-slate-800 shadow-inner hover:bg-slate-800 active:scale-[0.98] transition-all mt-1">
                         <Plus className="w-3.5 h-3.5" /> New Order
                     </button>
                 </div>
 
-                <div className="grid grid-cols-4 gap-3 mb-6">
-                    {(["New", "Preparing", "In Route", "Delivered"] as OrderStatus[]).map((s) => {
+                <div className="grid grid-cols-5 gap-3 mb-6">
+                    {(["New", "Preparing", "Ready", "Completed", "Cancelled"] as OrderStatus[]).map((s) => {
                         const cfg = STATUS_CONFIG[s];
                         return (
                             <div key={s} className="bg-white rounded-[8px] border border-slate-100 px-4 py-3.5 flex items-center justify-between">
@@ -72,7 +72,11 @@ export function OrdersFeature() {
                             <span key={i} className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">{col}</span>
                         ))}
                     </div>
-                    {filteredOrders.length === 0 ? (
+                    {isLoading ? (
+                        <div className="py-16 flex justify-center">
+                            <p className="text-sm text-slate-400 font-mono animate-pulse">Loading orders...</p>
+                        </div>
+                    ) : filteredOrders.length === 0 ? (
                         <div className="py-16 flex flex-col items-center gap-3">
                             <Package className="w-8 h-8 text-slate-200" />
                             <div className="text-center"><p className="text-sm font-medium text-slate-500">No orders found</p><p className="text-xs text-slate-400 mt-0.5">Try adjusting your search or filter.</p></div>
@@ -91,7 +95,7 @@ export function OrdersFeature() {
                 </div>
             </div>
             {selectedOrder && <OrderDrawer order={selectedOrder} onClose={() => setSelectedOrder(null)} />}
-            {deleteTarget && <DeleteOrderModal order={deleteTarget} onConfirm={() => { deleteOrder(deleteTarget.id); setDeleteTarget(null); }} onCancel={() => setDeleteTarget(null)} />}
+            {deleteTarget && <DeleteOrderModal order={deleteTarget} onConfirm={() => { updateOrderStatus(deleteTarget.id, "Cancelled"); setDeleteTarget(null); }} onCancel={() => setDeleteTarget(null)} />}
             {createOpen && <CreateOrderModal onClose={() => setCreateOpen(false)} onSave={createOrder} />}
         </div>
     );

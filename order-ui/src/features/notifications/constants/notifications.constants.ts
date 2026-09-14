@@ -9,7 +9,7 @@ import {
   KeyRound,
   CreditCard,
 } from "lucide-react";
-import type { NotificationGroup } from "@/types/notifications";
+import type { NotificationFeedItem, NotificationGroup } from "@/types/notifications";
 
 export const NOTIFICATION_GROUPS: NotificationGroup[] = [
   {
@@ -38,5 +38,36 @@ export const NOTIFICATION_GROUPS: NotificationGroup[] = [
       { id: "password-change", icon: KeyRound,    label: "Password & Credential Changes", description: "Confirmation emails when account credentials or recovery options are updated." },
       { id: "billing",         icon: CreditCard,  label: "Billing & Invoice Events",   description: "Invoice generation, payment confirmations, and renewal reminders." },
     ],
+  },
+];
+
+export const RECENT_NOTIFICATIONS: NotificationFeedItem[] = [
+  {
+    id: "n1",
+    title: "Order #10432 shipped",
+    description: "Carrier picked up the shipment, ETA Sep 12.",
+    timestamp: "5m ago",
+    read: false,
+  },
+  {
+    id: "n2",
+    title: "Low stock alert",
+    description: "SKU-2291 fell below its reorder threshold.",
+    timestamp: "1h ago",
+    read: false,
+  },
+  {
+    id: "n3",
+    title: "Procurement approval",
+    description: "Purchase order #884 was approved by finance.",
+    timestamp: "3h ago",
+    read: true,
+  },
+  {
+    id: "n4",
+    title: "Scheduled maintenance",
+    description: "Platform maintenance window Sep 10, 2:00 AM UTC.",
+    timestamp: "Yesterday",
+    read: true,
   },
 ];

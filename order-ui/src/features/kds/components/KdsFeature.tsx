@@ -4,10 +4,11 @@ import { useKdsOrders } from '../hooks/useKdsOrders';
 import { useUpdateKdsStatus } from '../hooks/useUpdateKdsStatus';
 import { useKdsSummary } from '../hooks/useKdsSummary';
 import { KdsTicket } from './KdsTicket';
+import { getTicketChannelLabel } from '../constants/kds.constants';
 
 export const KdsFeature = () => {
     const { data: tickets, isLoading: isLoadingTickets } = useKdsOrders();
-    const { data: summary, isLoading: isLoadingSummary } = useKdsSummary();
+    const summary = useKdsSummary(tickets ?? []);
     const mutation = useUpdateKdsStatus();
     const [time, setTime] = useState("");
 
@@ -26,7 +27,7 @@ export const KdsFeature = () => {
         return () => clearInterval(interval);
     }, []);
 
-    if (isLoadingTickets || isLoadingSummary) {
+    if (isLoadingTickets) {
         return <div className="p-8 text-slate-400 font-medium">Loading KDS...</div>;
     }
 
@@ -53,13 +54,13 @@ export const KdsFeature = () => {
                             All Tickets ({tickets?.length || 0})
                         </button>
                         <button className="px-6 py-1.5 rounded-[6px] text-slate-400 hover:text-slate-200 text-sm font-medium transition-colors">
-                            Dine-In ({tickets?.filter(t => t.type === 'DINE-IN').length || 0})
+                            Dine-In ({tickets?.filter((t) => getTicketChannelLabel(t) === 'DINE-IN').length || 0})
                         </button>
                         <button className="px-6 py-1.5 rounded-[6px] text-slate-400 hover:text-slate-200 text-sm font-medium transition-colors">
-                            Delivery ({tickets?.filter(t => t.type === 'DELIVERY').length || 0})
+                            Delivery ({tickets?.filter((t) => getTicketChannelLabel(t) === 'DELIVERY').length || 0})
                         </button>
                         <button className="px-6 py-1.5 rounded-[6px] text-slate-400 hover:text-slate-200 text-sm font-medium transition-colors">
-                            Pickup ({tickets?.filter(t => t.type === 'PICKUP').length || 0})
+                            Pickup ({tickets?.filter((t) => getTicketChannelLabel(t) === 'PICKUP').length || 0})
                         </button>
                     </div>
                 </div>
@@ -82,13 +83,11 @@ export const KdsFeature = () => {
                 {/* Left: Ticket Grid (75%) */}
                 <main className="flex-1 p-6 overflow-y-auto">
                     <div className="flex flex-wrap gap-6 items-start content-start h-full">
-                        {tickets?.map((ticket) => (
+                        {tickets?.map((order) => (
                             <KdsTicket
-                                key={ticket.id}
-                                ticket={ticket}
-                                onItemToggle={(itemId, completed) =>
-                                    mutation.mutate({ ticketId: ticket.id, itemId, completed })
-                                }
+                                key={order.id}
+                                order={order}
+                                onAdvanceStatus={(nextStatus) => mutation.mutate({ orderId: order.id, status: nextStatus })}
                             />
                         ))}
                     </div>
@@ -102,7 +101,7 @@ export const KdsFeature = () => {
                     </div>
 
                     <div className="flex-1 overflow-y-auto p-4 space-y-2">
-                        {summary?.map((item, idx) => (
+                        {summary.map((item, idx) => (
                             <div
                                 key={idx}
                                 className="flex items-center gap-4 p-3 rounded-[8px] border border-slate-800/50 bg-slate-950/30 hover:bg-slate-800/50 transition-colors"

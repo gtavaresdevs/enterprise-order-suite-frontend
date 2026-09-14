@@ -1,1 +1,0 @@
-export { InventoryFeature } from "./components/InventoryFeature";

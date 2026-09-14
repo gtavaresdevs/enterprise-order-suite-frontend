@@ -1,44 +1,36 @@
 import type { ElementType } from "react";
+import type { OrderChannel } from "@/types/orders";
+import type { MenuItem } from "@/types/menu";
 
-// ── Navigation & Action Contracts ───────────────────────────────────────────
-
-export interface NavItem {
-  icon: ElementType;
-  label: string;
-  to: string;
-}
+// ── Action Contracts ─────────────────────────────────────────────────────────
 
 export interface ActionCard {
   icon: ElementType;
   label: string;
   description: string;
   to?: string;
-  badge?: string;
+  copyValue?: string;
   accent: string;
   iconBg: string;
 }
 
-// ── Dashboard/Portal Data Contracts ────────────────────────────────────────
+// ── Dashboard Data Contracts ────────────────────────────────────────────────
 
-export interface Stat {
-  label: string;
-  value: string;
-  sub: string;
-  icon: ElementType;
-  iconColor: string;
-  iconBg: string;
-  trend?: "up" | "down";
-  mono?: boolean;
+export interface ChannelCount {
+  channel: OrderChannel;
+  count: number;
 }
 
-export interface ChatMessage {
-  role: "user" | "assistant";
-  text: string;
-  time: string;
+export interface HomeSnapshot {
+  snapshotDate: string;
+  channelCounts: ChannelCount[];
+  totalOrders: number;
+  revenue: number;
+  avgOrderValue: number;
 }
 
-export interface HomeData {
-  actions: ActionCard[];
-  stats: Stat[];
-  chatMessages: ChatMessage[];
+export interface HomeDashboardData {
+  snapshot: HomeSnapshot;
+  kitchenBacklogCount: number;
+  lowStockItems: MenuItem[];
 }

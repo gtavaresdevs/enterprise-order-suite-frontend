@@ -1,21 +1,15 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { updateTicketStatus } from '../services/kds.service';
+import type { OrderStatus } from '@/types/orders';
+import { ordersService } from '@/features/orders/services/orders.service';
 
 export const useUpdateKdsStatus = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({
-            ticketId,
-            itemId,
-            completed,
-        }: {
-            ticketId: string;
-            itemId: string;
-            completed: boolean;
-        }) => updateTicketStatus(ticketId, itemId, completed),
+        mutationFn: ({ orderId, status }: { orderId: string; status: OrderStatus }) =>
+            ordersService.updateOrderStatus(orderId, status),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['kds-tickets'] });
+            queryClient.invalidateQueries({ queryKey: ['orders'] });
         },
     });
 };

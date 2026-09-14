@@ -1,7 +1,8 @@
 import { HomeHeader } from "./HomeHeader";
 import { QuickActions } from "./QuickActions";
-import { StatsOverview } from "./StatsOverview";
-import { ChatAssistant } from "./ChatAssistant";
+import { TodaySnapshot } from "./TodaySnapshot";
+import { KitchenBacklog } from "./KitchenBacklog";
+import { LowStockAlerts } from "./LowStockAlerts";
 
 export function HomeFeature() {
     return (
@@ -22,23 +23,18 @@ export function HomeFeature() {
 
             {/* Page container */}
             <div className="relative z-10 max-w-[1100px] mx-auto px-6 py-8 space-y-6">
-                {/* Top sections */}
                 <HomeHeader />
                 <QuickActions />
 
-                {/* 2-column layout (FIXED SYSTEM) */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
-
-                    {/* LEFT COLUMN */}
                     <div className="space-y-5">
-                        <StatsOverview />
+                        <TodaySnapshot />
                     </div>
 
-                    {/* RIGHT COLUMN */}
                     <div className="space-y-5">
-                        <ChatAssistant />
+                        <KitchenBacklog />
+                        <LowStockAlerts />
                     </div>
-
                 </div>
             </div>
         </div>

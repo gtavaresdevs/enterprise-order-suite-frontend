@@ -1,11 +1,20 @@
 import { useState } from "react";
-import type { CartItem, FlowState, MenuItem } from "@/types/storefront";
+import { useQuery } from "@tanstack/react-query";
+import type { CartItem, FlowState } from "@/types/storefront";
+import type { MenuItem } from "@/types/menu";
+import { storefrontService } from "../services/storefront.service";
 
 export const useStorefront = () => {
     const [activeCategory, setActiveCategory] = useState("Burgers");
     const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
     const [cart, setCart] = useState<CartItem[]>([]);
     const [flowState, setFlowState] = useState<FlowState>("feed");
+
+    const { data: menuItems = [], isLoading } = useQuery({
+        queryKey: ["menuItems"],
+        queryFn: storefrontService.getMenu,
+        select: (items) => items.filter((item) => item.available),
+    });
 
     const cartTotal = cart.reduce((s, i) => s + i.price * i.quantity, 0);
     const cartCount = cart.reduce((s, i) => s + i.quantity, 0);
@@ -23,6 +32,8 @@ export const useStorefront = () => {
     };
 
     return {
+        menuItems,
+        isLoading,
         activeCategory,
         setActiveCategory,
         selectedItem,

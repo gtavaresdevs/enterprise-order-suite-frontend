@@ -1,10 +1,9 @@
 import { useState, useCallback } from "react";
-import type { SettingsSection, ApiKey, ActiveSession, SecurityPreferences } from "@/types/settings";
+import type { ApiKey, ActiveSession, SecurityPreferences } from "@/types/settings";
 import { API_KEYS_INIT, SESSIONS_INIT } from "@/features/settings/constants/settings.constants";
 
 // In a real application, TanStack Query would handle fetching and mutations here.
 export function useSettings() {
-    const [activeSection, setActiveSection] = useState<SettingsSection>("security");
     const [keys, setKeys] = useState<ApiKey[]>(API_KEYS_INIT);
     const [sessions, setSessions] = useState<ActiveSession[]>(SESSIONS_INIT);
     const [securityPrefs, setSecurityPrefs] = useState<SecurityPreferences>({ twoFA: true, loginAlerts: true });
@@ -26,8 +25,6 @@ export function useSettings() {
     }, []);
 
     return {
-        activeSection,
-        setActiveSection,
         keys,
         revokeKey,
         sessions,

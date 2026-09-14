@@ -26,6 +26,7 @@
     "axios": "^1.16.0",
     "class-variance-authority": "^0.7.1",
     "lucide-react": "^1.14.0",
+    "qrcode.react": "^4.2.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-is": "^19.2.7",

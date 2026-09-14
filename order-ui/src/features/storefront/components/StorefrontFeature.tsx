@@ -1,4 +1,5 @@
 import { Star } from "lucide-react";
+import { usePreferencesContext } from "@/app/providers/PreferencesProvider";
 import { useStorefront } from "../hooks/useStorefront";
 import { CATEGORIES } from "../constants/storefront.constants";
 import { MenuCard } from "./MenuCard";
@@ -6,15 +7,17 @@ import { BottomSheet } from "./BottomSheet";
 import { CartOverlay } from "./CartOverlay";
 import { CheckoutFlow } from "./CheckoutFlow";
 import { SuccessView } from "./SuccessView";
-import { MENU } from "../constants/storefront.constants";
 
 export const StorefrontFeature = () => {
     const {
-        activeCategory, setActiveCategory, selectedItem, setSelectedItem,
+        menuItems, isLoading, activeCategory, setActiveCategory, selectedItem, setSelectedItem,
         cart, setCart, cartTotal, cartCount, flowState, setFlowState, addToCart
     } = useStorefront();
 
-    const visibleMenu = MENU.filter((item) => item.category === activeCategory);
+    const { preferences } = usePreferencesContext();
+    const { storefrontLogo, storefrontCover, storefrontBrandColor } = preferences;
+
+    const visibleMenu = menuItems.filter((item) => item.category === activeCategory);
 
     return (
         <div className="min-h-screen flex items-start justify-center py-8 px-4 bg-[#f8fafc] [background-image:radial-gradient(#0f172a_1px,transparent_1px)] [background-size:32px_32px]">
@@ -22,8 +25,19 @@ export const StorefrontFeature = () => {
 
                 {/* Banner */}
                 <div className="relative h-40 flex-shrink-0 bg-slate-900">
-                    <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=800&h=320&fit=crop&auto=format" alt="Banner" className="w-full h-full object-cover opacity-80" />
+                    <img
+                        src={storefrontCover ?? "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=800&h=320&fit=crop&auto=format"}
+                        alt="Banner"
+                        className="w-full h-full object-cover opacity-80"
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
+                    {storefrontLogo && (
+                        <img
+                            src={storefrontLogo}
+                            alt="Store logo"
+                            className="absolute top-3 left-4 w-10 h-10 rounded-[8px] object-cover border-2 border-white shadow-md"
+                        />
+                    )}
                     <div className="absolute bottom-3 left-4">
                         <p className="text-sm font-bold text-white">The Urban Grill</p>
                         <div className="flex items-center gap-1.5 mt-0.5">
@@ -36,7 +50,7 @@ export const StorefrontFeature = () => {
                 <div className="flex-shrink-0 bg-white border-b border-slate-100 sticky top-0 z-20">
                     <div className="flex gap-2 px-4 py-3 overflow-x-auto">
                         {CATEGORIES.map((cat) => (
-                            <button key={cat} onClick={() => setActiveCategory(cat)} className={`flex-shrink-0 h-7 px-3 rounded-full text-xs font-medium ${activeCategory === cat ? "bg-slate-950 text-white" : "bg-slate-100 text-slate-500"}`}>
+                            <button key={cat} onClick={() => setActiveCategory(cat)} className={`flex-shrink-0 h-7 px-3 rounded-full text-xs font-medium ${activeCategory === cat ? "text-white" : "bg-slate-100 text-slate-500"}`} style={activeCategory === cat ? { backgroundColor: storefrontBrandColor } : undefined}>
                                 {cat}
                             </button>
                         ))}
@@ -46,14 +60,18 @@ export const StorefrontFeature = () => {
                 {/* Menu Items */}
                 <div className="flex-1 overflow-y-auto pb-24">
                     <div className="px-4 pt-4 space-y-3">
-                        {visibleMenu.map((item) => <MenuCard key={item.id} item={item} onSelect={() => setSelectedItem(item)} />)}
+                        {isLoading ? (
+                            <p className="text-xs text-slate-400 text-center py-8">Loading menu...</p>
+                        ) : (
+                            visibleMenu.map((item) => <MenuCard key={item.id} item={item} onSelect={() => setSelectedItem(item)} />)
+                        )}
                     </div>
                 </div>
 
                 {/* Cart FAB */}
                 {cartCount > 0 && flowState === "feed" && (
                     <div className="absolute bottom-0 left-0 right-0 px-4 pb-5 pt-3 bg-gradient-to-t from-white via-white to-transparent z-30">
-                        <button onClick={() => setFlowState("cart")} className="w-full h-14 rounded-[8px] bg-slate-950 text-white font-semibold flex items-center justify-between px-5">
+                        <button onClick={() => setFlowState("cart")} className="w-full h-14 rounded-[8px] text-white font-semibold flex items-center justify-between px-5" style={{ backgroundColor: storefrontBrandColor }}>
                             <span>View Cart ({cartCount})</span>
                             <span className="font-mono">${cartTotal.toFixed(2)}</span>
                         </button>

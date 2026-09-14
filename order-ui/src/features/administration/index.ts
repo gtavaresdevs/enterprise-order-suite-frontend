@@ -1,3 +1,3 @@
-export { AdministrationFeature } from "@/features/administration/components/AdministrationFeature";
-export type { AdministrationPageId } from "@/types/administration";
-
+export { TeamFeature } from "@/features/administration/components/TeamFeature";
+export { RolesFeature } from "@/features/administration/components/RolesFeature";
+export { AuditLogFeature } from "@/features/administration/components/AuditLogFeature";
