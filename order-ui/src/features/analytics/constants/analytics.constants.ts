@@ -7,7 +7,7 @@ export const CHANNEL_COLORS: Record<OrderChannel, string> = {
 };
 
 export const REVENUE_CHART_CONFIG = {
-  margin: { top: 0, right: 0, left: -20, bottom: 0 },
+  margin: { top: 0, right: 0, left: 0, bottom: 0 },
   xAxisTick: { fontSize: 12, fill: '#64748b' },
   yAxisTick: { fontSize: 12, fill: '#64748b', fontFamily: 'DM Mono' },
 };

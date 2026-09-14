@@ -13,7 +13,7 @@ export const RevenueChart = ({ data }: RevenueChartProps) => {
                 <BarChart data={data} margin={REVENUE_CHART_CONFIG.margin}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                     <XAxis dataKey="day" axisLine={false} tickLine={false} tick={REVENUE_CHART_CONFIG.xAxisTick} dy={10} />
-                    <YAxis axisLine={false} tickLine={false} tick={REVENUE_CHART_CONFIG.yAxisTick} tickFormatter={(val) => `$${val / 1000}k`} />
+                    <YAxis axisLine={false} tickLine={false} tick={REVENUE_CHART_CONFIG.yAxisTick} tickFormatter={(val: number) => `$${val}`} />
                     <Tooltip
                         cursor={{ fill: '#f8fafc' }}
                         contentStyle={{ borderRadius: '8px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', fontFamily: 'DM Mono', fontSize: '14px' }}
