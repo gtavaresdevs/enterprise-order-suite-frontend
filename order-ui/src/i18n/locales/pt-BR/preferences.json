@@ -49,6 +49,8 @@
     "coverBanner": "Banner de Capa",
     "coverUploadHint": "Clique para enviar a imagem de capa",
     "coverHint": "JPG ou PNG · mín. 800×200px",
-    "brandPrimaryColor": "Cor Primária da Marca"
+    "brandPrimaryColor": "Cor Primária da Marca",
+    "logoAlt": "Logotipo",
+    "coverAlt": "Capa"
   }
 }

@@ -17,6 +17,18 @@
   },
   "account": {
     "viewProfile": "View Profile",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "enterpriseRole": "Enterprise · {{role}}"
+  },
+  "brand": {
+    "enterprise": "Enterprise",
+    "orderSuite": "Order Suite"
+  },
+  "mobileHeader": {
+    "openMenu": "Open navigation menu"
+  },
+  "notificationBell": {
+    "title": "Notifications",
+    "newCount": "{{count}} new"
   }
 }

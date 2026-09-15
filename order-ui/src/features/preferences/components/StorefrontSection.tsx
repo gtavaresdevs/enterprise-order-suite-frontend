@@ -70,7 +70,7 @@ export function StorefrontSection() {
                         <div className="relative group cursor-pointer" onClick={() => logoRef.current?.click()}>
                             <div className="w-20 h-20 rounded-[8px] border-2 border-dashed border-slate-200 bg-slate-50 overflow-hidden flex items-center justify-center hover:border-slate-400 transition-colors">
                                 {logoSrc ? (
-                                    <img src={logoSrc} alt="Logo" className="w-full h-full object-cover" />
+                                    <img src={logoSrc} alt={t("storefrontSection.logoAlt")} className="w-full h-full object-cover" />
                                 ) : (
                                     <div className="flex flex-col items-center gap-1"><Camera className="w-5 h-5 text-slate-300" /><span className="text-[10px] text-slate-400">{t("storefrontSection.upload")}</span></div>
                                 )}
@@ -87,7 +87,7 @@ export function StorefrontSection() {
                             onClick={() => coverRef.current?.click()}
                         >
                             {coverSrc ? (
-                                <img src={coverSrc} alt="Cover" className="w-full h-full object-cover" />
+                                <img src={coverSrc} alt={t("storefrontSection.coverAlt")} className="w-full h-full object-cover" />
                             ) : (
                                 <div className="flex flex-col items-center gap-1.5"><ImagePlus className="w-5 h-5 text-slate-300" /><span className="text-xs text-slate-400">{t("storefrontSection.coverUploadHint")}</span></div>
                             )}

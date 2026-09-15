@@ -45,7 +45,7 @@ export function AvatarDropdown() {
               {displayName}
             </p>
             <p className="text-[10px] text-slate-400 leading-none">
-              Enterprise · {role}
+              {t("account.enterpriseRole", { role })}
             </p>
           </div>
 

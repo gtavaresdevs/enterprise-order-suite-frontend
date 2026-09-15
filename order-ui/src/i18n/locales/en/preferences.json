@@ -49,6 +49,8 @@
     "coverBanner": "Cover Banner",
     "coverUploadHint": "Click to upload cover image",
     "coverHint": "JPG or PNG · min 800×200px",
-    "brandPrimaryColor": "Brand Primary Color"
+    "brandPrimaryColor": "Brand Primary Color",
+    "logoAlt": "Logo",
+    "coverAlt": "Cover"
   }
 }

@@ -17,6 +17,18 @@
   },
   "account": {
     "viewProfile": "Ver Perfil",
-    "signOut": "Sair"
+    "signOut": "Sair",
+    "enterpriseRole": "Enterprise · {{role}}"
+  },
+  "brand": {
+    "enterprise": "Enterprise",
+    "orderSuite": "Order Suite"
+  },
+  "mobileHeader": {
+    "openMenu": "Abrir menu de navegação"
+  },
+  "notificationBell": {
+    "title": "Notificações",
+    "newCount": "{{count}} novas"
   }
 }

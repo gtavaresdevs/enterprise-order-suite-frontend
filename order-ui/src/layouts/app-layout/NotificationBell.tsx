@@ -1,4 +1,5 @@
 import { Bell } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -9,6 +10,7 @@ import {
 import { useNotificationFeed } from "@/features/notifications/hooks/useNotificationFeed";
 
 export function NotificationBell() {
+  const { t } = useTranslation("shell");
   const { notifications, unreadCount } = useNotificationFeed();
 
   return (
@@ -31,10 +33,10 @@ export function NotificationBell() {
         className="w-80 rounded-[8px] border border-slate-200 shadow-lg shadow-slate-900/10 p-0 overflow-hidden"
       >
         <div className="px-3 py-2.5 bg-white flex items-center justify-between">
-          <p className="text-xs font-semibold text-slate-700">Notifications</p>
+          <p className="text-xs font-semibold text-slate-700">{t("notificationBell.title")}</p>
           {unreadCount > 0 && (
             <span className="text-[10px] font-medium text-blue-600 bg-blue-50 rounded-full px-2 py-0.5">
-              {unreadCount} new
+              {t("notificationBell.newCount", { count: unreadCount })}
             </span>
           )}
         </div>

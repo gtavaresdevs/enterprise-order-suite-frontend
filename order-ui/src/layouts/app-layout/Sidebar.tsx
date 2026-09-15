@@ -41,7 +41,7 @@ function UserChip({ onNavigate }: { onNavigate?: () => void }) {
         </div>
         <div className="min-w-0 flex-1 text-left">
           <p className="text-xs font-semibold text-slate-700 truncate leading-none">{displayName}</p>
-          <p className="text-[10px] text-slate-400 mt-0.5 truncate">Enterprise · {role}</p>
+          <p className="text-[10px] text-slate-400 mt-0.5 truncate">{t("account.enterpriseRole", { role })}</p>
         </div>
         <ChevronRight className={`w-3 h-3 text-slate-400 flex-shrink-0 transition-transform ${open ? "-rotate-90" : "rotate-90"}`} />
       </button>
@@ -142,8 +142,8 @@ export function SidebarContent({ onNavigate, collapsed = false }: SidebarContent
           </div>
           {!collapsed && (
             <div className="min-w-0">
-              <p className="text-sm font-semibold text-foreground leading-none truncate">Enterprise</p>
-              <p className="text-[10px] text-muted-foreground mt-0.5 font-medium tracking-wide uppercase">Order Suite</p>
+              <p className="text-sm font-semibold text-foreground leading-none truncate">{t("brand.enterprise")}</p>
+              <p className="text-[10px] text-muted-foreground mt-0.5 font-medium tracking-wide uppercase">{t("brand.orderSuite")}</p>
             </div>
           )}
         </div>
