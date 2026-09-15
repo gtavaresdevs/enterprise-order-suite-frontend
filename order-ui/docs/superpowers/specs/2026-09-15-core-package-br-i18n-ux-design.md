@@ -16,9 +16,8 @@ Two prior mechanisms in the codebase are relevant and are being **replaced**, no
 - `src/i18n/translations.ts` + `useTranslation()` — a hand-rolled dictionary covering only 2 files
   (Sidebar, AvatarDropdown), only French/Spanish, with stale labels ("Users", "Administrators")
   that predate Phase 5's Team/Roles/Audit Log rename. Delete once react-i18next covers its ground.
-- `preferences.language`'s 8-option list (English (US/UK), Français, Deutsch, 日本語, 한국어,
-  中文, Español) — only ever drove `formatCurrency`/`formatDate` locale, never real string
-  translation. Collapses to English / Português (Brasil).
+- `preferences.language`'s 8-option list — only ever drove `formatCurrency`/`formatDate` locale,
+  never real string translation. Collapses to two locales (see "i18n architecture" below).
 
 `src/utils/format.ts` (`formatCurrency`/`formatDate`) and the `preferences` feature's
 localStorage-backed persistence (`src/features/preferences/services/preferences.service.ts`) are
@@ -41,6 +40,13 @@ for these — adding them now would be speculative plumbing with nothing to atta
 - **Library**: `react-i18next` + `i18next`. Locale strings under `src/i18n/locales/{en,pt-BR}/*.json`,
   namespaced per feature (`common.json`, `orders.json`, `storefront.json`, `kds.json`, etc.) —
   mirrors the feature-module convention rather than one giant file.
+- **Two locales only, extensible by construction**: only `en` and `pt-BR` are built now — no other
+  language is in scope for this spec. Because keys are semantic (not English strings) and every
+  locale is just another sibling folder under `src/i18n/locales/`, adding a third locale later is
+  additive (new folder + one more `preferences.language`/`i18n.resources` entry) — it never requires
+  touching call sites or restructuring the key set. `preferences.language`'s option list collapses
+  from the current 8 cosmetic-only entries (English (US/UK), Français, Deutsch, 日本語, 한국어,
+  中文, Español — none had real string coverage) down to just English / Português (Brasil).
 - **Runtime, not build-time**: changing `preferences.language` updates all mounted UI immediately
   through react-i18next, no reload/navigation. Public routes (`/storefront`, `/table-menu`, `/kds`)
   and authenticated routes share the same i18n state, both reachable since `PreferencesProvider`
