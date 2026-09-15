@@ -1,13 +1,19 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 import type { PreferencesState } from "@/types/preferences";
 import { preferencesService } from "@/features/preferences/services/preferences.service";
+import i18n from "@/i18n/config";
 import {
-    LANGUAGES,
     TIMEZONES,
     DATE_FORMATS,
     CURRENCIES,
     FONT_SIZES,
 } from "@/features/preferences/constants/preferences.constants";
+
+function getDefaultLanguage(): string {
+    return navigator.language.startsWith("en") ? "English" : "Português (Brasil)";
+}
+
+const DEFAULT_LANGUAGE = getDefaultLanguage();
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const DEFAULT_PREFERENCES: PreferencesState = {
@@ -16,9 +22,9 @@ export const DEFAULT_PREFERENCES: PreferencesState = {
     compactMode: false,
     denseTable: true,
     reducedMotion: false,
-    language: LANGUAGES[0],
+    language: DEFAULT_LANGUAGE,
     timezone: TIMEZONES[0],
-    dateFormat: DATE_FORMATS[0],
+    dateFormat: DEFAULT_LANGUAGE === "Português (Brasil)" ? "DD/MM/YYYY" : DATE_FORMATS[0],
     currency: CURRENCIES[0],
     sidebarNavigation: "expanded",
     storefrontLogo: null,
@@ -86,6 +92,11 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     useEffect(() => {
         document.documentElement.toggleAttribute("data-reduced-motion", preferences.reducedMotion);
     }, [preferences.reducedMotion]);
+
+    useEffect(() => {
+        const target = preferences.language === "Português (Brasil)" ? "pt-BR" : "en";
+        i18n.changeLanguage(target);
+    }, [preferences.language]);
 
     const updatePreference = useCallback(<K extends keyof PreferencesState>(
         key: K,

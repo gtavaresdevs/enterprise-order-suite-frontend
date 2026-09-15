@@ -9,16 +9,7 @@ export const TIMEZONES = [
     "UTC+10:00 — Australian Eastern Time",
 ];
 
-export const LANGUAGES = [
-    "English (US)",
-    "English (UK)",
-    "Français",
-    "Deutsch",
-    "日本語",
-    "한국어",
-    "中文 (简体)",
-    "Español",
-];
+export const LANGUAGES = ["English", "Português (Brasil)"];
 
 export const DATE_FORMATS = ["MM/DD/YYYY", "DD/MM/YYYY", "YYYY-MM-DD", "D MMM YYYY"];
 
@@ -29,6 +20,7 @@ export const CURRENCIES = [
     "JPY — Japanese Yen",
     "CNY — Chinese Yuan",
     "INR — Indian Rupee",
+    "BRL — Real Brasileiro",
 ];
 
 export const FONT_SIZES = ["Compact (13px)", "Default (15px)", "Comfortable (17px)"];

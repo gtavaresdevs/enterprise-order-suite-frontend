@@ -1,12 +1,7 @@
 const LOCALE_MAP: Record<string, string> = {
     "English (US)": "en-US",
-    "English (UK)": "en-GB",
-    "Français": "fr-FR",
-    "Deutsch": "de-DE",
-    "日本語": "ja-JP",
-    "한국어": "ko-KR",
-    "中文 (简体)": "zh-CN",
-    "Español": "es-ES",
+    "English": "en-US",
+    "Português (Brasil)": "pt-BR",
 };
 
 const TIMEZONE_OFFSET_MINUTES: Record<string, number> = {
