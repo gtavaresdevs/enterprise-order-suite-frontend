@@ -16,6 +16,10 @@ import enMenu from "./locales/en/menu.json";
 import ptBrMenu from "./locales/pt-BR/menu.json";
 import enTables from "./locales/en/tables.json";
 import ptBrTables from "./locales/pt-BR/tables.json";
+import enHome from "./locales/en/home.json";
+import ptBrHome from "./locales/pt-BR/home.json";
+import enAnalytics from "./locales/en/analytics.json";
+import ptBrAnalytics from "./locales/pt-BR/analytics.json";
 
 export const resources = {
   en: {
@@ -27,6 +31,8 @@ export const resources = {
     orders: enOrders,
     menu: enMenu,
     tables: enTables,
+    home: enHome,
+    analytics: enAnalytics,
   },
   "pt-BR": {
     common: ptBrCommon,
@@ -37,6 +43,8 @@ export const resources = {
     orders: ptBrOrders,
     menu: ptBrMenu,
     tables: ptBrTables,
+    home: ptBrHome,
+    analytics: ptBrAnalytics,
   },
 } as const;
 

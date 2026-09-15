@@ -1,0 +1,60 @@
+{
+  "header": {
+    "brandLabel": "Enterprise Order Suite",
+    "greeting": {
+      "morning": "Good morning",
+      "afternoon": "Good afternoon",
+      "evening": "Good evening"
+    },
+    "fallbackName": "there"
+  },
+  "quickActions": {
+    "title": "Quick Actions",
+    "pathwaysCount_one": "{{count}} pathway",
+    "pathwaysCount_other": "{{count}} pathways",
+    "copied": "Copied!",
+    "copyLinkAction": "Copy link",
+    "navigate": "Navigate",
+    "actions": {
+      "newOrder": {
+        "title": "New Order",
+        "description": "Enter a phone or dine-in order on a customer's behalf."
+      },
+      "openKds": {
+        "title": "Open Kitchen Display",
+        "description": "View and advance the live kitchen order queue."
+      },
+      "viewMenu": {
+        "title": "View Menu",
+        "description": "Manage items, prices, availability, and stock."
+      },
+      "copyLink": {
+        "title": "Copy Ordering Link",
+        "description": "Share the public storefront link via WhatsApp or Instagram."
+      }
+    }
+  },
+  "snapshot": {
+    "title": "Today's Snapshot",
+    "loading": "Loading snapshot...",
+    "revenueLabel": "Revenue",
+    "orderCountLabel": "Orders",
+    "avgOrderValueLabel": "Avg Order Value",
+    "ordersByChannel": "Orders by Channel"
+  },
+  "kitchenBacklog": {
+    "title": "Kitchen Backlog",
+    "subtitle_one": "Order New or Preparing",
+    "subtitle_other": "Orders New or Preparing",
+    "viewButton": "View Kitchen Display"
+  },
+  "lowStock": {
+    "title": "Low-Stock Alerts",
+    "itemCount_one": "{{count}} item",
+    "itemCount_other": "{{count}} items",
+    "loading": "Loading menu stock...",
+    "empty": "All menu items are well stocked.",
+    "stockLeft": "{{count}} left",
+    "manageButton": "Manage Menu"
+  }
+}

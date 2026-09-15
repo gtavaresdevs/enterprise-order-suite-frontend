@@ -1,17 +1,19 @@
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 import { Utensils, ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useHomeData } from "../hooks/useHomeData";
 
 export function KitchenBacklog() {
+    const { t } = useTranslation("home");
     const navigate = useNavigate();
     const { kitchenBacklogCount, isLoading } = useHomeData();
 
     return (
         <section>
             <h2 className="text-sm font-semibold text-slate-700 uppercase tracking-wider mb-4">
-                Kitchen Backlog
+                {t("kitchenBacklog.title")}
             </h2>
 
             <Card className="bg-white border border-slate-100 rounded-[8px] shadow-none">
@@ -25,7 +27,7 @@ export function KitchenBacklog() {
                                 {isLoading ? "-" : kitchenBacklogCount}
                             </p>
                             <p className="text-xs text-slate-400">
-                                Order{kitchenBacklogCount !== 1 ? "s" : ""} New or Preparing
+                                {t("kitchenBacklog.subtitle", { count: kitchenBacklogCount })}
                             </p>
                         </div>
                     </div>
@@ -35,7 +37,7 @@ export function KitchenBacklog() {
                         variant="outline"
                         className="w-full h-9 rounded-[8px] border-slate-200 text-slate-700 hover:bg-slate-50 flex items-center justify-between"
                     >
-                        View Kitchen Display
+                        {t("kitchenBacklog.viewButton")}
                         <ArrowRight className="w-4 h-4" />
                     </Button>
                 </CardContent>

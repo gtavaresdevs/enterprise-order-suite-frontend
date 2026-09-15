@@ -1,17 +1,19 @@
 import { DollarSign, ShoppingBag, Calculator } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent } from "@/components/ui/card";
 import { useHomeData } from "../hooks/useHomeData";
 import { useFormat } from "@/features/preferences/hooks/useFormat";
 
 export function TodaySnapshot() {
+    const { t } = useTranslation("home");
     const { snapshot, isLoading } = useHomeData();
     const { formatCurrency } = useFormat();
 
     const tiles = snapshot
         ? [
-            { label: "Revenue", value: formatCurrency(snapshot.revenue), icon: DollarSign, iconColor: "text-emerald-600", iconBg: "bg-emerald-50" },
-            { label: "Orders", value: String(snapshot.totalOrders), icon: ShoppingBag, iconColor: "text-blue-600", iconBg: "bg-blue-50" },
-            { label: "Avg Order Value", value: formatCurrency(snapshot.avgOrderValue), icon: Calculator, iconColor: "text-slate-600", iconBg: "bg-slate-100" },
+            { label: t("snapshot.revenueLabel"), value: formatCurrency(snapshot.revenue), icon: DollarSign, iconColor: "text-emerald-600", iconBg: "bg-emerald-50" },
+            { label: t("snapshot.orderCountLabel"), value: String(snapshot.totalOrders), icon: ShoppingBag, iconColor: "text-blue-600", iconBg: "bg-blue-50" },
+            { label: t("snapshot.avgOrderValueLabel"), value: formatCurrency(snapshot.avgOrderValue), icon: Calculator, iconColor: "text-slate-600", iconBg: "bg-slate-100" },
         ]
         : [];
 
@@ -19,7 +21,7 @@ export function TodaySnapshot() {
         <section>
             <div className="flex items-center justify-between mb-4">
                 <h2 className="text-sm font-semibold text-slate-700 uppercase tracking-wider">
-                    Today's Snapshot
+                    {t("snapshot.title")}
                 </h2>
                 {snapshot && (
                     <span className="text-xs text-slate-400 font-mono">{snapshot.snapshotDate}</span>
@@ -27,7 +29,7 @@ export function TodaySnapshot() {
             </div>
 
             {isLoading ? (
-                <p className="text-sm text-slate-400 font-mono animate-pulse">Loading snapshot...</p>
+                <p className="text-sm text-slate-400 font-mono animate-pulse">{t("snapshot.loading")}</p>
             ) : (
                 <div className="flex flex-col gap-3">
                     {tiles.map((tile) => {
@@ -54,7 +56,7 @@ export function TodaySnapshot() {
                     <Card className="bg-white border border-slate-100 rounded-[8px] shadow-none">
                         <CardContent className="p-4">
                             <p className="text-[11px] font-medium text-slate-400 uppercase tracking-wide mb-2.5">
-                                Orders by Channel
+                                {t("snapshot.ordersByChannel")}
                             </p>
                             <div className="flex flex-col gap-2">
                                 {snapshot?.channelCounts.map((c) => (

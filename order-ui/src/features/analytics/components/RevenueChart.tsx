@@ -1,4 +1,5 @@
 import { ResponsiveContainer, BarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts";
+import { useTranslation } from "react-i18next";
 import { REVENUE_CHART_CONFIG } from "../constants/analytics.constants";
 import type { RevenueData } from "@/types/analytics";
 
@@ -7,6 +8,8 @@ interface RevenueChartProps {
 }
 
 export const RevenueChart = ({ data }: RevenueChartProps) => {
+    const { t } = useTranslation("analytics");
+
     return (
         <div className="h-[280px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -17,7 +20,7 @@ export const RevenueChart = ({ data }: RevenueChartProps) => {
                     <Tooltip
                         cursor={{ fill: '#f8fafc' }}
                         contentStyle={{ borderRadius: '8px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', fontFamily: 'DM Mono', fontSize: '14px' }}
-                        formatter={(value: any) => [`$${value}`, 'Revenue']}
+                        formatter={(value: any) => [`$${value}`, t("chart.revenueTooltipLabel")]}
                     />
                     <Bar dataKey="revenue" fill="#0f172a" radius={[4, 4, 0, 0]} maxBarSize={48} />
                 </BarChart>

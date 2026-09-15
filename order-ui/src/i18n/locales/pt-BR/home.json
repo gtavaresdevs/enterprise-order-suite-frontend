@@ -1,0 +1,60 @@
+{
+  "header": {
+    "brandLabel": "Enterprise Order Suite",
+    "greeting": {
+      "morning": "Bom dia",
+      "afternoon": "Boa tarde",
+      "evening": "Boa noite"
+    },
+    "fallbackName": "você"
+  },
+  "quickActions": {
+    "title": "Ações Rápidas",
+    "pathwaysCount_one": "{{count}} atalho",
+    "pathwaysCount_other": "{{count}} atalhos",
+    "copied": "Copiado!",
+    "copyLinkAction": "Copiar link",
+    "navigate": "Acessar",
+    "actions": {
+      "newOrder": {
+        "title": "Novo Pedido",
+        "description": "Registre um pedido por telefone ou presencial em nome de um cliente."
+      },
+      "openKds": {
+        "title": "Abrir Painel da Cozinha",
+        "description": "Visualize e avance a fila de pedidos da cozinha em tempo real."
+      },
+      "viewMenu": {
+        "title": "Ver Cardápio",
+        "description": "Gerencie itens, preços, disponibilidade e estoque."
+      },
+      "copyLink": {
+        "title": "Copiar Link de Pedidos",
+        "description": "Compartilhe o link público da loja virtual via WhatsApp ou Instagram."
+      }
+    }
+  },
+  "snapshot": {
+    "title": "Resumo de Hoje",
+    "loading": "Carregando resumo...",
+    "revenueLabel": "Receita",
+    "orderCountLabel": "Pedidos",
+    "avgOrderValueLabel": "Ticket Médio",
+    "ordersByChannel": "Pedidos por Canal"
+  },
+  "kitchenBacklog": {
+    "title": "Fila da Cozinha",
+    "subtitle_one": "Pedido Novo ou Em Preparo",
+    "subtitle_other": "Pedidos Novos ou Em Preparo",
+    "viewButton": "Ver Painel da Cozinha"
+  },
+  "lowStock": {
+    "title": "Alertas de Estoque Baixo",
+    "itemCount_one": "{{count}} item",
+    "itemCount_other": "{{count}} itens",
+    "loading": "Carregando estoque do cardápio...",
+    "empty": "Todos os itens do cardápio estão bem abastecidos.",
+    "stockLeft": "{{count}} restantes",
+    "manageButton": "Gerenciar Cardápio"
+  }
+}

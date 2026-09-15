@@ -9,9 +9,9 @@ export function useTimestamp() {
   }, []);
   
   const hour = ts.getHours();
-  const greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+  const greetingPeriod: "morning" | "afternoon" | "evening" = hour < 12 ? "morning" : hour < 17 ? "afternoon" : "evening";
   const dateStr = ts.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
   const timeStr = ts.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
-  
-  return { greeting, dateStr, timeStr };
+
+  return { greetingPeriod, dateStr, timeStr };
 }
