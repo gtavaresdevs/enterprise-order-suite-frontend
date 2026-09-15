@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 import type { PreferencesState } from "@/types/preferences";
 import { preferencesService } from "@/features/preferences/services/preferences.service";
-import i18n from "@/i18n/config";
+import i18n, { resolveLanguage } from "@/i18n/config";
 import {
     TIMEZONES,
     DATE_FORMATS,
@@ -25,7 +25,7 @@ export const DEFAULT_PREFERENCES: PreferencesState = {
     language: DEFAULT_LANGUAGE,
     timezone: TIMEZONES[0],
     dateFormat: DEFAULT_LANGUAGE === "Português (Brasil)" ? "DD/MM/YYYY" : DATE_FORMATS[0],
-    currency: CURRENCIES[0],
+    currency: DEFAULT_LANGUAGE === "Português (Brasil)" ? "BRL — Real Brasileiro" : CURRENCIES[0],
     sidebarNavigation: "expanded",
     storefrontLogo: null,
     storefrontCover: null,
@@ -54,7 +54,19 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     useEffect(() => {
         preferencesService.getPreferences()
             .then((stored) => {
-                setPreferences((prev) => ({ ...prev, ...stored }));
+                setPreferences((prev) => {
+                    const merged = { ...prev, ...stored };
+                    // A legacy/unrecognized saved language value (e.g. from before the
+                    // language list was collapsed to 2 entries) is canonicalized here so
+                    // the Preferences Language <select> always shows a valid selected
+                    // option, using the same fallback config.ts uses for i18next init.
+                    const isRecognized = merged.language === "English" || merged.language === "Português (Brasil)";
+                    if (!isRecognized) {
+                        const target = resolveLanguage(merged.language);
+                        merged.language = target === "pt-BR" ? "Português (Brasil)" : "English";
+                    }
+                    return merged;
+                });
             })
             .catch(() => {});
     }, []);
@@ -94,8 +106,7 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     }, [preferences.reducedMotion]);
 
     useEffect(() => {
-        const target = preferences.language === "Português (Brasil)" ? "pt-BR" : "en";
-        i18n.changeLanguage(target);
+        i18n.changeLanguage(resolveLanguage(preferences.language));
     }, [preferences.language]);
 
     const updatePreference = useCallback(<K extends keyof PreferencesState>(

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Users, Plus } from "lucide-react";
 import { useTeam } from "@/features/administration/hooks/useTeam";
+import { useFormat } from "@/features/preferences/hooks/useFormat";
 import { Pagination } from "./Pagination";
 import { StatusPill } from "./StatusPill";
 import { AdministrationHeader } from "./AdministrationHeader";
@@ -11,6 +12,7 @@ import type { UserSummary } from "@/types/administration";
 
 export function TeamFeature() {
     const { t } = useTranslation("administration");
+    const { formatDate } = useFormat();
     const [page, setPage] = useState(0);
     const { data, isLoading, isError } = useTeam(page);
     const [selected, setSelected] = useState<UserSummary | null>(null);
@@ -64,7 +66,7 @@ export function TeamFeature() {
                                 <span className="text-xs font-mono text-slate-500">{u.role}</span>
                                 <StatusPill active={u.active} />
                                 <span className="text-xs text-slate-400 font-mono">
-                                    {new Date(u.createdAt).toLocaleDateString()}
+                                    {formatDate(u.createdAt)}
                                 </span>
                             </button>
                         ))

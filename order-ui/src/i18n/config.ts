@@ -60,18 +60,31 @@ export const resources = {
   },
 } as const;
 
+/**
+ * Resolves a saved `preferences.language` value (as stored in the Preferences
+ * feature, e.g. "English" / "Português (Brasil)") to an i18next language code.
+ * An unrecognized/legacy value (including one from before the language list
+ * was collapsed to these 2 entries) falls back to browser-language detection.
+ * Shared by i18next init below and by `PreferencesProvider` so the two can
+ * never resolve a saved value differently.
+ */
+export function resolveLanguage(saved: string | undefined): "en" | "pt-BR" {
+  if (saved === "English") return "en";
+  if (saved === "Português (Brasil)") return "pt-BR";
+  return navigator.language.startsWith("en") ? "en" : "pt-BR";
+}
+
 function detectDefaultLanguage(): "en" | "pt-BR" {
   const saved = window.localStorage.getItem("preferences");
   if (saved) {
     try {
       const parsed = JSON.parse(saved) as { language?: string };
-      if (parsed.language === "English") return "en";
-      if (parsed.language === "Português (Brasil)") return "pt-BR";
+      return resolveLanguage(parsed.language);
     } catch {
       // fall through to navigator detection
     }
   }
-  return navigator.language.startsWith("en") ? "en" : "pt-BR";
+  return resolveLanguage(undefined);
 }
 
 i18n.use(initReactI18next).init({

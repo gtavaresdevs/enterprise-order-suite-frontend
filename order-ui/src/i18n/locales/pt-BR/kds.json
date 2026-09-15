@@ -3,18 +3,18 @@
   "header": {
     "station": "Estação de Grelha",
     "timeFallback": "14:32",
-    "recallLastTicket": "Reabrir Última Comanda",
+    "recallLastTicket": "Reabrir Último Pedido",
     "pauseStation": "Pausar Estação"
   },
   "filters": {
-    "allTickets": "Todas as Comandas ({{count}})",
+    "allTickets": "Todos os Pedidos ({{count}})",
     "dineIn": "Presencial ({{count}})",
     "delivery": "Entrega ({{count}})",
     "pickup": "Retirada ({{count}})"
   },
   "summary": {
     "title": "Resumo de Produção",
-    "subtitle": "Todo o Dia (Comandas Ativas)"
+    "subtitle": "Todo o Dia (Pedidos Ativos)"
   },
   "actions": {
     "startPreparing": "Iniciar Preparo",

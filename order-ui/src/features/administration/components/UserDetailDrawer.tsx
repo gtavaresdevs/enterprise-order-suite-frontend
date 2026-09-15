@@ -5,6 +5,7 @@ import { X, Mail, Shield } from "lucide-react";
 import { teamService } from "@/features/administration/services/team.service";
 import { useTeam } from "@/features/administration/hooks/useTeam";
 import { useRoles } from "@/features/administration/hooks/useRoles";
+import { useFormat } from "@/features/preferences/hooks/useFormat";
 import { StatusPill } from "./StatusPill";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -109,6 +110,7 @@ function UserDetailContent({
     isResendingSetup,
 }: UserDetailContentProps) {
     const { t } = useTranslation("administration");
+    const { formatDate } = useFormat();
     const [firstName, setFirstName] = useState(user.firstName);
     const [lastName, setLastName] = useState(user.lastName);
     const [email, setEmail] = useState(user.email);
@@ -143,7 +145,7 @@ function UserDetailContent({
                         <div className="flex items-center gap-2 mt-1">
                             <StatusPill active={user.active} />
                             <span className="text-xs text-slate-400 font-mono">
-                                {t("userDetail.joinedLabel", { date: new Date(user.createdAt).toLocaleDateString() })}
+                                {t("userDetail.joinedLabel", { date: formatDate(user.createdAt) })}
                             </span>
                         </div>
                     </div>

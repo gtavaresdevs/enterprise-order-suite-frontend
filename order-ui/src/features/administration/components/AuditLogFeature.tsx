@@ -2,11 +2,13 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollText } from "lucide-react";
 import { useAuditLog } from "@/features/administration/hooks/useAuditLog";
+import { useFormat } from "@/features/preferences/hooks/useFormat";
 import { Pagination } from "./Pagination";
 import { AdministrationHeader } from "./AdministrationHeader";
 
 export function AuditLogFeature() {
     const { t } = useTranslation("administration");
+    const { formatDate } = useFormat();
     const [page, setPage] = useState(0);
     const { data, isLoading, isError } = useAuditLog(page);
 
@@ -45,7 +47,7 @@ export function AuditLogFeature() {
                                 <span className="text-sm font-medium text-slate-800">{event.type}</span>
                                 <span className="text-xs font-mono text-slate-500">#{event.actorUserId}</span>
                                 <span className="text-xs font-mono text-slate-500">{event.targetUserId ? `#${event.targetUserId}` : t("auditLog.emptyValue")}</span>
-                                <span className="text-xs text-slate-400 font-mono">{new Date(event.createdAt).toLocaleString()}</span>
+                                <span className="text-xs text-slate-400 font-mono">{formatDate(event.createdAt)}</span>
                             </div>
                         ))
                     )}
