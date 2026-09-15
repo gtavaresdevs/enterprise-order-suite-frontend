@@ -10,14 +10,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useLogout } from "@/features/auth/hooks/useLogout";
-import { useTranslation } from "@/features/preferences/hooks/useTranslation";
+import { useTranslation } from "react-i18next";
 import { useProfileSummary } from "@/features/profile/hooks/useProfileSummary";
 
 export function AvatarDropdown() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { mutate: logout, isPending: isLoggingOut } = useLogout();
-  const { t } = useTranslation();
+  const { t } = useTranslation("shell");
   const { role, initials, displayName, email } = useProfileSummary();
 
   const handleNavigate = (path: string) => {
@@ -76,7 +76,7 @@ export function AvatarDropdown() {
             className="flex items-center gap-2.5 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 cursor-pointer"
           >
             <User className="w-3.5 h-3.5 text-slate-400" />
-            {t("View Profile")}
+            {t("account.viewProfile")}
           </DropdownMenuItem>
 
           <DropdownMenuItem
@@ -84,7 +84,7 @@ export function AvatarDropdown() {
             className="flex items-center gap-2.5 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 cursor-pointer"
           >
             <Bell className="w-3.5 h-3.5 text-slate-400" />
-            {t("Notifications")}
+            {t("nav.notifications")}
           </DropdownMenuItem>
 
           <DropdownMenuItem
@@ -92,7 +92,7 @@ export function AvatarDropdown() {
             className="flex items-center gap-2.5 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 cursor-pointer"
           >
             <Settings className="w-3.5 h-3.5 text-slate-400" />
-            {t("Preferences")}
+            {t("nav.preferences")}
           </DropdownMenuItem>
 
           {role !== "USER" && (
@@ -101,7 +101,7 @@ export function AvatarDropdown() {
               className="flex items-center gap-2.5 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 cursor-pointer"
             >
               <Settings className="w-3.5 h-3.5 text-slate-400" />
-              {t("Settings")}
+              {t("nav.settings")}
             </DropdownMenuItem>
           )}
         </div>
@@ -115,7 +115,7 @@ export function AvatarDropdown() {
             className="flex items-center gap-2.5 px-3 py-2 text-sm text-red-600 hover:bg-red-50 cursor-pointer"
           >
             <LogOut className="w-3.5 h-3.5" />
-            {t("Sign out")}
+            {t("account.signOut")}
           </DropdownMenuItem>
         </div>
       </DropdownMenuContent>

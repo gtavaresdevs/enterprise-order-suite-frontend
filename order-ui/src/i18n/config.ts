@@ -2,13 +2,17 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import enCommon from "./locales/en/common.json";
 import ptBrCommon from "./locales/pt-BR/common.json";
+import enShell from "./locales/en/shell.json";
+import ptBrShell from "./locales/pt-BR/shell.json";
 
 export const resources = {
   en: {
     common: enCommon,
+    shell: enShell,
   },
   "pt-BR": {
     common: ptBrCommon,
+    shell: ptBrShell,
   },
 } as const;
 

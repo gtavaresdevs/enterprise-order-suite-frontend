@@ -1,0 +1,22 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "orders": "Orders",
+    "menu": "Menu",
+    "tables": "Tables",
+    "analytics": "Analytics",
+    "administration": "Administration",
+    "team": "Team",
+    "roles": "Roles",
+    "auditLog": "Audit Log",
+    "notifications": "Notifications",
+    "preferences": "Preferences",
+    "settings": "Settings",
+    "navigationSection": "Navigation",
+    "accountSection": "Account"
+  },
+  "account": {
+    "viewProfile": "View Profile",
+    "signOut": "Sign out"
+  }
+}
