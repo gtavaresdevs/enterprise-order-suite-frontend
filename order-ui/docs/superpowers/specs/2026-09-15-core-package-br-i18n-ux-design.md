@@ -163,6 +163,57 @@ roadmap-blocked). The honest mock-backed approximation:
 appends a mock "Mensagem enviada via WhatsApp" entry to the notification feed (channel icon/label
 only — no real Meta Cloud API call, consistent with the existing mock-service pattern).
 
+## Dine-in comandas: tablet/QR self-order & waiter mobile ordering
+
+Today `Order` is single-shot (create → progress through KDS → done); Dine-in has no concept of a
+table's *whole visit* accumulating multiple rounds of items, and `/table-menu` (Phase 3) is
+explicitly read-only ("no cart/checkout UI"). This supersedes that scope note: a table's dine-in
+session becomes a real ordering surface, both for the customer (own phone via the existing QR, or
+a restaurant-owned tablet pinned to the same URL — one responsive build, not two) and for a waiter
+ordering tableside from their own phone.
+
+**New type — `Comanda`** (`src/types/tables.ts`, alongside `Table`):
+```
+export type ComandaMode = "Shared" | "Individual";
+export type ComandaStatus = "Open" | "Closed";
+
+export interface Comanda {
+  id: string;
+  tableId: string;
+  mode: ComandaMode;
+  guestLabel?: string;   // Individual mode only — one Comanda per named guest
+  status: ComandaStatus;
+  openedAt: string;
+}
+```
+`Table` gains `status: "Free" | "Occupied"`. `Order` gains an optional `comandaId` (Dine-in only).
+Both `Table` and `Order` are shared types with existing multi-feature consumers — this goes
+through `migrate-shared-type` at implementation time, same as the delivery-address field above.
+
+**Seating (waiter-only, in Tables feature)**: opening a Free table is where mode is decided —
+**Shared** (one Comanda, everyone at the table orders into it) or **Individual** (waiter enters N
+guest labels, one Comanda each). This is decided once at seating, not changed mid-visit. Table
+flips to Occupied; the table's QR/tablet route unlocks only in Shared mode.
+
+**Customer self-order** (`/table-menu`, evolved from read-only to a real cart+submit flow): only
+enabled when the table has an **Open, Shared** comanda. Submitting creates a normal `Order`
+(`channel: "Dine-in"`, `table`, `comandaId`) that flows through KDS exactly as any Dine-in order
+does today — straight to the kitchen, no waiter-approval gate. If the table is in Individual mode
+or not yet seated, the route shows a message directing the guest to their waiter instead of a cart
+— individual comandas are deliberately never customer-editable, per the earlier requirement.
+
+**Waiter mobile ordering**: a phone-optimized flow (reusing the same menu-item picker/cart
+component as the customer self-order view, not `CreateOrderModal`'s free-text item entry — that
+gap is fixed here since a waiter tapping through real menu items is the actual use case) where the
+waiter picks a table, then (if Individual mode) which guest's Comanda, adds items, submits — same
+straight-to-KDS path.
+
+**Closing out**: Tables feature gains a per-table view of its open Comanda(s) with a running total
+(sum of linked Orders) and a "Fechar comanda" action — reuses the PIX/Cartão/Dinheiro picker
+already spec'd for Storefront checkout, sets `paymentStatus: "Paid"` on that Comanda's Orders, and
+marks the Comanda Closed (table returns to Free once all its Comandas are closed). No fiscal
+document/receipt generation — that's Package 2.
+
 ## Owner/staff-facing dashboard UX (incremental polish, no restructuring)
 
 Preserve all existing navigation/behavior; these are hierarchy and visual-consistency fixes to
@@ -196,7 +247,11 @@ automated safety net. One `verify-ui` browser pass: toggle EN↔PT-BR on both a 
 (Storefront) and an authenticated route (Orders) confirming live swap with no reload, confirm the
 PIX/Cartão/Dinheiro picker renders and submits, and confirm the customer order-status timeline
 advances when an order's status is changed from KDS/Orders in the same session (mirrors Phase 4's
-cross-feature verification pattern).
+cross-feature verification pattern). Also cover the comanda flow end-to-end: seat a table Shared,
+submit an order via `/table-menu`, confirm it appears on KDS and Orders tagged to that table/
+comanda; seat a table Individual and confirm `/table-menu` shows the waiter-only message instead
+of a cart; close a comanda and confirm its orders show `paymentStatus: "Paid"` and the table
+returns to Free.
 
 ## Future package roadmap (reference only — not built in this spec)
 
@@ -229,3 +284,6 @@ Recorded here so later specs don't need to re-derive it; none of the following i
 - No full visual re-theme.
 - No geocoding, map UI, or real routing/drive-time calculation — delivery zones are a
   plain owner-curated name list, and ETA is a flat sum of two owner-set numbers.
+- No mid-visit switch between Shared/Individual comanda mode, no bill-splitting UI beyond
+  Individual mode's inherent per-guest separation, and no dedicated kiosk-mode build for tablets
+  (the same responsive `/table-menu` route serves phone and mounted tablet alike).
