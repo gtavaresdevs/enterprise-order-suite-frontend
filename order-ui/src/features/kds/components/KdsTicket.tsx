@@ -1,6 +1,7 @@
+import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import type { Order } from '@/types/orders';
+import type { Order, OrderStatus } from '@/types/orders';
 import { getTicketChannelLabel, NEXT_STATUS } from '../constants/kds.constants';
 import { StatusBadge } from './StatusBadge';
 
@@ -9,8 +10,16 @@ interface KdsTicketProps {
     onAdvanceStatus: (nextStatus: Order["status"]) => void;
 }
 
+const ACTION_LABEL_KEY: Partial<Record<OrderStatus, string>> = {
+    New: 'actions.startPreparing',
+    Preparing: 'actions.markReady',
+    Ready: 'actions.completeOrder',
+};
+
 export const KdsTicket = ({ order, onAdvanceStatus }: KdsTicketProps) => {
+    const { t } = useTranslation('kds');
     const action = NEXT_STATUS[order.status];
+    const actionLabelKey = ACTION_LABEL_KEY[order.status];
 
     return (
         <Card className="w-[360px] flex flex-col bg-slate-900 border border-slate-800 rounded-[8px] shadow-2xl flex-shrink-0">
@@ -68,7 +77,7 @@ export const KdsTicket = ({ order, onAdvanceStatus }: KdsTicketProps) => {
                         onClick={() => onAdvanceStatus(action.next)}
                         className="w-full py-4 text-lg rounded-[6px] transition-all active:scale-[0.98] flex items-center justify-center gap-2 bg-slate-50 hover:bg-white text-slate-950 font-bold shadow-sm"
                     >
-                        {action.label}
+                        {actionLabelKey ? t(actionLabelKey) : action.label}
                     </button>
                 </div>
             )}

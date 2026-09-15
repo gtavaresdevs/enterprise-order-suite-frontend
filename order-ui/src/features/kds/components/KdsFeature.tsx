@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { History, PauseCircle, ChevronDown } from 'lucide-react';
 import { useKdsOrders } from '../hooks/useKdsOrders';
 import { useUpdateKdsStatus } from '../hooks/useUpdateKdsStatus';
@@ -7,6 +8,7 @@ import { KdsTicket } from './KdsTicket';
 import { getTicketChannelLabel } from '../constants/kds.constants';
 
 export const KdsFeature = () => {
+    const { t } = useTranslation('kds');
     const { data: tickets, isLoading: isLoadingTickets } = useKdsOrders();
     const summary = useKdsSummary(tickets ?? []);
     const mutation = useUpdateKdsStatus();
@@ -28,7 +30,7 @@ export const KdsFeature = () => {
     }, []);
 
     if (isLoadingTickets) {
-        return <div className="p-8 text-slate-400 font-medium">Loading KDS...</div>;
+        return <div className="p-8 text-slate-400 font-medium">{t('loading')}</div>;
     }
 
     return (
@@ -38,12 +40,12 @@ export const KdsFeature = () => {
                 {/* Left: Station & Clock */}
                 <div className="flex items-center gap-6 w-[300px]">
                     <button className="flex items-center gap-2 text-lg font-bold text-slate-50 hover:text-slate-300 transition-colors">
-                        Grill Station
+                        {t('header.station')}
                         <ChevronDown className="w-5 h-5 text-slate-500" />
                     </button>
                     <div className="h-5 w-px bg-slate-800" />
                     <div className="font-mono text-lg font-medium text-slate-400">
-                        {time || "14:32 PM"}
+                        {time || t('header.timeFallback')}
                     </div>
                 </div>
 
@@ -51,16 +53,16 @@ export const KdsFeature = () => {
                 <div className="flex-1 flex justify-center">
                     <div className="flex p-1 bg-slate-950 border border-slate-800 rounded-[8px]">
                         <button className="px-6 py-1.5 rounded-[6px] bg-slate-800 text-slate-50 text-sm font-semibold shadow-sm">
-                            All Tickets ({tickets?.length || 0})
+                            {t('filters.allTickets', { count: tickets?.length || 0 })}
                         </button>
                         <button className="px-6 py-1.5 rounded-[6px] text-slate-400 hover:text-slate-200 text-sm font-medium transition-colors">
-                            Dine-In ({tickets?.filter((t) => getTicketChannelLabel(t) === 'DINE-IN').length || 0})
+                            {t('filters.dineIn', { count: tickets?.filter((tk) => getTicketChannelLabel(tk) === 'DINE-IN').length || 0 })}
                         </button>
                         <button className="px-6 py-1.5 rounded-[6px] text-slate-400 hover:text-slate-200 text-sm font-medium transition-colors">
-                            Delivery ({tickets?.filter((t) => getTicketChannelLabel(t) === 'DELIVERY').length || 0})
+                            {t('filters.delivery', { count: tickets?.filter((tk) => getTicketChannelLabel(tk) === 'DELIVERY').length || 0 })}
                         </button>
                         <button className="px-6 py-1.5 rounded-[6px] text-slate-400 hover:text-slate-200 text-sm font-medium transition-colors">
-                            Pickup ({tickets?.filter((t) => getTicketChannelLabel(t) === 'PICKUP').length || 0})
+                            {t('filters.pickup', { count: tickets?.filter((tk) => getTicketChannelLabel(tk) === 'PICKUP').length || 0 })}
                         </button>
                     </div>
                 </div>
@@ -69,11 +71,11 @@ export const KdsFeature = () => {
                 <div className="w-[300px] flex items-center justify-end gap-3">
                     <button className="flex items-center gap-2 px-4 py-2 rounded-[8px] text-sm font-medium text-slate-300 hover:bg-slate-800 transition-colors">
                         <History className="w-4 h-4" />
-                        Recall Last Ticket
+                        {t('header.recallLastTicket')}
                     </button>
                     <button className="flex items-center gap-2 px-4 py-2 rounded-[8px] bg-slate-800 hover:bg-slate-700 text-sm font-medium text-slate-50 transition-colors">
                         <PauseCircle className="w-4 h-4" />
-                        Pause Station
+                        {t('header.pauseStation')}
                     </button>
                 </div>
             </header>
@@ -96,8 +98,8 @@ export const KdsFeature = () => {
                 {/* Right Sidebar: Production Summary (25%) */}
                 <aside className="w-1/4 min-w-[320px] max-w-[400px] border-l border-slate-800 bg-slate-900 flex flex-col z-10 shadow-2xl">
                     <div className="p-5 border-b border-slate-800 bg-slate-900">
-                        <h2 className="text-lg font-bold text-slate-50 tracking-tight">Production Summary</h2>
-                        <p className="text-sm font-medium text-slate-400 mt-0.5">All Day (Active Tickets)</p>
+                        <h2 className="text-lg font-bold text-slate-50 tracking-tight">{t('summary.title')}</h2>
+                        <p className="text-sm font-medium text-slate-400 mt-0.5">{t('summary.subtitle')}</p>
                     </div>
 
                     <div className="flex-1 overflow-y-auto p-4 space-y-2">

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import type { Order } from "@/types/orders";
 import { useFormat } from "@/features/preferences/hooks/useFormat";
@@ -6,6 +7,7 @@ import { ItemCountBadge } from "./ItemCountBadge";
 import { ActionButton } from "./ActionButton";
 
 export function OrderRow({ order, onView, onEdit, onDelete }: { order: Order; onView: () => void; onEdit: () => void; onDelete: () => void }) {
+    const { t } = useTranslation("orders");
     const { formatCurrency, formatDate } = useFormat();
     return (
         <div className="orders-table-row grid grid-cols-[1fr_1.2fr_0.8fr_0.7fr_0.8fr_0.7fr_auto] gap-4 items-center px-5 py-3.5 hover:bg-slate-50/80 transition-colors group">
@@ -19,9 +21,9 @@ export function OrderRow({ order, onView, onEdit, onDelete }: { order: Order; on
             <span className="text-sm font-semibold text-slate-800 font-mono">{formatCurrency(order.total)}</span>
             <StatusBadge status={order.status} />
             <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                <ActionButton icon={Eye} label="View" onClick={onView} />
-                <ActionButton icon={Pencil} label="Edit" onClick={onEdit} />
-                <ActionButton icon={Trash2} label="Cancel" onClick={onDelete} danger />
+                <ActionButton icon={Eye} label={t("row.viewAction")} onClick={onView} />
+                <ActionButton icon={Pencil} label={t("row.editAction")} onClick={onEdit} />
+                <ActionButton icon={Trash2} label={t("row.cancelAction")} onClick={onDelete} danger />
             </div>
         </div>
     );

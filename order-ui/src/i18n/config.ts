@@ -8,6 +8,10 @@ import enStorefront from "./locales/en/storefront.json";
 import ptBrStorefront from "./locales/pt-BR/storefront.json";
 import enTableMenu from "./locales/en/tableMenu.json";
 import ptBrTableMenu from "./locales/pt-BR/tableMenu.json";
+import enKds from "./locales/en/kds.json";
+import ptBrKds from "./locales/pt-BR/kds.json";
+import enOrders from "./locales/en/orders.json";
+import ptBrOrders from "./locales/pt-BR/orders.json";
 
 export const resources = {
   en: {
@@ -15,12 +19,16 @@ export const resources = {
     shell: enShell,
     storefront: enStorefront,
     tableMenu: enTableMenu,
+    kds: enKds,
+    orders: enOrders,
   },
   "pt-BR": {
     common: ptBrCommon,
     shell: ptBrShell,
     storefront: ptBrStorefront,
     tableMenu: ptBrTableMenu,
+    kds: ptBrKds,
+    orders: ptBrOrders,
   },
 } as const;
 

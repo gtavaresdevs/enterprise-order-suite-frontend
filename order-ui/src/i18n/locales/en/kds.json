@@ -1,0 +1,24 @@
+{
+  "loading": "Loading KDS...",
+  "header": {
+    "station": "Grill Station",
+    "timeFallback": "14:32 PM",
+    "recallLastTicket": "Recall Last Ticket",
+    "pauseStation": "Pause Station"
+  },
+  "filters": {
+    "allTickets": "All Tickets ({{count}})",
+    "dineIn": "Dine-In ({{count}})",
+    "delivery": "Delivery ({{count}})",
+    "pickup": "Pickup ({{count}})"
+  },
+  "summary": {
+    "title": "Production Summary",
+    "subtitle": "All Day (Active Tickets)"
+  },
+  "actions": {
+    "startPreparing": "Start Preparing",
+    "markReady": "Mark Ready",
+    "completeOrder": "Complete Order"
+  }
+}

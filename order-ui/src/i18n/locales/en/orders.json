@@ -1,0 +1,100 @@
+{
+  "status": {
+    "new": "New",
+    "preparing": "Preparing",
+    "ready": "Ready",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "filters": {
+    "all": "All"
+  },
+  "feature": {
+    "brandLabel": "Enterprise Order Suite",
+    "title": "Order Operations",
+    "subtitle": "Manage and track active orders across every channel in real time.",
+    "newOrderButton": "New Order",
+    "searchPlaceholder": "Search by order ID, customer name, or status..."
+  },
+  "table": {
+    "colOrderId": "Order ID",
+    "colCustomer": "Customer",
+    "colItems": "Items",
+    "colDate": "Date",
+    "colTotal": "Total",
+    "colStatus": "Status",
+    "loading": "Loading orders...",
+    "emptyTitle": "No orders found",
+    "emptySubtitle": "Try adjusting your search or filter.",
+    "showingCount": "Showing {{shown}} of {{total}} orders"
+  },
+  "row": {
+    "viewAction": "View",
+    "editAction": "Edit",
+    "cancelAction": "Cancel"
+  },
+  "itemCount": {
+    "items_one": "{{count}} item",
+    "items_other": "{{count}} items",
+    "units_one": "{{count}} unit",
+    "units_other": "{{count}} units"
+  },
+  "drawer": {
+    "channelOrder": "{{channel}} Order",
+    "orderDetailsLabel": "Order Details",
+    "tableLabel": "Table",
+    "fulfillmentLabel": "Fulfillment",
+    "emptyValue": "—",
+    "phoneLabel": "Phone",
+    "orderItemsLabel": "Order Items",
+    "lineCount_one": "{{count}} line",
+    "lineCount_other": "{{count}} lines",
+    "unitPriceEach": "{{price}} each",
+    "orderTotalLabel": "Order Total",
+    "contactCustomerButton": "Contact Customer"
+  },
+  "deleteModal": {
+    "title": "Cancel Order",
+    "description": "This will mark the order as {{status}}.",
+    "confirmMessage": "Cancel {{orderId}} for {{customerName}}?",
+    "keepButton": "Keep Order",
+    "confirmButton": "Cancel Order"
+  },
+  "createModal": {
+    "title": "New Order",
+    "subtitle": "Enter customer details and order items.",
+    "customerSectionLabel": "Customer",
+    "nameLabel": "Name",
+    "namePlaceholder": "Customer name",
+    "phoneLabel": "Phone",
+    "phonePlaceholder": "+1 (555) 000-0000",
+    "channelLabel": "Channel",
+    "channelPhone": "Phone",
+    "channelDineIn": "Dine-in",
+    "statusLabel": "Initial Status",
+    "tableLabel": "Table",
+    "tablePlaceholder": "Select a table...",
+    "fulfillmentLabel": "Fulfillment",
+    "fulfillmentPickup": "Pickup",
+    "fulfillmentDelivery": "Delivery",
+    "itemsSectionLabel": "Items",
+    "addItemButton": "Add Item",
+    "colItemName": "Item Name",
+    "colQty": "Qty",
+    "colPrice": "Price",
+    "itemNamePlaceholder": "e.g. Double Smash Burger",
+    "qtyPlaceholder": "1",
+    "pricePlaceholder": "0.00",
+    "totalLabel": "Total",
+    "fixErrors": "Fix errors above.",
+    "cancelButton": "Cancel",
+    "submitButton": "Create Order",
+    "errors": {
+      "nameRequired": "Name required.",
+      "phoneRequired": "Phone required.",
+      "tableRequired": "Table required.",
+      "itemNameRequired": "Item name required.",
+      "priceRequired": "Price required."
+    }
+  }
+}
