@@ -20,6 +20,8 @@ import enHome from "./locales/en/home.json";
 import ptBrHome from "./locales/pt-BR/home.json";
 import enAnalytics from "./locales/en/analytics.json";
 import ptBrAnalytics from "./locales/pt-BR/analytics.json";
+import enAdministration from "./locales/en/administration.json";
+import ptBrAdministration from "./locales/pt-BR/administration.json";
 
 export const resources = {
   en: {
@@ -33,6 +35,7 @@ export const resources = {
     tables: enTables,
     home: enHome,
     analytics: enAnalytics,
+    administration: enAdministration,
   },
   "pt-BR": {
     common: ptBrCommon,
@@ -45,6 +48,7 @@ export const resources = {
     tables: ptBrTables,
     home: ptBrHome,
     analytics: ptBrAnalytics,
+    administration: ptBrAdministration,
   },
 } as const;
 
