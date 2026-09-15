@@ -1,0 +1,54 @@
+{
+  "header": {
+    "title": "Preferências",
+    "subtitle": "Personalize sua interface, configurações regionais e comportamento de exibição."
+  },
+  "sections": {
+    "interface": { "title": "Interface", "description": "Opções de tema visual e densidade de exibição." },
+    "regional": { "title": "Regional", "description": "Fuso horário, idioma e preferências de localização." },
+    "dataFormatting": { "title": "Formatação de Dados", "description": "Convenções de exibição de data, moeda e números." },
+    "layout": { "title": "Layout", "description": "Configure o comportamento dos painéis e da barra lateral." }
+  },
+  "rows": {
+    "colorTheme": { "label": "Tema de Cor", "sub": "Controla o modo visual global do painel." },
+    "fontSize": { "label": "Tamanho da Fonte", "sub": "Tamanho de texto base para todos os elementos da interface." },
+    "compactMode": { "label": "Modo Compacto", "sub": "Reduz o espaçamento e o preenchimento para maior densidade de informação." },
+    "denseTableRows": { "label": "Linhas de Tabela Densas", "sub": "Exiba mais linhas de pedidos por tela na tabela de dados." },
+    "reduceMotion": { "label": "Reduzir Movimento", "sub": "Desative transições e animações não essenciais." },
+    "language": { "label": "Idioma", "sub": "Idioma do texto e conteúdo da interface." },
+    "timeZone": { "label": "Fuso Horário", "sub": "Usado para carimbos de data/hora e exibições de agendamento de pedidos." },
+    "dateFormat": { "label": "Formato de Data", "sub": "Como as datas são exibidas nos registros de pedidos e transações." },
+    "currency": { "label": "Moeda", "sub": "Moeda padrão para preços, faturas e totais." },
+    "sidebarNavigation": { "label": "Navegação da Barra Lateral", "sub": "Fixe a barra lateral ou recolha para o modo somente ícones." }
+  },
+  "themeOptions": {
+    "light": "Claro",
+    "dark": "Escuro",
+    "system": "Sistema"
+  },
+  "sidebarOptions": {
+    "expanded": "Expandida",
+    "collapsed": "Somente ícones",
+    "auto": "Automático"
+  },
+  "select": {
+    "placeholder": "Selecione uma opção"
+  },
+  "footer": {
+    "note": "As preferências são aplicadas imediatamente após salvar.",
+    "saved": "Salvo!",
+    "save": "Salvar Preferências"
+  },
+  "storefrontSection": {
+    "title": "Loja Virtual e White-label",
+    "description": "Configure a identidade da sua loja voltada ao cliente.",
+    "previewStore": "Pré-visualizar Loja",
+    "storeLogo": "Logotipo da Loja",
+    "upload": "Enviar",
+    "logoHint": "PNG · 1:1",
+    "coverBanner": "Banner de Capa",
+    "coverUploadHint": "Clique para enviar a imagem de capa",
+    "coverHint": "JPG ou PNG · mín. 800×200px",
+    "brandPrimaryColor": "Cor Primária da Marca"
+  }
+}

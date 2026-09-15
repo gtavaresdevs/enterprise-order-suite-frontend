@@ -22,6 +22,10 @@ import enAnalytics from "./locales/en/analytics.json";
 import ptBrAnalytics from "./locales/pt-BR/analytics.json";
 import enAdministration from "./locales/en/administration.json";
 import ptBrAdministration from "./locales/pt-BR/administration.json";
+import enNotifications from "./locales/en/notifications.json";
+import ptBrNotifications from "./locales/pt-BR/notifications.json";
+import enPreferences from "./locales/en/preferences.json";
+import ptBrPreferences from "./locales/pt-BR/preferences.json";
 
 export const resources = {
   en: {
@@ -36,6 +40,8 @@ export const resources = {
     home: enHome,
     analytics: enAnalytics,
     administration: enAdministration,
+    notifications: enNotifications,
+    preferences: enPreferences,
   },
   "pt-BR": {
     common: ptBrCommon,
@@ -49,6 +55,8 @@ export const resources = {
     home: ptBrHome,
     analytics: ptBrAnalytics,
     administration: ptBrAdministration,
+    notifications: ptBrNotifications,
+    preferences: ptBrPreferences,
   },
 } as const;
 
