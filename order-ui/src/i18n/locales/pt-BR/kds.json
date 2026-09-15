@@ -1,0 +1,24 @@
+{
+  "loading": "Carregando Cozinha...",
+  "header": {
+    "station": "Estação de Grelha",
+    "timeFallback": "14:32",
+    "recallLastTicket": "Reabrir Último Pedido",
+    "pauseStation": "Pausar Estação"
+  },
+  "filters": {
+    "allTickets": "Todos os Pedidos ({{count}})",
+    "dineIn": "Presencial ({{count}})",
+    "delivery": "Entrega ({{count}})",
+    "pickup": "Retirada ({{count}})"
+  },
+  "summary": {
+    "title": "Resumo de Produção",
+    "subtitle": "Todo o Dia (Pedidos Ativos)"
+  },
+  "actions": {
+    "startPreparing": "Iniciar Preparo",
+    "markReady": "Marcar como Pronto",
+    "completeOrder": "Concluir Pedido"
+  }
+}

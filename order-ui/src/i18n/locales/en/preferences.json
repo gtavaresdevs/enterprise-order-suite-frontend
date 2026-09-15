@@ -1,0 +1,56 @@
+{
+  "header": {
+    "title": "Preferences",
+    "subtitle": "Customize your interface, regional settings, and display behavior."
+  },
+  "sections": {
+    "interface": { "title": "Interface", "description": "Visual theme and display density options." },
+    "regional": { "title": "Regional", "description": "Time zone, language, and localization preferences." },
+    "dataFormatting": { "title": "Data Formatting", "description": "Date, currency, and numerical display conventions." },
+    "layout": { "title": "Layout", "description": "Configure dashboard panel and sidebar behavior." }
+  },
+  "rows": {
+    "colorTheme": { "label": "Color Theme", "sub": "Controls the global visual mode of the dashboard." },
+    "fontSize": { "label": "Font Size", "sub": "Base text size for all UI elements." },
+    "compactMode": { "label": "Compact Mode", "sub": "Reduce padding and spacing for higher information density." },
+    "denseTableRows": { "label": "Dense Table Rows", "sub": "Show more order rows per screen in the data table." },
+    "reduceMotion": { "label": "Reduce Motion", "sub": "Disable non-essential transitions and animations." },
+    "language": { "label": "Language", "sub": "Interface text and content language." },
+    "timeZone": { "label": "Time Zone", "sub": "Used for order timestamps and scheduling displays." },
+    "dateFormat": { "label": "Date Format", "sub": "How dates are displayed across order and transaction records." },
+    "currency": { "label": "Currency", "sub": "Default currency for pricing, invoices, and totals." },
+    "sidebarNavigation": { "label": "Sidebar Navigation", "sub": "Pin the sidebar or collapse to icon-only mode." }
+  },
+  "themeOptions": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "sidebarOptions": {
+    "expanded": "Expanded",
+    "collapsed": "Icons only",
+    "auto": "Auto"
+  },
+  "select": {
+    "placeholder": "Select option"
+  },
+  "footer": {
+    "note": "Preferences are applied immediately after saving.",
+    "saved": "Saved!",
+    "save": "Save Preferences"
+  },
+  "storefrontSection": {
+    "title": "Storefront & White-label",
+    "description": "Configure your public customer-facing store identity.",
+    "previewStore": "Preview Store",
+    "storeLogo": "Store Logo",
+    "upload": "Upload",
+    "logoHint": "PNG · 1:1",
+    "coverBanner": "Cover Banner",
+    "coverUploadHint": "Click to upload cover image",
+    "coverHint": "JPG or PNG · min 800×200px",
+    "brandPrimaryColor": "Brand Primary Color",
+    "logoAlt": "Logo",
+    "coverAlt": "Cover"
+  }
+}

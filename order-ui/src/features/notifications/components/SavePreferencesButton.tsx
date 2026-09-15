@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Save, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -7,6 +8,8 @@ interface SavePreferencesButtonProps {
 }
 
 export function SavePreferencesButton({ isSaved, onSave }: SavePreferencesButtonProps) {
+    const { t } = useTranslation("notifications");
+
     return (
         <Button
             onClick={onSave}
@@ -16,7 +19,7 @@ export function SavePreferencesButton({ isSaved, onSave }: SavePreferencesButton
                 }`}
         >
             {isSaved ? <CheckCircle2 className="w-4 h-4" /> : <Save className="w-4 h-4" />}
-            {isSaved ? "Preferences Saved" : "Save Preferences"}
+            {isSaved ? t("saveButton.saved") : t("saveButton.save")}
         </Button>
     );
 }

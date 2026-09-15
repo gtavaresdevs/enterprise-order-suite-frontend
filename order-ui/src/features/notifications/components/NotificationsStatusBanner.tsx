@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Bell, BellOff } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
@@ -16,6 +17,8 @@ export function NotificationsStatusBanner({
     totalCount,
     onToggleMute,
 }: NotificationsStatusBannerProps) {
+    const { t } = useTranslation("notifications");
+
     return (
         <Card className={globalMute ? "bg-slate-950 border-slate-800 text-slate-50" : "bg-white border-slate-100"}>
             <CardContent className="p-4 flex items-center justify-between">
@@ -27,12 +30,12 @@ export function NotificationsStatusBanner({
                     )}
                     <div className="flex flex-col gap-0.5">
                         <p className={`text-sm font-semibold ${globalMute ? "text-slate-50" : "text-slate-800"}`}>
-                            {globalMute ? "All notifications muted" : "Notifications active"}
+                            {globalMute ? t("statusBanner.mutedTitle") : t("statusBanner.activeTitle")}
                         </p>
                         <p className={`text-xs ${globalMute ? "text-slate-400" : "text-slate-500"}`}>
                             {globalMute
-                                ? "You will not receive any alerts until this is turned off."
-                                : `${activeCount} of ${totalCount} notification types enabled.`}
+                                ? t("statusBanner.mutedDescription")
+                                : t("statusBanner.activeDescription", { active: activeCount, total: totalCount })}
                         </p>
                     </div>
                 </div>
@@ -41,7 +44,7 @@ export function NotificationsStatusBanner({
                         htmlFor="global-mute-switch"
                         className={`text-xs font-medium cursor-pointer ${globalMute ? "text-slate-400" : "text-slate-500"}`}
                     >
-                        {globalMute ? "Unmute all" : "Mute all"}
+                        {globalMute ? t("statusBanner.unmuteAll") : t("statusBanner.muteAll")}
                     </Label>
                     <Switch
                         id="global-mute-switch"

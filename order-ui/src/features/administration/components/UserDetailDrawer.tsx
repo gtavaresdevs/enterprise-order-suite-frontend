@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
 import { X, Mail, Shield } from "lucide-react";
 import { teamService } from "@/features/administration/services/team.service";
 import { useTeam } from "@/features/administration/hooks/useTeam";
 import { useRoles } from "@/features/administration/hooks/useRoles";
+import { useFormat } from "@/features/preferences/hooks/useFormat";
 import { StatusPill } from "./StatusPill";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,6 +20,7 @@ import {
 import type { UserDetail, RoleOption } from "@/types/administration";
 
 export function UserDetailDrawer({ userId, onClose }: { userId: number; onClose: () => void }) {
+    const { t } = useTranslation("administration");
     const { data: user, isLoading } = useQuery({
         queryKey: ["users", "detail", userId],
         queryFn: () => teamService.getUser(userId),
@@ -41,7 +44,7 @@ export function UserDetailDrawer({ userId, onClose }: { userId: number; onClose:
             <>
                 <div className="fixed inset-0 bg-slate-950/30 backdrop-blur-[2px] z-40" onClick={onClose} />
                 <div className="fixed right-0 top-0 h-full w-full max-w-[440px] bg-white z-50 shadow-2xl flex items-center justify-center">
-                    <p className="text-sm text-slate-400 font-mono animate-pulse">Loading user...</p>
+                    <p className="text-sm text-slate-400 font-mono animate-pulse">{t("userDetail.loading")}</p>
                 </div>
             </>
         );
@@ -106,6 +109,8 @@ function UserDetailContent({
     resendSetup,
     isResendingSetup,
 }: UserDetailContentProps) {
+    const { t } = useTranslation("administration");
+    const { formatDate } = useFormat();
     const [firstName, setFirstName] = useState(user.firstName);
     const [lastName, setLastName] = useState(user.lastName);
     const [email, setEmail] = useState(user.email);
@@ -117,7 +122,7 @@ function UserDetailContent({
         try {
             await update({ id: userId, request: { email, firstName, lastName } });
         } catch {
-            setSaveError("Couldn't save changes. Check the email isn't already in use.");
+            setSaveError(t("userDetail.saveError"));
         }
     }
 
@@ -126,7 +131,7 @@ function UserDetailContent({
         try {
             await setRole({ id: userId, request: { role } });
         } catch {
-            setRoleError("Couldn't update the role.");
+            setRoleError(t("userDetail.roleUpdateError"));
         }
     }
 
@@ -140,7 +145,7 @@ function UserDetailContent({
                         <div className="flex items-center gap-2 mt-1">
                             <StatusPill active={user.active} />
                             <span className="text-xs text-slate-400 font-mono">
-                                Joined {new Date(user.createdAt).toLocaleDateString()}
+                                {t("userDetail.joinedLabel", { date: formatDate(user.createdAt) })}
                             </span>
                         </div>
                     </div>
@@ -151,7 +156,7 @@ function UserDetailContent({
 
                 <div className="flex-1 overflow-y-auto px-6 py-5 flex flex-col gap-5">
                     <div className="flex flex-col gap-1.5">
-                        <Label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Email</Label>
+                        <Label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">{t("userDetail.emailLabel")}</Label>
                         <div className="relative">
                             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
                             <Input value={email} onChange={(e) => setEmail(e.target.value)} className="pl-8 h-9 rounded-[8px] bg-slate-50 border-slate-200" />
@@ -159,11 +164,11 @@ function UserDetailContent({
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                         <div className="flex flex-col gap-1.5">
-                            <Label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">First name</Label>
+                            <Label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">{t("userDetail.firstNameLabel")}</Label>
                             <Input value={firstName} onChange={(e) => setFirstName(e.target.value)} className="h-9 rounded-[8px] bg-slate-50 border-slate-200" />
                         </div>
                         <div className="flex flex-col gap-1.5">
-                            <Label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">Last name</Label>
+                            <Label className="text-xs font-semibold text-slate-600 uppercase tracking-wide">{t("userDetail.lastNameLabel")}</Label>
                             <Input value={lastName} onChange={(e) => setLastName(e.target.value)} className="h-9 rounded-[8px] bg-slate-50 border-slate-200" />
                         </div>
                     </div>
@@ -172,7 +177,7 @@ function UserDetailContent({
                         disabled={isUpdating || !email.trim()}
                         className="h-9 rounded-[8px] bg-slate-950 text-slate-50 border-slate-800 shadow-inner hover:bg-slate-800"
                     >
-                        {isUpdating ? "Saving..." : "Save changes"}
+                        {isUpdating ? t("userDetail.savingButton") : t("userDetail.saveButton")}
                     </Button>
                     {saveError && <p className="text-xs text-red-600">{saveError}</p>}
 
@@ -180,7 +185,7 @@ function UserDetailContent({
 
                     <div className="flex flex-col gap-1.5">
                         <Label className="text-xs font-semibold text-slate-600 uppercase tracking-wide flex items-center gap-1.5">
-                            <Shield className="w-3.5 h-3.5" /> Role
+                            <Shield className="w-3.5 h-3.5" /> {t("userDetail.roleLabel")}
                         </Label>
                         <Select
                             value={user.role}
@@ -197,7 +202,7 @@ function UserDetailContent({
                             </SelectContent>
                         </Select>
                         {rolesError && (
-                            <p className="text-xs text-amber-600">Couldn't load role options.</p>
+                            <p className="text-xs text-amber-600">{t("userDetail.rolesLoadError")}</p>
                         )}
                         {roleError && <p className="text-xs text-red-600">{roleError}</p>}
                     </div>
@@ -212,7 +217,7 @@ function UserDetailContent({
                                 disabled={isDeactivating}
                                 className="h-9 rounded-[8px] border-red-200 text-red-600 hover:bg-red-50"
                             >
-                                {isDeactivating ? "Deactivating..." : "Deactivate"}
+                                {isDeactivating ? t("userDetail.deactivatingButton") : t("userDetail.deactivateButton")}
                             </Button>
                         ) : (
                             <Button
@@ -221,7 +226,7 @@ function UserDetailContent({
                                 disabled={isReactivating}
                                 className="h-9 rounded-[8px] border-emerald-200 text-emerald-600 hover:bg-emerald-50"
                             >
-                                {isReactivating ? "Reactivating..." : "Reactivate"}
+                                {isReactivating ? t("userDetail.reactivatingButton") : t("userDetail.reactivateButton")}
                             </Button>
                         )}
                         <Button
@@ -230,7 +235,7 @@ function UserDetailContent({
                             disabled={isResendingSetup}
                             className="h-9 rounded-[8px] border-slate-200 text-slate-600 hover:bg-slate-100"
                         >
-                            {isResendingSetup ? "Sending..." : "Resend password setup email"}
+                            {isResendingSetup ? t("userDetail.sendingButton") : t("userDetail.resendSetupButton")}
                         </Button>
                     </div>
                 </div>

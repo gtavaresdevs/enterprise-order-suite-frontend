@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Save, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -7,10 +8,12 @@ interface PreferencesFooterProps {
 }
 
 export function PreferencesFooter({ isSaved, onSave }: PreferencesFooterProps) {
+    const { t } = useTranslation("preferences");
+
     return (
         <div className="mt-6 flex items-center justify-between">
             <p className="text-xs text-slate-400 font-mono">
-                Preferences are applied immediately after saving.
+                {t("footer.note")}
             </p>
             <Button
                 onClick={onSave}
@@ -20,7 +23,7 @@ export function PreferencesFooter({ isSaved, onSave }: PreferencesFooterProps) {
                     }`}
             >
                 {isSaved ? <CheckCircle2 className="w-4 h-4" /> : <Save className="w-4 h-4" />}
-                {isSaved ? "Saved!" : "Save Preferences"}
+                {isSaved ? t("footer.saved") : t("footer.save")}
             </Button>
         </div>
     );

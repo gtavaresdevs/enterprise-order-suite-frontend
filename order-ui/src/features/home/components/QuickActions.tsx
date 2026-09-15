@@ -1,10 +1,22 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 import { ArrowRight, ChevronRight, Check, Copy } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { ACTION_CARDS } from "../constants/home.constants";
 
+// ACTION_CARDS entries are identified by their destination/copy target so their
+// display copy can be looked up in the "home" i18n namespace without needing
+// the mock constants file itself to carry translation keys.
+const ACTION_TRANSLATION_KEY: Record<string, string> = {
+    "/orders": "newOrder",
+    "/kds": "openKds",
+    "/menu": "viewMenu",
+    "/storefront": "copyLink",
+};
+
 export function QuickActions() {
+    const { t } = useTranslation("home");
     const navigate = useNavigate();
     const [copiedLabel, setCopiedLabel] = useState<string | null>(null);
 
@@ -24,11 +36,11 @@ export function QuickActions() {
 
             <div className="flex items-center justify-between">
                 <h2 className="text-sm font-semibold text-slate-700 uppercase tracking-wider">
-                    Quick Actions
+                    {t("quickActions.title")}
                 </h2>
 
                 <span className="text-xs text-slate-400 font-mono">
-                    {ACTION_CARDS.length} pathways
+                    {t("quickActions.pathwaysCount", { count: ACTION_CARDS.length })}
                 </span>
             </div>
 
@@ -36,6 +48,9 @@ export function QuickActions() {
                 {ACTION_CARDS.map((card) => {
                     const Icon = card.icon;
                     const isCopied = copiedLabel === card.label;
+                    const actionKey = ACTION_TRANSLATION_KEY[card.to ?? card.copyValue ?? ""] ?? "newOrder";
+                    const label = t(`quickActions.actions.${actionKey}.title`);
+                    const description = t(`quickActions.actions.${actionKey}.description`);
 
                     return (
                         <Card
@@ -65,19 +80,19 @@ export function QuickActions() {
 
                                 <div className="space-y-1.5">
                                     <h3 className="text-sm font-semibold text-slate-800 leading-snug">
-                                        {card.label}
+                                        {label}
                                     </h3>
 
                                     <p className="text-xs text-slate-400 leading-relaxed">
-                                        {card.description}
+                                        {description}
                                     </p>
                                 </div>
 
                                 <div className="flex items-center gap-1 text-xs font-medium text-slate-500 group-hover:text-slate-700 transition-colors">
                                     {card.copyValue ? (
-                                        isCopied ? "Copied!" : "Copy link"
+                                        isCopied ? t("quickActions.copied") : t("quickActions.copyLinkAction")
                                     ) : (
-                                        <>Navigate <ChevronRight className="w-3 h-3" /></>
+                                        <>{t("quickActions.navigate")} <ChevronRight className="w-3 h-3" /></>
                                     )}
                                 </div>
 

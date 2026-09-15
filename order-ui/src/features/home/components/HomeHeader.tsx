@@ -1,11 +1,13 @@
 import { Layers } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useTimestamp } from "../hooks/useTimestamp";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 
 export function HomeHeader() {
-    const { greeting, dateStr, timeStr } = useTimestamp();
+    const { t } = useTranslation("home");
+    const { greetingPeriod, dateStr, timeStr } = useTimestamp();
     const { user } = useAuth();
-    const displayName = [user?.firstName, user?.lastName].filter(Boolean).join(" ") || user?.email || "there";
+    const displayName = [user?.firstName, user?.lastName].filter(Boolean).join(" ") || user?.email || t("header.fallbackName");
 
     return (
         <div className="flex items-start justify-between mb-8">
@@ -17,12 +19,12 @@ export function HomeHeader() {
                     </div>
 
                     <span className="text-xs font-medium text-slate-400 uppercase tracking-widest">
-                        Enterprise Order Suite
+                        {t("header.brandLabel")}
                     </span>
                 </div>
 
                 <h1 className="text-2xl font-semibold text-slate-900 leading-tight">
-                    {greeting}, <span className="text-slate-500">{displayName}</span>
+                    {t(`header.greeting.${greetingPeriod}`, { name: displayName })}
                 </h1>
 
                 <div className="flex items-center gap-2">

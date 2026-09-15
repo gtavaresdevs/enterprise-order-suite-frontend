@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { X, Package, Tag, DollarSign, Boxes } from "lucide-react";
 import { CATEGORIES } from "../constants/menu.constants";
 import { Input } from "@/components/ui/input";
@@ -16,6 +17,7 @@ interface MenuItemModalProps {
 }
 
 export function MenuItemModal({ item, onClose, onSubmit, isSubmitting }: MenuItemModalProps) {
+    const { t } = useTranslation("menu");
     const isEditing = item !== undefined;
     const [name, setName] = useState(item?.name ?? "");
     const [desc, setDesc] = useState(item?.description ?? "");
@@ -23,9 +25,14 @@ export function MenuItemModal({ item, onClose, onSubmit, isSubmitting }: MenuIte
     const [category, setCat] = useState(item?.category ?? CATEGORIES[1]);
     const [stockQuantity, setStockQuantity] = useState(item ? String(item.stockQuantity) : "0");
     const [available, setAvailable] = useState(item?.available ?? true);
+    const [nameError, setNameError] = useState(false);
 
     const handleSubmit = () => {
-        if (!name.trim()) return;
+        if (!name.trim()) {
+            setNameError(true);
+            return;
+        }
+        setNameError(false);
         onSubmit({
             name,
             description: desc,
@@ -49,8 +56,8 @@ export function MenuItemModal({ item, onClose, onSubmit, isSubmitting }: MenuIte
 
                     <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
                         <div>
-                            <h2 className="text-base font-semibold text-slate-900 font-outfit">{isEditing ? "Edit Menu Item" : "Add Menu Item"}</h2>
-                            <p className="text-xs text-slate-400 mt-0.5 font-mono">{isEditing ? "Update this item's listing." : "Add a new item to the menu."}</p>
+                            <h2 className="text-base font-semibold text-slate-900 font-outfit">{isEditing ? t("modal.titleEdit") : t("modal.titleCreate")}</h2>
+                            <p className="text-xs text-slate-400 mt-0.5 font-mono">{isEditing ? t("modal.subtitleEdit") : t("modal.subtitleCreate")}</p>
                         </div>
                         <Button variant="ghost" size="icon" onClick={onClose} className="w-8 h-8 rounded-[8px] text-slate-400 hover:bg-slate-100 hover:text-slate-700">
                             <X className="w-4 h-4" />
@@ -59,27 +66,33 @@ export function MenuItemModal({ item, onClose, onSubmit, isSubmitting }: MenuIte
 
                     <div className="px-6 py-5 space-y-4">
                         <div>
-                            <Label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5 font-mono">Photo</Label>
+                            <Label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5 font-mono">{t("modal.photoLabel")}</Label>
                             <div className="h-32 rounded-[8px] border-2 border-dashed border-slate-200 bg-slate-50 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-slate-100 hover:border-slate-300 transition-all">
                                 <Package className="w-6 h-6 text-slate-300" />
-                                <p className="text-xs text-slate-400">Click to upload or drag & drop</p>
-                                <p className="text-[10px] text-slate-300 font-mono">PNG, JPG · Recommended 4:3 ratio</p>
+                                <p className="text-xs text-slate-400">{t("modal.photoUploadHint")}</p>
+                                <p className="text-[10px] text-slate-300 font-mono">{t("modal.photoFormatHint")}</p>
                             </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-3">
                             <div className="col-span-2">
-                                <Label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5 font-mono">Item Name</Label>
+                                <Label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5 font-mono">{t("modal.nameLabel")}</Label>
                                 <Input
-                                    placeholder="e.g. Double Smash Burger"
+                                    placeholder={t("modal.namePlaceholder")}
                                     value={name}
-                                    onChange={(e) => setName(e.target.value)}
+                                    onChange={(e) => {
+                                        setName(e.target.value);
+                                        if (nameError) setNameError(false);
+                                    }}
                                     className={inputCls}
                                 />
+                                {nameError && (
+                                    <p className="text-xs text-red-500 mt-1">{t("modal.errors.nameRequired")}</p>
+                                )}
                             </div>
 
                             <div>
-                                <Label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5 font-mono">Category</Label>
+                                <Label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5 font-mono">{t("modal.categoryLabel")}</Label>
                                 <div className="relative">
                                     <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
                                     <select
@@ -95,7 +108,7 @@ export function MenuItemModal({ item, onClose, onSubmit, isSubmitting }: MenuIte
                             </div>
 
                             <div>
-                                <Label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5 font-mono">Price</Label>
+                                <Label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5 font-mono">{t("modal.priceLabel")}</Label>
                                 <div className="relative">
                                     <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
                                     <Input
@@ -111,7 +124,7 @@ export function MenuItemModal({ item, onClose, onSubmit, isSubmitting }: MenuIte
                             </div>
 
                             <div>
-                                <Label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5 font-mono">Stock Quantity</Label>
+                                <Label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5 font-mono">{t("modal.stockQuantityLabel")}</Label>
                                 <div className="relative">
                                     <Boxes className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
                                     <Input
@@ -127,15 +140,15 @@ export function MenuItemModal({ item, onClose, onSubmit, isSubmitting }: MenuIte
                             </div>
 
                             <div className="col-span-2 flex items-center justify-between rounded-[8px] border border-slate-200 bg-slate-50 px-3 h-9">
-                                <span className="text-xs font-medium text-slate-600">Available for sale</span>
+                                <span className="text-xs font-medium text-slate-600">{t("modal.availableToggleLabel")}</span>
                                 <Switch checked={available} onCheckedChange={setAvailable} />
                             </div>
 
                             <div className="col-span-2">
-                                <Label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5 font-mono">Description</Label>
+                                <Label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5 font-mono">{t("modal.descriptionLabel")}</Label>
                                 <Textarea
                                     rows={3}
-                                    placeholder="Brief description of the item..."
+                                    placeholder={t("modal.descriptionPlaceholder")}
                                     value={desc}
                                     onChange={(e) => setDesc(e.target.value)}
                                     className="rounded-[8px] bg-slate-50 border-slate-200 focus-visible:ring-slate-950/10 resize-none"
@@ -146,14 +159,14 @@ export function MenuItemModal({ item, onClose, onSubmit, isSubmitting }: MenuIte
 
                     <div className="px-6 py-4 border-t border-slate-100 bg-slate-50/60 flex justify-end gap-2 rounded-b-[8px]">
                         <Button variant="outline" onClick={onClose} className="rounded-[8px] h-9 border-slate-200 text-slate-600 hover:bg-slate-100">
-                            Cancel
+                            {t("modal.cancelButton")}
                         </Button>
                         <Button
                             onClick={handleSubmit}
-                            disabled={isSubmitting || !name.trim()}
+                            disabled={isSubmitting}
                             className="rounded-[8px] h-9 bg-slate-950 text-slate-50 border-slate-800 shadow-inner hover:bg-slate-800 transition-all"
                         >
-                            {isSubmitting ? "Saving..." : isEditing ? "Save Changes" : "Add to Menu"}
+                            {isSubmitting ? t("modal.savingButton") : isEditing ? t("modal.saveChangesButton") : t("modal.addToMenuButton")}
                         </Button>
                     </div>
                 </div>

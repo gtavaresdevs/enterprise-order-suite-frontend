@@ -1,0 +1,49 @@
+{
+  "feature": {
+    "brandLabel": "Enterprise Order Suite",
+    "title": "Menu",
+    "subtitle": "The single catalog served on the storefront, QR tables, and staff order entry.",
+    "addItemButton": "Add Menu Item",
+    "searchPlaceholder": "Search menu items by name, category, or description...",
+    "stats": {
+      "totalItems": "Total Items",
+      "available": "Available",
+      "lowStock": "Low Stock"
+    },
+    "loading": "Loading menu...",
+    "emptyText": "No menu items match your search.",
+    "itemsShown_one": "{{count}} item shown",
+    "itemsShown_other": "{{count}} items shown"
+  },
+  "card": {
+    "eightySixed": "86'd",
+    "lowStockBadge": "Low stock",
+    "addonCount_one": "{{count}} addon",
+    "addonCount_other": "{{count}} addons",
+    "available": "Available"
+  },
+  "modal": {
+    "titleCreate": "Add Menu Item",
+    "titleEdit": "Edit Menu Item",
+    "subtitleCreate": "Add a new item to the menu.",
+    "subtitleEdit": "Update this item's listing.",
+    "photoLabel": "Photo",
+    "photoUploadHint": "Click to upload or drag & drop",
+    "photoFormatHint": "PNG, JPG · Recommended 4:3 ratio",
+    "nameLabel": "Item Name",
+    "namePlaceholder": "e.g. Double Smash Burger",
+    "categoryLabel": "Category",
+    "priceLabel": "Price",
+    "stockQuantityLabel": "Stock Quantity",
+    "availableToggleLabel": "Available for sale",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Brief description of the item...",
+    "cancelButton": "Cancel",
+    "savingButton": "Saving...",
+    "saveChangesButton": "Save Changes",
+    "addToMenuButton": "Add to Menu",
+    "errors": {
+      "nameRequired": "Item name is required."
+    }
+  }
+}

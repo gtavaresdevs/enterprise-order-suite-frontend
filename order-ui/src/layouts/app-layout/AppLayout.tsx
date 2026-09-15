@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Sidebar, SidebarContent } from "./Sidebar";
 import { MobileHeader } from "./MobileHeader";
 import { GlobalHeader } from "./GlobalHeader";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 
 export function AppLayout() {
+    const { t } = useTranslation("shell");
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     return (
@@ -17,7 +19,7 @@ export function AppLayout() {
             {/* ── Mobile Sidebar (Drawer via ShadCN) ── */}
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
                 <SheetContent side="left" className="w-[220px] p-0 bg-card border-r-border">
-                    <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                    <SheetTitle className="sr-only">{t("mobileHeader.openMenu")}</SheetTitle>
                     <SidebarContent onNavigate={() => setIsMobileMenuOpen(false)} />
                 </SheetContent>
             </Sheet>

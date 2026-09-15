@@ -1,0 +1,100 @@
+{
+  "status": {
+    "new": "Novo",
+    "preparing": "Preparando",
+    "ready": "Pronto",
+    "completed": "Concluído",
+    "cancelled": "Cancelado"
+  },
+  "filters": {
+    "all": "Todos"
+  },
+  "feature": {
+    "brandLabel": "Enterprise Order Suite",
+    "title": "Operações de Pedidos",
+    "subtitle": "Gerencie e acompanhe pedidos ativos em todos os canais em tempo real.",
+    "newOrderButton": "Novo Pedido",
+    "searchPlaceholder": "Buscar por ID do pedido, nome do cliente ou status..."
+  },
+  "table": {
+    "colOrderId": "ID do Pedido",
+    "colCustomer": "Cliente",
+    "colItems": "Itens",
+    "colDate": "Data",
+    "colTotal": "Total",
+    "colStatus": "Status",
+    "loading": "Carregando pedidos...",
+    "emptyTitle": "Nenhum pedido encontrado",
+    "emptySubtitle": "Tente ajustar sua busca ou filtro.",
+    "showingCount": "Mostrando {{shown}} de {{total}} pedidos"
+  },
+  "row": {
+    "viewAction": "Visualizar",
+    "editAction": "Editar",
+    "cancelAction": "Cancelar"
+  },
+  "itemCount": {
+    "items_one": "{{count}} item",
+    "items_other": "{{count}} itens",
+    "units_one": "{{count}} unidade",
+    "units_other": "{{count}} unidades"
+  },
+  "drawer": {
+    "channelOrder": "Pedido {{channel}}",
+    "orderDetailsLabel": "Detalhes do Pedido",
+    "tableLabel": "Mesa",
+    "fulfillmentLabel": "Modalidade",
+    "emptyValue": "—",
+    "phoneLabel": "Telefone",
+    "orderItemsLabel": "Itens do Pedido",
+    "lineCount_one": "{{count}} item",
+    "lineCount_other": "{{count}} itens",
+    "unitPriceEach": "{{price}} cada",
+    "orderTotalLabel": "Total do Pedido",
+    "contactCustomerButton": "Contatar Cliente"
+  },
+  "deleteModal": {
+    "title": "Cancelar Pedido",
+    "description": "Isso marcará o pedido como {{status}}.",
+    "confirmMessage": "Cancelar {{orderId}} para {{customerName}}?",
+    "keepButton": "Manter Pedido",
+    "confirmButton": "Cancelar Pedido"
+  },
+  "createModal": {
+    "title": "Novo Pedido",
+    "subtitle": "Insira os dados do cliente e os itens do pedido.",
+    "customerSectionLabel": "Cliente",
+    "nameLabel": "Nome",
+    "namePlaceholder": "Nome do cliente",
+    "phoneLabel": "Telefone",
+    "phonePlaceholder": "+55 (11) 00000-0000",
+    "channelLabel": "Canal",
+    "channelPhone": "Telefone",
+    "channelDineIn": "Presencial",
+    "statusLabel": "Status Inicial",
+    "tableLabel": "Mesa",
+    "tablePlaceholder": "Selecione uma mesa...",
+    "fulfillmentLabel": "Modalidade",
+    "fulfillmentPickup": "Retirada",
+    "fulfillmentDelivery": "Entrega",
+    "itemsSectionLabel": "Itens",
+    "addItemButton": "Adicionar Item",
+    "colItemName": "Nome do Item",
+    "colQty": "Qtd",
+    "colPrice": "Preço",
+    "itemNamePlaceholder": "ex. Double Smash Burger",
+    "qtyPlaceholder": "1",
+    "pricePlaceholder": "0,00",
+    "totalLabel": "Total",
+    "fixErrors": "Corrija os erros acima.",
+    "cancelButton": "Cancelar",
+    "submitButton": "Criar Pedido",
+    "errors": {
+      "nameRequired": "Nome obrigatório.",
+      "phoneRequired": "Telefone obrigatório.",
+      "tableRequired": "Mesa obrigatória.",
+      "itemNameRequired": "Nome do item obrigatório.",
+      "priceRequired": "Preço obrigatório."
+    }
+  }
+}

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ChevronLeft, Minus, Plus } from "lucide-react";
 import type { CartItem } from "@/types/storefront";
 import type { MenuItem } from "@/types/menu";
@@ -12,6 +13,7 @@ export const BottomSheet = ({
     onClose: () => void;
     onAddToCart: (item: CartItem) => void;
 }) => {
+    const { t } = useTranslation("storefront");
     const [selectedSize, setSelectedSize] = useState(item.sizes?.[0]?.id ?? null);
     const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
     const [quantity, setQuantity] = useState(1);
@@ -49,7 +51,7 @@ export const BottomSheet = ({
 
                     {item.sizes && item.sizes.length > 0 && (
                         <div className="px-4 py-4 border-b border-slate-100">
-                            <p className="text-xs font-bold text-slate-700 uppercase tracking-wide mb-3">Size</p>
+                            <p className="text-xs font-bold text-slate-700 uppercase tracking-wide mb-3">{t("itemDetail.sizeLabel")}</p>
                             <div className="space-y-2">
                                 {item.sizes.map((size) => (
                                     <label key={size.id} className="flex items-center justify-between cursor-pointer group">
@@ -69,7 +71,7 @@ export const BottomSheet = ({
 
                     {item.addons && item.addons.length > 0 && (
                         <div className="px-4 py-4">
-                            <p className="text-xs font-bold text-slate-700 uppercase tracking-wide mb-3">Add-ons</p>
+                            <p className="text-xs font-bold text-slate-700 uppercase tracking-wide mb-3">{t("itemDetail.addonsLabel")}</p>
                             <div className="space-y-2">
                                 {item.addons.map((addon) => {
                                     const checked = selectedAddons.includes(addon.id);
@@ -97,7 +99,7 @@ export const BottomSheet = ({
                         <button onClick={() => setQuantity((q) => q + 1)} className="w-9 h-9 rounded-[8px] bg-slate-950 text-white flex items-center justify-center"><Plus className="w-4 h-4" /></button>
                     </div>
                     <button onClick={() => { onAddToCart({ menuId: item.id, name: item.name, price: unitPrice, quantity }); onClose(); }} className="w-full h-12 rounded-[8px] bg-slate-950 text-white font-semibold flex items-center justify-between px-4">
-                        <span>Add to Cart</span>
+                        <span>{t("itemDetail.addToCartButton")}</span>
                         <span className="font-mono">${total.toFixed(2)}</span>
                     </button>
                 </div>
