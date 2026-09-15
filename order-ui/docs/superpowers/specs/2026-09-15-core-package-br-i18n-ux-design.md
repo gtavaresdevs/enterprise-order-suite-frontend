@@ -40,6 +40,27 @@ screen, not a logistics/marketplace integration. What stays deferred to Package 
 Marketplace): per-zone/live-routed ETAs, driver assignment/tracking, and third-party marketplace
 (iFood/99Food/Rappi) integration.
 
+## Implementation phasing
+
+This spec covers four differently-sized efforts (i18n is large but mechanical, delivery zones are
+medium, comandas are large and architecturally new, polish is small/cosmetic). Following the same
+`writing-plans` → `using-git-worktrees` → `subagent-driven-development` → `finishing-a-development-
+branch` cycle each prior phase used, this becomes four sequential phases, each with its own plan
+file and merge, rather than one combined plan — a defect in one shouldn't block the others from
+landing:
+
+- **Phase 7 — i18n foundation**: react-i18next setup, full string extraction across every Core
+  feature, formatting (BRL/DD-MM-YYYY), terminology glossary. No new features — infra + swap only.
+- **Phase 8 — Payment method**: the shared PIX/Card/Cash picker (mock PIX QR/waiting screen, Card
+  crédito/débito, Cash troco) wired into `CheckoutFlow`/`CreateOrderModal`. Built before Phases 9
+  and 10 since both reuse this picker (Storefront checkout, comanda-closing).
+- **Phase 9 — Delivery zones**: Entrega/Retirada choice, bairro zone config + gating, ETA
+  estimate, WhatsApp business number + status-timeline/notification work.
+- **Phase 10 — Dine-in comandas**: `Comanda`/`Table.status`, seating flow, `/table-menu`
+  self-order + Chamar garçom/Pedir a conta, waiter mobile ordering, comanda closing.
+- **Phase 11 — Dashboard/visual polish**: KDS/Orders status-color unification, elapsed-time,
+  Home hierarchy, empty states, scoped visual polish.
+
 ## i18n architecture
 
 - **Library**: `react-i18next` + `i18next`. Locale strings under `src/i18n/locales/{en,pt-BR}/*.json`,
@@ -85,14 +106,50 @@ Marketplace): per-zone/live-routed ETAs, driver assignment/tracking, and third-p
   exists today — audit `CreateOrderModal`/customer profile fields for current phone inputs before
   adding a mask utility, to avoid a duplicate masking implementation.
 
-## Payment method (mock)
+## Payment method (mock, but real data — supersedes the earlier "local state only" call)
 
 `CheckoutFlow.tsx` (Storefront) currently hardcodes a single fake "Card ending in •••• 4242" row.
-Replace with a radio group: **PIX** (first/default), **Cartão** (card), **Dinheiro** (cash) — held
-as local component state (`paymentMethod`), not added to the shared `Order` type. `Order` has no
-payment modeling today; adding it prematurely is exactly the kind of plumbing the future Fiscal
-package should own once real gateway data exists. `CreateOrderModal` (staff-side Phone/Dine-in
-creation) gets the same three options for UI consistency, same local-state treatment.
+This is revised from an earlier draft of this spec: payment method is now real `Order` data (still
+entirely mock-backed, no gateway), not component-local state — because it needs to be visible to
+staff (Orders admin, comanda-closing) and carries operationally real sub-detail (which card type,
+how much change to bring), not just a UI choice that disappears after checkout.
+
+Every context in Core where a payment method is chosen — Storefront checkout, `CreateOrderModal`
+(staff-created Phone/Dine-in orders), and comanda-closing (below) — shares **one** picker
+component and the same `Order` fields:
+```
+export type PaymentMethod = "PIX" | "Card" | "Cash";
+export type CardType = "Credit" | "Debit";
+```
+`Order` gains: `paymentMethod?: PaymentMethod`, `cardType?: CardType` (Card only), `changeFor?:
+number` (Cash only — the note value the customer will pay with, so staff/delivery knows how much
+troco to bring; omitted/undefined means no change needed). All Core payment methods are
+**in-person** (PIX is pay-now via a mock QR/code flow; Card and Cash are collected physically —
+by a delivery courier's own card machine, or at the table/counter — never through our app). This
+matches confirmed real-world practice (researched against iFood's own "pagamento na entrega"
+flow): the courier brings their own maquininha, selects crédito/débito on it based on what the
+customer chose at checkout, and no fee or provider integration touches our app at all. Marking a
+payment "received" isn't a separate screen — it happens implicitly when staff advances that order
+(or, for a comanda, all its orders) to `Completed`/closed.
+
+- **PIX**: selecting it and continuing shows a dedicated mock screen — QR code + a fake
+  copia-e-cola alphanumeric code + an "Aguardando confirmação de pagamento..." state that
+  auto-advances after a short delay. This is what makes it recognizable as PIX to a Brazilian
+  user (a plain radio label doesn't), and gives a real PSP an obvious screen to replace later.
+- **Card**: choosing it reveals a Crédito/Débito sub-choice (`cardType`) — the courier/staff needs
+  to know which to run on their machine. No card number/details are ever collected in-app.
+- **Cash**: choosing it reveals an optional "Troco para quanto?" numeric field (`changeFor`) —
+  standard BR delivery-app pattern so the courier brings the right change.
+
+**Explicitly not built now — in-app card payment (pay-now, gateway-charged).** You raised this as
+something to be sellable later, not now: a customer selecting a saved card or adding a new one to
+pay immediately in-app. That requires a real PSP (Stone/Cielo/PagBank — already listed under
+Package 10 — Integrações & Plugins), PCI-relevant handling, and per-provider fees, none of which
+exist yet. Rather than shipping an unused feature flag or dead UI now (which the project's own
+conventions rule out — no speculative flags, no half-built paths), this stays purely as a
+documented seam: `PaymentMethod` is deliberately a plain union (not a struct baking in "always
+in-person"), so adding `"CardInApp"` later, behind a real flag introduced when Package 10 actually
+builds the gateway integration, doesn't require touching every consumer of the type again.
 
 ## Delivery zone configuration & address gating
 
@@ -108,7 +165,12 @@ small-operator tool: radius tools routinely misrepresent real drive time/geograp
 deliver to Bairro X, Y, Z" is immediately understandable to both owner and customer, and matches
 how Brazilian delivery businesses already communicate coverage. Same section also gets two
 numeric fields: **avg. prep time** and **avg. delivery time** (minutes) — both owner-set
-estimates, no routing calculation involved.
+estimates, no routing calculation involved. Also gets a **WhatsApp business number** field — the
+customer-status "Continuar no WhatsApp" link below is meaningless without one; if it's unset, that
+affordance doesn't render rather than producing a broken `wa.me` link.
+
+**Empty zones**: if `deliveryZones` is empty, "Entrega" doesn't appear as a fulfillment choice at
+all (Pickup-only) rather than being offered and then always failing the bairro check.
 
 Customer side: before showing the delivery menu (Storefront, delivery fulfillment only — not
 Table-Menu, which is inherently on-premise), the customer picks their bairro from a dropdown
@@ -124,7 +186,7 @@ complemento) is free text — no CEP/ViaCEP involved, matching the out-of-scope 
 only for `fulfillment: "Delivery"` orders. `Order` is a shared type consumed by
 Orders/KDS/Storefront/Analytics/Home — this change goes through the `migrate-shared-type` skill
 at implementation time, not ad hoc. `PreferencesState` gains `deliveryZones: string[]`,
-`avgPrepTimeMinutes: number`, `avgDeliveryTimeMinutes: number`.
+`avgPrepTimeMinutes: number`, `avgDeliveryTimeMinutes: number`, `whatsappNumber: string`.
 
 ## Customer-facing order status (notification workflow)
 
@@ -206,13 +268,22 @@ or not yet seated, the route shows a message directing the guest to their waiter
 component as the customer self-order view, not `CreateOrderModal`'s free-text item entry — that
 gap is fixed here since a waiter tapping through real menu items is the actual use case) where the
 waiter picks a table, then (if Individual mode) which guest's Comanda, adds items, submits — same
-straight-to-KDS path.
+straight-to-KDS path. This runs alongside customer self-order, not instead of it: a Shared table
+lets both the customer's own device and a waiter add into the same Comanda; Individual mode is
+waiter-only entirely.
+
+**Table actions** (confirmed baseline expectation for this product category, not an extra):
+`/table-menu`, on a Shared/Open comanda, gets two buttons — **"Chamar garçom"** and **"Pedir a
+conta"** — each posting a mock entry into the existing staff-facing notification feed (table name
++ action, no new backend). Individual-mode tables don't show these since there's no customer-self
+surface to put them on.
 
 **Closing out**: Tables feature gains a per-table view of its open Comanda(s) with a running total
-(sum of linked Orders) and a "Fechar comanda" action — reuses the PIX/Cartão/Dinheiro picker
-already spec'd for Storefront checkout, sets `paymentStatus: "Paid"` on that Comanda's Orders, and
-marks the Comanda Closed (table returns to Free once all its Comandas are closed). No fiscal
-document/receipt generation — that's Package 2.
+(sum of linked Orders) and a "Fechar comanda" action — reuses the PIX/Card/Cash picker from
+"Payment method" above (Card here means the physical machine brought to the table, same as
+delivery), sets `paymentMethod`/`paymentStatus: "Paid"` on that Comanda's Orders, and marks the
+Comanda Closed (table returns to Free once all its Comandas are closed). No fiscal document/
+receipt generation — that's Package 2.
 
 ## Owner/staff-facing dashboard UX (incremental polish, no restructuring)
 
@@ -245,13 +316,14 @@ touched by the above — not tracked as a separate line item requiring its own a
 No test suite in this repo (confirmed convention) — `yarn build` and `yarn lint` are the
 automated safety net. One `verify-ui` browser pass: toggle EN↔PT-BR on both a public route
 (Storefront) and an authenticated route (Orders) confirming live swap with no reload, confirm the
-PIX/Cartão/Dinheiro picker renders and submits, and confirm the customer order-status timeline
+PIX/Card/Cash picker renders and submits for each method (PIX's mock QR/waiting screen, Card's
+Crédito/Débito sub-choice, Cash's troco field), and confirm the customer order-status timeline
 advances when an order's status is changed from KDS/Orders in the same session (mirrors Phase 4's
 cross-feature verification pattern). Also cover the comanda flow end-to-end: seat a table Shared,
 submit an order via `/table-menu`, confirm it appears on KDS and Orders tagged to that table/
-comanda; seat a table Individual and confirm `/table-menu` shows the waiter-only message instead
-of a cart; close a comanda and confirm its orders show `paymentStatus: "Paid"` and the table
-returns to Free.
+comanda; use "Chamar garçom"/"Pedir a conta" and confirm each posts to the notification feed; seat
+a table Individual and confirm `/table-menu` shows the waiter-only message instead of a cart;
+close a comanda and confirm its orders show `paymentStatus: "Paid"` and the table returns to Free.
 
 ## Future package roadmap (reference only — not built in this spec)
 
@@ -274,11 +346,15 @@ Recorded here so later specs don't need to re-derive it; none of the following i
    period comparison, PDF/Excel export.
 9. **Cardápio Inteligente** — menu-engineering matrix, price suggestions, combo builder.
 10. **Integrações & Plugins** — plugin architecture, accounting integrations (ContaAzul/Omie),
-    payment gateways (Stone/Cielo/PagBank), TEF, WhatsApp API, doc-gen plugins.
+    payment gateways (Stone/Cielo/PagBank), TEF, WhatsApp API, doc-gen plugins. Also where
+    **in-app card payment** (saved cards / add-new-card, pay-now, gateway-charged) eventually
+    lands — Core only ever collects Card/Cash in person (see "Payment method" above).
 
 ## Non-goals for this spec
 
 - No backend/API changes (all payment/WhatsApp/status/delivery-zone work stays mock-backed).
+- No in-app (gateway-charged) card payment, saved cards, or PCI-relevant handling — Card in Core
+  always means a physical machine at delivery/table; the in-app path is documented, not built.
 - No new state-management library (TanStack Query only, per repo convention).
 - No fiscal/financial/inventory data modeling.
 - No full visual re-theme.
