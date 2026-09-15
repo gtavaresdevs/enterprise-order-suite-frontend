@@ -31,9 +31,14 @@ shell (Sidebar/Header/AvatarDropdown).
 
 **Out of scope** (belongs to a future package's own spec — do not build now):
 CPF/CNPJ fields, CEP/ViaCEP address autocomplete, NCM/CFOP/CST/tax-regime fields, fechamento de
-caixa, CMV, ficha técnica, delivery zones, real WhatsApp Business API integration, real payment
-gateway integration, any backend/API change (blocked per roadmap). No UI surface currently exists
-for these — adding them now would be speculative plumbing with nothing to attach to.
+caixa, CMV, ficha técnica, real WhatsApp Business API integration, real payment gateway
+integration, any backend/API change (blocked per roadmap). No UI surface currently exists for
+these — adding them now would be speculative plumbing with nothing to attach to.
+
+Basic delivery-zone gating (below) **is** in scope — it's a Storefront-facing configuration
+screen, not a logistics/marketplace integration. What stays deferred to Package 5 (Delivery &
+Marketplace): per-zone/live-routed ETAs, driver assignment/tracking, and third-party marketplace
+(iFood/99Food/Rappi) integration.
 
 ## i18n architecture
 
@@ -89,6 +94,38 @@ payment modeling today; adding it prematurely is exactly the kind of plumbing th
 package should own once real gateway data exists. `CreateOrderModal` (staff-side Phone/Dine-in
 creation) gets the same three options for UI consistency, same local-state treatment.
 
+## Delivery zone configuration & address gating
+
+Storefront today has no fulfillment choice at all — `CartOverlay`/`CheckoutFlow` hardcode a
+delivery-only flow (fixed "Delivery Fee", fixed fake address). This work adds the missing
+Entrega/Retirada choice up front (before menu browsing starts) as a prerequisite for zone-gating
+to have anywhere to attach: Retirada skips the zone step entirely; Entrega triggers it.
+
+Owner side (Preferences → Storefront section, alongside the existing logo/cover/brand-color
+config): a simple named-zone list — add/remove bairro names as chips/tags, no map, no
+geocoding/ViaCEP call. Research confirms this beats radius or drawn-polygon zones for a
+small-operator tool: radius tools routinely misrepresent real drive time/geography, while "we
+deliver to Bairro X, Y, Z" is immediately understandable to both owner and customer, and matches
+how Brazilian delivery businesses already communicate coverage. Same section also gets two
+numeric fields: **avg. prep time** and **avg. delivery time** (minutes) — both owner-set
+estimates, no routing calculation involved.
+
+Customer side: before showing the delivery menu (Storefront, delivery fulfillment only — not
+Table-Menu, which is inherently on-premise), the customer picks their bairro from a dropdown
+seeded with exactly the owner's configured list, plus a **"Meu bairro não está na lista"** option.
+Picking from the owner's own list — rather than free-text matched against it — avoids false
+negatives from typos/naming variants (e.g. "Vila Madalena" vs "V. Madalena"). If the bairro isn't
+covered: a clear message ("No momento não entregamos nesse bairro"), with a **"Trocar para
+Retirada"** (switch to pickup) offer if pickup is available as a fulfillment option; otherwise the
+message stands alone. Once inside a covered zone, the rest of the address (rua, número,
+complemento) is free text — no CEP/ViaCEP involved, matching the out-of-scope boundary above.
+
+`Order` gains an optional `deliveryAddress` field (bairro + rua/número/complemento), populated
+only for `fulfillment: "Delivery"` orders. `Order` is a shared type consumed by
+Orders/KDS/Storefront/Analytics/Home — this change goes through the `migrate-shared-type` skill
+at implementation time, not ad hoc. `PreferencesState` gains `deliveryZones: string[]`,
+`avgPrepTimeMinutes: number`, `avgDeliveryTimeMinutes: number`.
+
 ## Customer-facing order status (notification workflow)
 
 Real-time order transparency is what stops customers from flagging staff to ask "is it ready?" —
@@ -99,12 +136,23 @@ roadmap-blocked). The honest mock-backed approximation:
   via TanStack Query `refetchInterval` (short interval, active only while that screen is mounted —
   stop polling on unmount) against the existing `["orders"]` cache key. No new backend capability
   required, no fabricated real-time claim made in the UI copy.
-- Render a status **timeline** (Recebido → Preparando → Pronto → Entregue/Retirado, terms per the
-  glossary above) driven directly by the real `OrderStatus` enum — not a single status line —
-  since a timeline is what actually reduces "where's my order" anxiety.
+- Render a status **timeline** driven directly by the real `OrderStatus` enum, with copy that's
+  fulfillment-aware rather than one generic set of labels — the underlying enum
+  (`New`/`Preparing`/`Ready`/`Completed`) never changes, only its displayed label does, which stays
+  inside the "presentation-boundary only" i18n rule above:
+  - **Delivery**: Confirmado → Preparando → Saiu para entrega → Entregue.
+  - **Pickup**: Confirmado → Preparando → Pronto para retirada → Retirado.
+  - **Dine-in**: Confirmado → Preparando → Pronto → Servido.
+- For delivery orders, the timeline and the WhatsApp message both show the estimate:
+  `avgPrepTimeMinutes + avgDeliveryTimeMinutes` from the owner's Preferences config, snapshotted
+  onto the order at creation time (`Order.estimatedDeliveryMinutes`, optional, Delivery-only) so a
+  later change to the owner's settings doesn't retroactively alter an in-flight order's promised
+  estimate. This is a flat, owner-configured estimate — no live routing/traffic/driving-time
+  calculation, no per-zone differentiation (that granularity is Package 5's driver-tracking work).
 - The existing mock WhatsApp notification channel (see Notifications, below) becomes a
   "Continuar no WhatsApp" (`wa.me` deep link) affordance on the confirmation screen — a share/
-  continuation link, not a real push notification.
+  continuation link, not a real push notification. For Delivery orders its message copy includes
+  the current status (from the mapping above) and the estimate.
 - Leave a `connect-backend`-style TODO comment at the polling call site, flagging it for
   replacement once a real WebSocket/push channel exists — matching how Phase 3 flagged its
   interim table-lookup implementation.
@@ -161,8 +209,9 @@ Recorded here so later specs don't need to re-derive it; none of the following i
    reconciliation, accounting export.
 4. **Estoque & Compras** — ficha técnica, auto stock deduction, expiry tracking, waste logging,
    ABC curve, supplier management, purchase orders.
-5. **Delivery & Marketplace** — own delivery channel, iFood/99Food/Rappi integration, delivery
-   zones, driver tracking.
+5. **Delivery & Marketplace** — iFood/99Food/Rappi marketplace integration, driver
+   assignment/tracking, per-zone/live-routed ETAs. (Basic named-zone gating + flat ETA estimate
+   is already Core — see "Delivery zone configuration & address gating" above.)
 6. **CRM & Fidelização** — customer database, cashback, campaigns, NPS, loyalty.
 7. **Equipe (Staff)** — shift scheduling, clock-in/out, performance, tip management (extends
    existing Team/Roles RBAC from Phase 5).
@@ -174,7 +223,9 @@ Recorded here so later specs don't need to re-derive it; none of the following i
 
 ## Non-goals for this spec
 
-- No backend/API changes (all payment/WhatsApp/status work stays mock-backed).
+- No backend/API changes (all payment/WhatsApp/status/delivery-zone work stays mock-backed).
 - No new state-management library (TanStack Query only, per repo convention).
 - No fiscal/financial/inventory data modeling.
 - No full visual re-theme.
+- No geocoding, map UI, or real routing/drive-time calculation — delivery zones are a
+  plain owner-curated name list, and ETA is a flat sum of two owner-set numbers.
