@@ -2,9 +2,9 @@
   "header": {
     "brandLabel": "Enterprise Order Suite",
     "greeting": {
-      "morning": "Bom dia",
-      "afternoon": "Boa tarde",
-      "evening": "Boa noite"
+      "morning": "Bom dia, {{name}}",
+      "afternoon": "Boa tarde, {{name}}",
+      "evening": "Boa noite, {{name}}"
     },
     "fallbackName": "você"
   },

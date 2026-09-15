@@ -24,7 +24,7 @@ export function HomeHeader() {
                 </div>
 
                 <h1 className="text-2xl font-semibold text-slate-900 leading-tight">
-                    {t(`header.greeting.${greetingPeriod}`)}, <span className="text-slate-500">{displayName}</span>
+                    {t(`header.greeting.${greetingPeriod}`, { name: displayName })}
                 </h1>
 
                 <div className="flex items-center gap-2">

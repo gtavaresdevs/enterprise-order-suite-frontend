@@ -2,9 +2,9 @@
   "header": {
     "brandLabel": "Enterprise Order Suite",
     "greeting": {
-      "morning": "Good morning",
-      "afternoon": "Good afternoon",
-      "evening": "Good evening"
+      "morning": "Good morning, {{name}}",
+      "afternoon": "Good afternoon, {{name}}",
+      "evening": "Good evening, {{name}}"
     },
     "fallbackName": "there"
   },
