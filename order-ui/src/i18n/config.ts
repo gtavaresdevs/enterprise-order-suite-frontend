@@ -12,6 +12,10 @@ import enKds from "./locales/en/kds.json";
 import ptBrKds from "./locales/pt-BR/kds.json";
 import enOrders from "./locales/en/orders.json";
 import ptBrOrders from "./locales/pt-BR/orders.json";
+import enMenu from "./locales/en/menu.json";
+import ptBrMenu from "./locales/pt-BR/menu.json";
+import enTables from "./locales/en/tables.json";
+import ptBrTables from "./locales/pt-BR/tables.json";
 
 export const resources = {
   en: {
@@ -21,6 +25,8 @@ export const resources = {
     tableMenu: enTableMenu,
     kds: enKds,
     orders: enOrders,
+    menu: enMenu,
+    tables: enTables,
   },
   "pt-BR": {
     common: ptBrCommon,
@@ -29,6 +35,8 @@ export const resources = {
     tableMenu: ptBrTableMenu,
     kds: ptBrKds,
     orders: ptBrOrders,
+    menu: ptBrMenu,
+    tables: ptBrTables,
   },
 } as const;
 

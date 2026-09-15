@@ -1,0 +1,25 @@
+{
+  "feature": {
+    "brandLabel": "Enterprise Order Suite",
+    "title": "Tables",
+    "subtitle": "Print-and-place QR codes linking each table to the read-only menu view.",
+    "addTableButton": "Add Table",
+    "loading": "Loading tables...",
+    "emptyText": "No tables yet. Add one to generate its QR code."
+  },
+  "card": {
+    "downloadButton": "Download"
+  },
+  "modal": {
+    "title": "Add Table",
+    "subtitle": "Generates a QR code linking to the read-only menu view.",
+    "nameLabel": "Table Name",
+    "namePlaceholder": "e.g. Table 6, Patio 3",
+    "cancelButton": "Cancel",
+    "addingButton": "Adding...",
+    "addButton": "Add Table",
+    "errors": {
+      "nameRequired": "Table name is required."
+    }
+  }
+}
