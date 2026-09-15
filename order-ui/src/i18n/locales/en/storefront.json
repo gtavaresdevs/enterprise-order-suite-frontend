@@ -1,0 +1,36 @@
+{
+  "feed": {
+    "bannerAlt": "Banner",
+    "logoAlt": "Store logo",
+    "businessName": "The Urban Grill",
+    "loadingMenu": "Loading menu...",
+    "viewCartButton": "View Cart ({{count}})"
+  },
+  "itemDetail": {
+    "sizeLabel": "Size",
+    "addonsLabel": "Add-ons",
+    "addToCartButton": "Add to Cart"
+  },
+  "cart": {
+    "title": "Your Cart",
+    "empty": "Your cart is empty.",
+    "subtotalLabel": "Subtotal",
+    "deliveryFeeLabel": "Delivery Fee",
+    "checkoutButton": "Go to Checkout"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "deliveryAddressLabel": "Delivery Address",
+    "customerName": "Marcus T.",
+    "addressLine1": "123 Main St, Apt 4B",
+    "paymentMethodLabel": "Payment Method",
+    "cardEndingLabel": "Card ending in •••• 4242",
+    "placeOrderButton": "Place Order"
+  },
+  "success": {
+    "title": "Order Received!",
+    "subtitle": "The kitchen is preparing your food.",
+    "trackOrderButton": "Track Order",
+    "backToMenuButton": "Back to Menu"
+  }
+}

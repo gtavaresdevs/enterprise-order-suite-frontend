@@ -4,15 +4,23 @@ import enCommon from "./locales/en/common.json";
 import ptBrCommon from "./locales/pt-BR/common.json";
 import enShell from "./locales/en/shell.json";
 import ptBrShell from "./locales/pt-BR/shell.json";
+import enStorefront from "./locales/en/storefront.json";
+import ptBrStorefront from "./locales/pt-BR/storefront.json";
+import enTableMenu from "./locales/en/tableMenu.json";
+import ptBrTableMenu from "./locales/pt-BR/tableMenu.json";
 
 export const resources = {
   en: {
     common: enCommon,
     shell: enShell,
+    storefront: enStorefront,
+    tableMenu: enTableMenu,
   },
   "pt-BR": {
     common: ptBrCommon,
     shell: ptBrShell,
+    storefront: ptBrStorefront,
+    tableMenu: ptBrTableMenu,
   },
 } as const;
 

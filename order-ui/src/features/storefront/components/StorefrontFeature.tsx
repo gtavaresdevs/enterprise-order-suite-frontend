@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Star } from "lucide-react";
 import { usePreferencesContext } from "@/app/providers/PreferencesProvider";
 import { useStorefront } from "../hooks/useStorefront";
@@ -9,6 +10,7 @@ import { CheckoutFlow } from "./CheckoutFlow";
 import { SuccessView } from "./SuccessView";
 
 export const StorefrontFeature = () => {
+    const { t } = useTranslation("storefront");
     const {
         menuItems, isLoading, activeCategory, setActiveCategory, selectedItem, setSelectedItem,
         cart, setCart, cartTotal, cartCount, flowState, setFlowState, addToCart
@@ -27,19 +29,19 @@ export const StorefrontFeature = () => {
                 <div className="relative h-40 flex-shrink-0 bg-slate-900">
                     <img
                         src={storefrontCover ?? "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=800&h=320&fit=crop&auto=format"}
-                        alt="Banner"
+                        alt={t("feed.bannerAlt")}
                         className="w-full h-full object-cover opacity-80"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
                     {storefrontLogo && (
                         <img
                             src={storefrontLogo}
-                            alt="Store logo"
+                            alt={t("feed.logoAlt")}
                             className="absolute top-3 left-4 w-10 h-10 rounded-[8px] object-cover border-2 border-white shadow-md"
                         />
                     )}
                     <div className="absolute bottom-3 left-4">
-                        <p className="text-sm font-bold text-white">The Urban Grill</p>
+                        <p className="text-sm font-bold text-white">{t("feed.businessName")}</p>
                         <div className="flex items-center gap-1.5 mt-0.5">
                             <span className="text-[10px] text-white/80"><Star className="w-2.5 h-2.5 fill-amber-400 inline" /> 4.8</span>
                         </div>
@@ -61,7 +63,7 @@ export const StorefrontFeature = () => {
                 <div className="flex-1 overflow-y-auto pb-24">
                     <div className="px-4 pt-4 space-y-3">
                         {isLoading ? (
-                            <p className="text-xs text-slate-400 text-center py-8">Loading menu...</p>
+                            <p className="text-xs text-slate-400 text-center py-8">{t("feed.loadingMenu")}</p>
                         ) : (
                             visibleMenu.map((item) => <MenuCard key={item.id} item={item} onSelect={() => setSelectedItem(item)} />)
                         )}
@@ -72,7 +74,7 @@ export const StorefrontFeature = () => {
                 {cartCount > 0 && flowState === "feed" && (
                     <div className="absolute bottom-0 left-0 right-0 px-4 pb-5 pt-3 bg-gradient-to-t from-white via-white to-transparent z-30">
                         <button onClick={() => setFlowState("cart")} className="w-full h-14 rounded-[8px] text-white font-semibold flex items-center justify-between px-5" style={{ backgroundColor: storefrontBrandColor }}>
-                            <span>View Cart ({cartCount})</span>
+                            <span>{t("feed.viewCartButton", { count: cartCount })}</span>
                             <span className="font-mono">${cartTotal.toFixed(2)}</span>
                         </button>
                     </div>

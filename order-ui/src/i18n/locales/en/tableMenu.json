@@ -1,0 +1,12 @@
+{
+  "menu": {
+    "bannerAlt": "Banner",
+    "logoAlt": "Store logo",
+    "defaultTitle": "Menu",
+    "loading": "Loading menu...",
+    "noItems": "No items in this category."
+  },
+  "notFound": {
+    "title": "Table not found"
+  }
+}
