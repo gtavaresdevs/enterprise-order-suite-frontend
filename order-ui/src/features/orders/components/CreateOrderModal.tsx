@@ -57,6 +57,7 @@ export function CreateOrderModal({ onClose, onSave }: { onClose: () => void; onS
             modifiers: [],
         }));
         const selectedTable = tables.find((t) => t.id === tableId);
+        const parsedChangeFor = parseFloat(changeFor);
         onSave({
             channel,
             fulfillment: channel === "Phone" ? fulfillment : undefined,
@@ -67,7 +68,7 @@ export function CreateOrderModal({ onClose, onSave }: { onClose: () => void; onS
             paymentStatus: "PayLater",
             paymentMethod: paymentMethod ?? undefined,
             cardType: paymentMethod === "Card" ? (cardType ?? undefined) : undefined,
-            changeFor: paymentMethod === "Cash" && changeFor ? parseFloat(changeFor) : undefined,
+            changeFor: paymentMethod === "Cash" && parsedChangeFor > 0 ? parsedChangeFor : undefined,
             createdAt: now.toISOString().slice(0, 10),
             total: grandTotal,
             items: orderItems,

@@ -44,6 +44,14 @@ features/<feature>/
 
 `src/pages/*.tsx` are thin route entry points that just render the feature's top-level component (e.g. `pages/Orders.tsx` renders `<OrdersFeature />` from `features/orders`). Route → page → feature is the standard chain; put logic in the feature, not the page.
 
+`src/components/` holds code that lives outside any single feature. `src/components/ui/` is
+presentational UI primitives (shadcn-based: Button, Card, Input, etc.). `src/components/<domain>/`
+is for a domain component genuinely shared by 2+ feature modules (e.g.
+`src/components/payment/PaymentMethodPicker.tsx`, shared by `orders` and `storefront`). Anything
+with only one feature consumer stays inside that feature's own `components/` folder — don't
+promote something to `src/components/` just because it might be reused later; the bar is an actual
+second consumer today.
+
 ### Mock data vs. real backend — important
 
 Feature services are **not uniformly wired to a real backend yet**. Only `auth` and `profile` services call the real API (`src/api/client.ts` → `axios`). Every other feature's service (`orders`, `inventory`, `administration`, `analytics`, `home`, `kds`, `notifications`, `preferences`, `settings`, `storefront`) returns static/mock data from its `constants/` file, sometimes wrapped in an artificial `setTimeout` to simulate latency, with the real `api.get/post/...` calls left commented out as TODOs. When touching one of these features, check the service file first to see whether you're editing mock plumbing or a real integration — don't assume network calls exist just because a hook looks like it's fetching.

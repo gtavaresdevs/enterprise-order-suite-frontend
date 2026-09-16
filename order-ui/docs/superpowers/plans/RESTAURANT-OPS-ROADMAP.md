@@ -48,9 +48,15 @@ phase below unless told otherwise.
 | 4 — Orders/KDS repoint to shared Order model | ✅ Done | `2026-09-12-restaurant-ops-phase4-orders-kds-unified-model.md` | `f80b6b4..1c652f3` |
 | 5 — Administration real implementation (real backend) | ✅ Done | `2026-09-13-restaurant-ops-phase5-administration.md` | `1edfaf8..ec9dc08` |
 | 6 — Home rewrite + Analytics repoint | ✅ Done | `2026-09-13-restaurant-ops-phase6-home-analytics.md` | `587a160..abaed9e` |
-| — Payment (card/PIX) + WhatsApp notifications | ⛔ Blocked | N/A | Backend/integration dependency — spec explicitly flags these as not frontend-actionable. Do not write a plan for these until that backend work exists. |
+| 7 — i18n foundation (EN/PT-BR) | ✅ Done | `2026-09-15-core-package-phase7-i18n-foundation.md` | `c61d145..bd8f9b5` (merged via `core-package-phase7-i18n-foundation` branch, see `c6f70ef`) |
+| 8 — Payment method (PIX/Card/Cash) | ✅ Done | `2026-09-15-core-package-phase8-payment-method.md` | `c4fb7ff..90b36fa` (this branch, `phase8-payment-method`) |
+| 9 — Delivery zones + WhatsApp notifications | ⏳ Not yet built | N/A | Normal backlog per the spec's phasing — Entrega/Retirada choice, bairro zone config/gating, ETA estimate, WhatsApp business number + status-timeline/notification work. No plan written yet. |
+| — In-app card payment (pay-now, gateway-charged) | ⛔ Blocked | N/A | Genuinely architecturally blocked, not just unscheduled: requires a real PSP integration (Stone/Cielo/PagBank, Package 10 — Integrações & Plugins) that doesn't exist yet. `PaymentMethod` is deliberately a plain union so adding `"CardInApp"` later doesn't require touching every consumer again. Do not write a plan for this until Package 10's gateway integration exists. |
 
-This was the last planned phase before the explicitly-blocked Payment/WhatsApp work above — there is no Phase 7 to write next. Any further frontend work on this initiative waits on the backend/integration dependency for payment and WhatsApp notifications.
+Phase 8 shipped in-person PIX/Card/Cash payment method capture (staff-created orders and
+storefront checkout UI). Per the spec's "Implementation phasing", the next phase is Phase 9 —
+Delivery zones (not yet written); only the in-app, gateway-charged card payment path above remains
+architecturally blocked.
 
 ### Phase 0 summary (foundation types)
 Unified `Order` type (`channel`/`fulfillment`/`table`, 5-value `OrderStatus`), created shared
@@ -167,6 +173,8 @@ channel pie/top-items/order-volume panels all showing real data with a clean con
 
 ## What's next
 
-Phase 6 was the last planned phase before the explicitly-blocked Payment (card/PIX) + WhatsApp
-notifications work above — there is no Phase 7 to write. Further frontend work on this initiative
-waits on that backend/integration dependency; don't invent a next phase in the meantime.
+Phases 7 (i18n foundation) and 8 (Payment method) are both done. Per the spec's "Implementation
+phasing", the next planned phase is **Phase 9 — Delivery zones** (Entrega/Retirada choice, bairro
+zone config + gating, ETA estimate, WhatsApp business number + status-timeline/notification work)
+— not yet written. Only in-app, gateway-charged card payment (Package 10 — Integrações & Plugins)
+remains architecturally blocked; don't write a plan for that until a real PSP integration exists.
