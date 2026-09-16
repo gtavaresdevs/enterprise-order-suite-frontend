@@ -46,6 +46,8 @@
     "fulfillmentLabel": "Modalidade",
     "emptyValue": "—",
     "phoneLabel": "Telefone",
+    "paymentLabel": "Forma de Pagamento",
+    "changeForValue": "Troco para {{amount}}",
     "orderItemsLabel": "Itens do Pedido",
     "lineCount_one": "{{count}} item",
     "lineCount_other": "{{count}} itens",

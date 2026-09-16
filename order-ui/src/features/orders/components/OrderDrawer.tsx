@@ -1,11 +1,12 @@
 import { useTranslation } from "react-i18next";
-import { X, ChevronRight, Phone, MapPin } from "lucide-react";
+import { X, ChevronRight, Phone, MapPin, Wallet } from "lucide-react";
 import type { Order, OrderLine } from "@/types/orders";
 import { useFormat } from "@/features/preferences/hooks/useFormat";
 import { StatusBadge } from "./StatusBadge";
 
 export function OrderDrawer({ order, onClose }: { order: Order; onClose: () => void }) {
   const { t } = useTranslation("orders");
+  const { t: tPayment } = useTranslation("payment");
   const { formatCurrency, formatDate } = useFormat();
   const lineTotal = (p: OrderLine) => {
     const modTotal = (p.modifiers ?? []).reduce((s, m) => s + m.price, 0);
@@ -56,6 +57,21 @@ export function OrderDrawer({ order, onClose }: { order: Order; onClose: () => v
                   <p className="text-sm font-medium text-slate-700 mt-0.5 font-mono">{order.customerPhone}</p>
                 </div>
               </div>
+              {order.paymentMethod && (
+                <div className="flex items-start gap-2.5">
+                  <div className="w-7 h-7 rounded-[8px] bg-slate-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Wallet className="w-3.5 h-3.5 text-slate-500" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">{t("drawer.paymentLabel")}</p>
+                    <p className="text-sm font-medium text-slate-700 mt-0.5 leading-snug">
+                      {tPayment(`methods.${order.paymentMethod}`)}
+                      {order.cardType ? ` · ${tPayment(`cardTypes.${order.cardType}`)}` : ""}
+                      {order.changeFor != null ? ` · ${t("drawer.changeForValue", { amount: formatCurrency(order.changeFor) })}` : ""}
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
