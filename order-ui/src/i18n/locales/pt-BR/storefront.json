@@ -23,9 +23,13 @@
     "deliveryAddressLabel": "Endereço de Entrega",
     "customerName": "Marcus T.",
     "addressLine1": "123 Main St, Apt 4B",
-    "paymentMethodLabel": "Método de Pagamento",
-    "cardEndingLabel": "Cartão terminado em •••• 4242",
     "placeOrderButton": "Finalizar Pedido"
+  },
+  "pixWaiting": {
+    "title": "Aguardando confirmação de pagamento...",
+    "copyCodeButton": "Copiar código PIX",
+    "copied": "Copiado!",
+    "waitingMessage": "Isso não vai demorar"
   },
   "success": {
     "title": "Pedido Recebido!",

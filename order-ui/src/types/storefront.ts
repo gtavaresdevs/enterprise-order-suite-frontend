@@ -5,4 +5,4 @@ export interface CartItem {
     quantity: number;
 }
 
-export type FlowState = "feed" | "cart" | "checkout" | "success";
+export type FlowState = "feed" | "cart" | "checkout" | "pixWaiting" | "success";

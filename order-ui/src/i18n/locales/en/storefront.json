@@ -23,9 +23,13 @@
     "deliveryAddressLabel": "Delivery Address",
     "customerName": "Marcus T.",
     "addressLine1": "123 Main St, Apt 4B",
-    "paymentMethodLabel": "Payment Method",
-    "cardEndingLabel": "Card ending in •••• 4242",
     "placeOrderButton": "Place Order"
+  },
+  "pixWaiting": {
+    "title": "Waiting for payment confirmation...",
+    "copyCodeButton": "Copy PIX code",
+    "copied": "Copied!",
+    "waitingMessage": "This won't take long"
   },
   "success": {
     "title": "Order Received!",

@@ -1,8 +1,24 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ArrowLeft, MapPin, CreditCard } from "lucide-react";
+import { ArrowLeft, MapPin } from "lucide-react";
+import type { PaymentMethod, CardType } from "@/types/orders";
+import { PaymentMethodPicker } from "@/components/payment/PaymentMethodPicker";
 
-export const CheckoutFlow = ({ onBack, onComplete }: { onBack: () => void; onComplete: () => void }) => {
+export const CheckoutFlow = ({ onBack, onPlaceOrder }: { onBack: () => void; onPlaceOrder: (method: PaymentMethod) => void }) => {
     const { t } = useTranslation("storefront");
+    const { t: tPayment } = useTranslation("payment");
+    const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | null>(null);
+    const [cardType, setCardType] = useState<CardType | null>(null);
+    const [changeFor, setChangeFor] = useState("");
+    const [submitted, setSubmitted] = useState(false);
+
+    const handlePlaceOrder = () => {
+        setSubmitted(true);
+        if (!paymentMethod) return;
+        if (paymentMethod === "Card" && !cardType) return;
+        onPlaceOrder(paymentMethod);
+    };
+
     return (
         <div className="absolute inset-0 z-50 bg-slate-50 flex flex-col">
             <div className="h-14 bg-white border-b border-slate-100 flex items-center px-4 flex-shrink-0">
@@ -27,19 +43,25 @@ export const CheckoutFlow = ({ onBack, onComplete }: { onBack: () => void; onCom
                 </section>
 
                 <section>
-                    <h2 className="text-sm font-bold text-slate-900 mb-2 px-1">{t("checkout.paymentMethodLabel")}</h2>
-                    <div className="bg-white rounded-[8px] border border-slate-100 shadow-sm overflow-hidden flex flex-col">
-                        <label className="flex items-center gap-3 p-4 border-b border-slate-100 cursor-pointer">
-                            <div className="w-5 h-5 rounded-full border-2 border-slate-900 flex items-center justify-center"><div className="w-2.5 h-2.5 rounded-full bg-slate-900" /></div>
-                            <CreditCard className="w-5 h-5 text-slate-400" />
-                            <span className="flex-1 text-sm font-semibold text-slate-900">{t("checkout.cardEndingLabel")}</span>
-                        </label>
+                    <div className="bg-white rounded-[8px] border border-slate-100 shadow-sm p-4">
+                        <PaymentMethodPicker
+                            value={paymentMethod}
+                            onValueChange={setPaymentMethod}
+                            cardType={cardType}
+                            onCardTypeChange={setCardType}
+                            changeFor={changeFor}
+                            onChangeForChange={setChangeFor}
+                            errors={{
+                                method: submitted && !paymentMethod ? tPayment("errors.methodRequired") : undefined,
+                                cardType: submitted && paymentMethod === "Card" && !cardType ? tPayment("errors.cardTypeRequired") : undefined,
+                            }}
+                        />
                     </div>
                 </section>
             </div>
 
             <div className="p-4 bg-white border-t border-slate-100 flex-shrink-0 pb-8">
-                <button onClick={onComplete} className="w-full h-[52px] bg-slate-950 text-slate-50 rounded-[8px] font-semibold text-[15px] hover:bg-slate-900">
+                <button onClick={handlePlaceOrder} className="w-full h-[52px] bg-slate-950 text-slate-50 rounded-[8px] font-semibold text-[15px] hover:bg-slate-900">
                     {t("checkout.placeOrderButton")}
                 </button>
             </div>

@@ -7,6 +7,7 @@ import { MenuCard } from "./MenuCard";
 import { BottomSheet } from "./BottomSheet";
 import { CartOverlay } from "./CartOverlay";
 import { CheckoutFlow } from "./CheckoutFlow";
+import { PixWaitingMock } from "./PixWaitingMock";
 import { SuccessView } from "./SuccessView";
 
 export const StorefrontFeature = () => {
@@ -85,7 +86,8 @@ export const StorefrontFeature = () => {
                     <BottomSheet item={selectedItem} onClose={() => setSelectedItem(null)} onAddToCart={addToCart} />
                 )}
                 {flowState === "cart" && <CartOverlay cart={cart} total={cartTotal} onClose={() => setFlowState("feed")} onCheckout={() => setFlowState("checkout")} />}
-                {flowState === "checkout" && <CheckoutFlow onBack={() => setFlowState("cart")} onComplete={() => setFlowState("success")} />}
+                {flowState === "checkout" && <CheckoutFlow onBack={() => setFlowState("cart")} onPlaceOrder={(method) => setFlowState(method === "PIX" ? "pixWaiting" : "success")} />}
+                {flowState === "pixWaiting" && <PixWaitingMock onConfirmed={() => setFlowState("success")} />}
                 {flowState === "success" && <SuccessView onBack={() => { setCart([]); setFlowState("feed"); }} />}
             </div>
         </div>
