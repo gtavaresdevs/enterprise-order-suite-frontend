@@ -26,6 +26,8 @@ import enNotifications from "./locales/en/notifications.json";
 import ptBrNotifications from "./locales/pt-BR/notifications.json";
 import enPreferences from "./locales/en/preferences.json";
 import ptBrPreferences from "./locales/pt-BR/preferences.json";
+import enPayment from "./locales/en/payment.json";
+import ptBrPayment from "./locales/pt-BR/payment.json";
 
 export const resources = {
   en: {
@@ -42,6 +44,7 @@ export const resources = {
     administration: enAdministration,
     notifications: enNotifications,
     preferences: enPreferences,
+    payment: enPayment,
   },
   "pt-BR": {
     common: ptBrCommon,
@@ -57,6 +60,7 @@ export const resources = {
     administration: ptBrAdministration,
     notifications: ptBrNotifications,
     preferences: ptBrPreferences,
+    payment: ptBrPayment,
   },
 } as const;
 

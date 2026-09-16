@@ -1,0 +1,20 @@
+{
+  "methodLabel": "Forma de Pagamento",
+  "methods": {
+    "PIX": "PIX",
+    "Card": "Cartão",
+    "Cash": "Dinheiro"
+  },
+  "cardTypeLabel": "Tipo de Cartão",
+  "cardTypes": {
+    "Credit": "Crédito",
+    "Debit": "Débito"
+  },
+  "changeForLabel": "Troco para quanto?",
+  "changeForPlaceholder": "ex. 50,00",
+  "changeForHint": "Opcional — deixe em branco se for pagar o valor exato",
+  "errors": {
+    "methodRequired": "Selecione uma forma de pagamento.",
+    "cardTypeRequired": "Selecione crédito ou débito."
+  }
+}

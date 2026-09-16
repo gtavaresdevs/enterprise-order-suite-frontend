@@ -2,6 +2,8 @@ export type OrderChannel = "Online" | "Dine-in" | "Phone";
 export type Fulfillment = "Pickup" | "Delivery";
 export type OrderStatus = "New" | "Preparing" | "Ready" | "Completed" | "Cancelled";
 export type PaymentStatus = "Paid" | "Pending" | "PayLater";
+export type PaymentMethod = "PIX" | "Card" | "Cash";
+export type CardType = "Credit" | "Debit";
 
 export interface Modifier {
   label: string;
@@ -26,6 +28,9 @@ export interface Order {
   items: OrderLine[];
   status: OrderStatus;
   paymentStatus: PaymentStatus;
+  paymentMethod?: PaymentMethod;
+  cardType?: CardType;
+  changeFor?: number;
   createdAt: string;
   total: number;
 }
