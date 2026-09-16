@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { User, Phone, Package, Plus, DollarSign, Minus, X, MapPin } from "lucide-react";
-import type { Order, OrderStatus, OrderLine, OrderChannel, Fulfillment } from "@/types/orders";
+import { User, Phone, Package, Plus, DollarSign, Minus, X, MapPin, Wallet } from "lucide-react";
+import type { Order, OrderStatus, OrderLine, OrderChannel, Fulfillment, PaymentMethod, CardType } from "@/types/orders";
 import { useFormat } from "@/features/preferences/hooks/useFormat";
 import { useTables } from "@/features/tables/hooks/useTables";
+import { PaymentMethodPicker } from "@/components/payment/PaymentMethodPicker";
 
 interface DraftItem { _key: string; name: string; quantity: string; unitPrice: string; }
 const emptyDraftItem = (): DraftItem => ({ _key: Math.random().toString(36).slice(2), name: "", quantity: "1", unitPrice: "" });
 
 export function CreateOrderModal({ onClose, onSave }: { onClose: () => void; onSave: (o: Omit<Order, "id">) => void }) {
     const { t } = useTranslation("orders");
+    const { t: tPayment } = useTranslation("payment");
     const { formatCurrency } = useFormat();
     const { tables } = useTables();
     const [customerName, setCustomerName] = useState("");
@@ -21,6 +23,9 @@ export function CreateOrderModal({ onClose, onSave }: { onClose: () => void; onS
     const [items, setItems] = useState<DraftItem[]>([emptyDraftItem()]);
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [submitted, setSubmitted] = useState(false);
+    const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | null>(null);
+    const [cardType, setCardType] = useState<CardType | null>(null);
+    const [changeFor, setChangeFor] = useState("");
 
     const grandTotal = items.reduce((s, p) => s + (parseFloat(p.quantity) || 0) * (parseFloat(p.unitPrice) || 0), 0);
 
@@ -29,6 +34,8 @@ export function CreateOrderModal({ onClose, onSave }: { onClose: () => void; onS
         if (!customerName.trim()) e.customerName = t("createModal.errors.nameRequired");
         if (!customerPhone.trim()) e.customerPhone = t("createModal.errors.phoneRequired");
         if (channel === "Dine-in" && !tableId) e.table = t("createModal.errors.tableRequired");
+        if (!paymentMethod) e.paymentMethod = tPayment("errors.methodRequired");
+        if (paymentMethod === "Card" && !cardType) e.cardType = tPayment("errors.cardTypeRequired");
         items.forEach((p, i) => {
             if (!p.name.trim()) e[`pname_${i}`] = t("createModal.errors.itemNameRequired");
             if (!p.unitPrice || parseFloat(p.unitPrice) <= 0) e[`pprice_${i}`] = t("createModal.errors.priceRequired");
@@ -58,6 +65,9 @@ export function CreateOrderModal({ onClose, onSave }: { onClose: () => void; onS
             customerPhone: customerPhone.trim(),
             status,
             paymentStatus: "PayLater",
+            paymentMethod: paymentMethod ?? undefined,
+            cardType: paymentMethod === "Card" ? (cardType ?? undefined) : undefined,
+            changeFor: paymentMethod === "Cash" && changeFor ? parseFloat(changeFor) : undefined,
             createdAt: now.toISOString().slice(0, 10),
             total: grandTotal,
             items: orderItems,
@@ -153,6 +163,22 @@ export function CreateOrderModal({ onClose, onSave }: { onClose: () => void; onS
                                     </div>
                                 </div>
                             )}
+                        </div>
+                        <div className="border-t border-slate-100" />
+                        <div>
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-1.5"><Wallet className="w-3 h-3" /> {t("createModal.paymentSectionLabel")}</p>
+                            <PaymentMethodPicker
+                                value={paymentMethod}
+                                onValueChange={setPaymentMethod}
+                                cardType={cardType}
+                                onCardTypeChange={setCardType}
+                                changeFor={changeFor}
+                                onChangeForChange={setChangeFor}
+                                errors={{
+                                    method: submitted ? errors.paymentMethod : undefined,
+                                    cardType: submitted ? errors.cardType : undefined,
+                                }}
+                            />
                         </div>
                     </div>
                     <div className="px-6 py-4 border-t border-slate-100 bg-slate-50/60 flex items-center justify-between flex-shrink-0">

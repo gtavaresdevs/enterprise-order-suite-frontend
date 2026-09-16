@@ -78,6 +78,7 @@
     "fulfillmentPickup": "Retirada",
     "fulfillmentDelivery": "Entrega",
     "itemsSectionLabel": "Itens",
+    "paymentSectionLabel": "Pagamento",
     "addItemButton": "Adicionar Item",
     "colItemName": "Nome do Item",
     "colQty": "Qtd",

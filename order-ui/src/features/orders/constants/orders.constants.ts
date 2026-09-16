@@ -23,6 +23,7 @@ export const ORDERS: Order[] = [
     total: 42.47,
     status: "Preparing",
     paymentStatus: "Paid",
+    paymentMethod: "PIX",
   },
   {
     id: "DEL-2024-8802",
@@ -50,6 +51,8 @@ export const ORDERS: Order[] = [
     total: 43.56,
     status: "New",
     paymentStatus: "Paid",
+    paymentMethod: "Card",
+    cardType: "Credit",
   },
   {
     id: "DEL-2024-8803",
@@ -71,6 +74,8 @@ export const ORDERS: Order[] = [
     total: 23.48,
     status: "Ready",
     paymentStatus: "Paid",
+    paymentMethod: "Cash",
+    changeFor: 30,
   },
   {
     id: "PHN-2024-8804",
@@ -86,6 +91,7 @@ export const ORDERS: Order[] = [
     total: 29.94,
     status: "Completed",
     paymentStatus: "PayLater",
+    paymentMethod: "Cash",
   },
   {
     id: "DEL-2024-8805",
@@ -104,6 +110,7 @@ export const ORDERS: Order[] = [
     total: 25.47,
     status: "New",
     paymentStatus: "Paid",
+    paymentMethod: "PIX",
   },
   {
     id: "DEL-2024-8806",
@@ -121,6 +128,8 @@ export const ORDERS: Order[] = [
     total: 50.97,
     status: "Ready",
     paymentStatus: "Paid",
+    paymentMethod: "Card",
+    cardType: "Debit",
   },
   {
     id: "DIN-2024-8807",
@@ -136,6 +145,7 @@ export const ORDERS: Order[] = [
     total: 25.78,
     status: "Completed",
     paymentStatus: "PayLater",
+    paymentMethod: "Cash",
   },
   {
     id: "DEL-2024-8808",
@@ -151,6 +161,7 @@ export const ORDERS: Order[] = [
     total: 47.96,
     status: "Preparing",
     paymentStatus: "Paid",
+    paymentMethod: "PIX",
   },
 ];
 

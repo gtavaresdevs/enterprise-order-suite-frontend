@@ -78,6 +78,7 @@
     "fulfillmentPickup": "Pickup",
     "fulfillmentDelivery": "Delivery",
     "itemsSectionLabel": "Items",
+    "paymentSectionLabel": "Payment",
     "addItemButton": "Add Item",
     "colItemName": "Item Name",
     "colQty": "Qty",
