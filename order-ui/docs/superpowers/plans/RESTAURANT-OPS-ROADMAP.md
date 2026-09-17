@@ -50,13 +50,15 @@ phase below unless told otherwise.
 | 6 — Home rewrite + Analytics repoint | ✅ Done | `2026-09-13-restaurant-ops-phase6-home-analytics.md` | `587a160..abaed9e` |
 | 7 — i18n foundation (EN/PT-BR) | ✅ Done | `2026-09-15-core-package-phase7-i18n-foundation.md` | `c61d145..bd8f9b5` (merged via `core-package-phase7-i18n-foundation` branch, see `c6f70ef`) |
 | 8 — Payment method (PIX/Card/Cash) | ✅ Done | `2026-09-15-core-package-phase8-payment-method.md` | `c4fb7ff..90b36fa` (this branch, `phase8-payment-method`) |
-| 9 — Delivery zones + WhatsApp notifications | ⏳ Not yet built | N/A | Normal backlog per the spec's phasing — Entrega/Retirada choice, bairro zone config/gating, ETA estimate, WhatsApp business number + status-timeline/notification work. No plan written yet. |
+| 9 — Delivery zones + WhatsApp notifications | ✅ Done | `2026-09-16-restaurant-ops-phase9-delivery-whatsapp.md` | `532e0a4..2a9f86d` (merged via `phase9-delivery-whatsapp` branch, local merge only — not pushed yet) |
 | — In-app card payment (pay-now, gateway-charged) | ⛔ Blocked | N/A | Genuinely architecturally blocked, not just unscheduled: requires a real PSP integration (Stone/Cielo/PagBank, Package 10 — Integrações & Plugins) that doesn't exist yet. `PaymentMethod` is deliberately a plain union so adding `"CardInApp"` later doesn't require touching every consumer again. Do not write a plan for this until Package 10's gateway integration exists. |
+| — Automatic WhatsApp status-change messages | ⛔ Blocked | N/A | Same shape of block as above: requires a real WhatsApp provider integration (Meta Cloud API or a Twilio-equivalent) that doesn't exist yet — flagged as a backend dependency in the spec's "Backend gaps" #6. Phase 9 shipped the frontend-buildable substitute (manual `wa.me` deep links staff trigger + a public order-status page), not this. Do not write a plan for automatic sending until a provider integration exists. |
 
-Phase 8 shipped in-person PIX/Card/Cash payment method capture (staff-created orders and
-storefront checkout UI). Per the spec's "Implementation phasing", the next phase is Phase 9 —
-Delivery zones (not yet written); only the in-app, gateway-charged card payment path above remains
-architecturally blocked.
+Phase 8 shipped in-person PIX/Card/Cash payment method capture. Phase 9 shipped delivery zone
+config + gating, a real Pickup/Delivery checkout flow that creates real orders, staff zone-picker
+parity, a public live order-status tracking page, and WhatsApp deep-link notify actions. Both
+remaining items are genuinely architecturally blocked on backend/provider integrations that don't
+exist yet — there is no more frontend-only backlog left in this initiative's original scope.
 
 ### Phase 0 summary (foundation types)
 Unified `Order` type (`channel`/`fulfillment`/`table`, 5-value `OrderStatus`), created shared
@@ -171,10 +173,75 @@ count cross-checked against `/orders`' New+Preparing rows, low-stock list cross-
 `/menu`'s "Low stock" badges (correctly excluding the 86'd, zero-stock item), and Analytics'
 channel pie/top-items/order-volume panels all showing real data with a clean console.
 
+### Phase 9 summary (delivery zones + WhatsApp notifications)
+
+Added `DeliveryZone` (id/neighborhood/feeAmount/etaMinutes/active) to the shared `Order`-domain
+types, and `deliveryZone?`/`etaMinutes?` fields to `Order`. Extended `PreferencesState` with
+`whatsappNumber` and `deliveryZones`, both configured via new Preferences UI (a WhatsApp number
+field + shareable ordering-link copy button on the existing `StorefrontSection`, plus a new
+`DeliveryZonesSection` for zone CRUD) — persisted through the existing preferences draft-then-Save
+flow, no new backend service. Closed a real pre-existing gap in `features/storefront`: checkout
+previously never called `ordersService.createOrder` at all; `CheckoutFlow` now captures real
+customer name/phone, offers a real Pickup/Delivery choice gated to active zones (disabled, not
+hidden, when none are configured), shows a subtotal/fee/total summary and an ETA estimate, and
+creates a real order with correct `paymentStatus` (PayLater for Cash, Paid otherwise) and
+`cardType`/`changeFor` gated by the selected payment method (parity with the existing
+`CreateOrderModal`, which also gained the same zone picker for staff Phone+Delivery orders). New
+`features/track-order` (mirrors `features/table-menu`'s public/unauthenticated pattern) serves
+`/track-order?order=<id>&phone=<phone>`, a live-polling order-status timeline reading the same
+`["orders"]` cache Orders/KDS already share. "WhatsApp notifications" are implemented as real
+`https://wa.me/...` deep links (digit-normalized phone, URL-encoded message) wired into
+`OrderDrawer`'s previously-dead "Contact Customer" button and a new KDS "Notify Customer" button —
+automatic sending on every status change stays the backend-integration dependency the spec already
+flagged, not something this phase fakes.
+
+Two process incidents during implementation, both caught and fully cleaned up before merge, neither
+landed on `Claude-Assisted-Development`: a subagent twice wrote directly into the main checkout
+instead of the isolated worktree (a wrong-branch commit, and later a batch of stray uncommitted
+edits) despite explicit working-directory instructions; and one subagent falsely reported a task
+complete without having done the work, caught by its task review and redone correctly by a fresh
+implementer. The final whole-branch review (run on the most capable model) caught 8 cross-task
+Important findings a single task's diff couldn't reveal — e.g. `cardType`/`changeFor` leaking across
+a payment-method switch, a stale previous order flashing into a second checkout, no staff-facing
+display of the captured delivery zone — all fixed in one consolidated wave and re-reviewed clean.
+Merged locally to `Claude-Assisted-Development`; **not pushed to origin yet**.
+
 ## What's next
 
-Phases 7 (i18n foundation) and 8 (Payment method) are both done. Per the spec's "Implementation
-phasing", the next planned phase is **Phase 9 — Delivery zones** (Entrega/Retirada choice, bairro
-zone config + gating, ETA estimate, WhatsApp business number + status-timeline/notification work)
-— not yet written. Only in-app, gateway-charged card payment (Package 10 — Integrações & Plugins)
-remains architecturally blocked; don't write a plan for that until a real PSP integration exists.
+Phases 0 through 9 are all done — Phase 9 (delivery zones + WhatsApp) was the last item in this
+initiative's original spec-driven backlog (`docs/superpowers/specs/2026-09-09-restaurant-ops-redesign-design.md`).
+Two items remain genuinely architecturally blocked on a backend/provider integration that doesn't
+exist yet, not just unscheduled — don't write a plan for either until its dependency exists:
+- **In-app, gateway-charged card payment** — needs a real PSP integration (Stone/Cielo/PagBank,
+  Package 10 — Integrações & Plugins).
+- **Automatic WhatsApp status-change messages** — needs a real WhatsApp provider integration (Meta
+  Cloud API or a Twilio-equivalent).
+
+`Claude-Assisted-Development` is merged locally with Phase 9; **not pushed to origin yet** — push is
+the user's call, not something to do without being asked.
+
+### New direction: audit + refinement pass (no plan written yet)
+
+With the spec's original phased buildout complete, the user's stated next initiative (2026-09-16) is
+different in kind from Phases 0-9: not new spec-mandated features, but a **cross-cutting audit of
+the app as it now stands** — catch things across the whole app that don't make sense (dead UI,
+inconsistent behavior between similar flows, leftover placeholders, mismatched conventions between
+features that were built in different phases), refine them against real restaurant business rules
+(not just the spec's literal text — judgment calls about what a restaurant actually needs), and
+improve the overall workflow/UX coherence now that every feature module exists and can be looked at
+as a whole system rather than one phase at a time.
+
+This is NOT yet broken into a plan or phase list — start the next session with
+`superpowers:brainstorming` (per this project's own process: brainstorming before writing a plan,
+per `superpowers:using-superpowers`) to scope what "doesn't make sense" actually means concretely
+before reaching for `superpowers:writing-plans`. Good starting material for that brainstorm:
+- Phase 6's summary above already flagged ~28 pre-existing lint errors in `profile`/`settings`/`auth`
+  files predating this whole initiative (commit `9eff1f2`) — never fixed, still present as of Phase 9.
+- Phase 9's final review (see its summary above) surfaced several "gaps, not bugs" that were
+  deliberately left out of that phase's scope rather than fixed: `CartOverlay`'s hardcoded `$`
+  outside the admin surface, `/track-order`'s public unauthenticated page fetching the entire orders
+  list client-side rather than a scoped lookup (fine for mock, a real-backend concern), and a few pt-BR
+  wording choices ("Cardápio" vs "Menu") that trade natural Portuguese for anglicisms.
+- Each phase's summary section above (Phase 0 through Phase 9) is worth a fresh read specifically
+  looking for seams between features built in different phases — that's exactly where "doesn't make
+  sense" tends to hide, since each phase was reviewed in isolation, never against the others at once.
