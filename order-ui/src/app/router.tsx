@@ -28,6 +28,7 @@ import AdministrationAuditLogPage from '@/pages/AdministrationAuditLog';
 import StorefrontPage from '@/pages/Storefront';
 import KDSPage from '@/pages/Kds';
 import TableMenuPage from '@/pages/TableMenu';
+import TrackOrderPage from '@/pages/TrackOrder';
 
 export const router = createBrowserRouter([
   // Public Auth Routes
@@ -64,6 +65,10 @@ export const router = createBrowserRouter([
   {
     path: '/table-menu',
     element: <TableMenuPage />,
+  },
+  {
+    path: '/track-order',
+    element: <TrackOrderPage />,
   },
 
   // Protected Application Routes

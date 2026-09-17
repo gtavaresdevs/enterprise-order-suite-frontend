@@ -1,0 +1,19 @@
+{
+  "title": "Acompanhe Seu Pedido",
+  "subtitle": "Informe o número do pedido e o telefone para ver o status.",
+  "orderIdPlaceholder": "Número do pedido (ex: DEL-2024-8801)",
+  "phonePlaceholder": "Telefone usado no checkout",
+  "lookupButton": "Acompanhar Pedido",
+  "loading": "Buscando seu pedido...",
+  "notFound": "Nenhum pedido encontrado com esse número e telefone.",
+  "orderIdLabel": "Pedido {{id}}",
+  "etaLabel": "Estimativa de {{count}} min",
+  "cancelled": "Este pedido foi cancelado.",
+  "itemsLabel": "Itens",
+  "steps": {
+    "New": "Pedido recebido",
+    "Preparing": "Em preparo",
+    "Ready": "Pronto",
+    "Completed": "Concluído"
+  }
+}
