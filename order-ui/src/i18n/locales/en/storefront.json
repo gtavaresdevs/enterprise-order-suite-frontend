@@ -35,6 +35,7 @@
     "zonePlaceholder": "Select your neighborhood",
     "etaEstimate": "Estimated {{count}} min",
     "placeOrderButton": "Place Order",
+    "placingOrderButton": "Placing Order...",
     "errors": {
       "nameRequired": "Enter your name.",
       "phoneRequired": "Enter a phone number.",

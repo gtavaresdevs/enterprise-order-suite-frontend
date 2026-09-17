@@ -15,7 +15,7 @@ export const StorefrontFeature = () => {
     const {
         menuItems, isLoading, activeCategory, setActiveCategory, selectedItem, setSelectedItem,
         cart, setCart, cartTotal, cartCount, flowState, setFlowState, addToCart,
-        placeOrder, placedOrder,
+        placeOrder, placedOrder, isPlacingOrder,
     } = useStorefront();
 
     const { preferences } = usePreferencesContext();
@@ -90,6 +90,7 @@ export const StorefrontFeature = () => {
                 {flowState === "checkout" && (
                     <CheckoutFlow
                         zones={deliveryZones}
+                        isPlacingOrder={isPlacingOrder}
                         onBack={() => setFlowState("cart")}
                         onPlaceOrder={(input) => {
                             placeOrder(input);

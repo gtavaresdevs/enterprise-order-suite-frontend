@@ -35,6 +35,7 @@
     "zonePlaceholder": "Selecione seu bairro",
     "etaEstimate": "Estimativa de {{count}} min",
     "placeOrderButton": "Fazer Pedido",
+    "placingOrderButton": "Enviando Pedido...",
     "errors": {
       "nameRequired": "Informe seu nome.",
       "phoneRequired": "Informe um número de telefone.",

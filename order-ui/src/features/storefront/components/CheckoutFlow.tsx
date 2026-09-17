@@ -8,11 +8,12 @@ import { PICKUP_ETA_MINUTES } from "../constants/storefront.constants";
 
 interface CheckoutFlowProps {
     zones: DeliveryZone[];
+    isPlacingOrder: boolean;
     onBack: () => void;
     onPlaceOrder: (input: PlaceOrderInput) => void;
 }
 
-export const CheckoutFlow = ({ zones, onBack, onPlaceOrder }: CheckoutFlowProps) => {
+export const CheckoutFlow = ({ zones, isPlacingOrder, onBack, onPlaceOrder }: CheckoutFlowProps) => {
     const { t } = useTranslation("storefront");
     const { t: tPayment } = useTranslation("payment");
     const activeZones = zones.filter((z) => z.active);
@@ -151,8 +152,8 @@ export const CheckoutFlow = ({ zones, onBack, onPlaceOrder }: CheckoutFlowProps)
             </div>
 
             <div className="p-4 bg-white border-t border-slate-100 flex-shrink-0 pb-8">
-                <button onClick={handlePlaceOrder} className="w-full h-[52px] bg-slate-950 text-slate-50 rounded-[8px] font-semibold text-[15px] hover:bg-slate-900">
-                    {t("checkout.placeOrderButton")}
+                <button onClick={handlePlaceOrder} disabled={isPlacingOrder} className="w-full h-[52px] bg-slate-950 text-slate-50 rounded-[8px] font-semibold text-[15px] hover:bg-slate-900 disabled:opacity-60 disabled:cursor-not-allowed">
+                    {isPlacingOrder ? t("checkout.placingOrderButton") : t("checkout.placeOrderButton")}
                 </button>
             </div>
         </div>
