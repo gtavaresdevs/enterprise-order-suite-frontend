@@ -20,6 +20,8 @@
     "startPreparing": "Start Preparing",
     "markReady": "Mark Ready",
     "completeOrder": "Complete Order"
-  }
+  },
+  "notifyCustomer": "Notify Customer",
+  "whatsappMessage": "Hi! Update on your order {{id}}."
 }
 

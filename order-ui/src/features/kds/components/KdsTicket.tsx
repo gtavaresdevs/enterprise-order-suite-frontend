@@ -1,9 +1,11 @@
 import { useTranslation } from 'react-i18next';
+import { MessageCircle } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import type { Order, OrderStatus } from '@/types/orders';
 import { getTicketChannelLabel, NEXT_STATUS } from '../constants/kds.constants';
 import { StatusBadge } from './StatusBadge';
+import { buildWhatsAppLink } from '@/utils/whatsapp';
 
 interface KdsTicketProps {
     order: Order;
@@ -70,17 +72,23 @@ export const KdsTicket = ({ order, onAdvanceStatus }: KdsTicketProps) => {
                 ))}
             </div>
 
-            {/* Footer Button — the real, working status-advance action */}
-            {action && (
-                <div className="p-4 border-t border-slate-800 bg-slate-900/50 rounded-b-[8px]">
+            {/* Footer Buttons */}
+            <div className="p-4 border-t border-slate-800 bg-slate-900/50 rounded-b-[8px] space-y-2">
+                {action && (
                     <button
                         onClick={() => onAdvanceStatus(action.next)}
                         className="w-full py-4 text-lg rounded-[6px] transition-all active:scale-[0.98] flex items-center justify-center gap-2 bg-slate-50 hover:bg-white text-slate-950 font-bold shadow-sm"
                     >
                         {actionLabelKey ? t(actionLabelKey) : action.label}
                     </button>
-                </div>
-            )}
+                )}
+                <button
+                    onClick={() => window.open(buildWhatsAppLink(order.customerPhone, t("whatsappMessage", { id: order.id })), "_blank", "noopener,noreferrer")}
+                    className="w-full py-2.5 text-sm rounded-[6px] flex items-center justify-center gap-2 bg-slate-800/60 hover:bg-slate-800 text-slate-300 font-semibold transition-colors"
+                >
+                    <MessageCircle className="w-3.5 h-3.5" /> {t("notifyCustomer")}
+                </button>
+            </div>
         </Card>
     );
 };

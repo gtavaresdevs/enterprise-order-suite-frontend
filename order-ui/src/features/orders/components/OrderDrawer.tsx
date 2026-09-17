@@ -1,8 +1,9 @@
 import { useTranslation } from "react-i18next";
-import { X, ChevronRight, Phone, MapPin, Wallet } from "lucide-react";
+import { X, ChevronRight, Phone, MapPin, Wallet, MessageCircle } from "lucide-react";
 import type { Order, OrderLine } from "@/types/orders";
 import { useFormat } from "@/features/preferences/hooks/useFormat";
 import { StatusBadge } from "./StatusBadge";
+import { buildWhatsAppLink } from "@/utils/whatsapp";
 
 export function OrderDrawer({ order, onClose }: { order: Order; onClose: () => void }) {
   const { t } = useTranslation("orders");
@@ -122,8 +123,11 @@ export function OrderDrawer({ order, onClose }: { order: Order; onClose: () => v
             <p className="text-2xl font-semibold text-slate-900 font-mono mt-0.5">{formatCurrency(order.total)}</p>
           </div>
           <div className="flex gap-2">
-            <button className="h-9 px-4 rounded-[8px] border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors">
-              {t("drawer.contactCustomerButton")}
+            <button
+              onClick={() => window.open(buildWhatsAppLink(order.customerPhone, t("drawer.whatsappMessage", { id: order.id, status: t(`status.${order.status.toLowerCase()}`) })), "_blank", "noopener,noreferrer")}
+              className="h-9 px-4 rounded-[8px] border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors flex items-center gap-1.5"
+            >
+              <MessageCircle className="w-3.5 h-3.5" /> {t("drawer.contactCustomerButton")}
             </button>
           </div>
         </div>

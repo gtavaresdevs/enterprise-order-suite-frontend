@@ -53,7 +53,8 @@
     "lineCount_other": "{{count}} itens",
     "unitPriceEach": "{{price}} cada",
     "orderTotalLabel": "Total do Pedido",
-    "contactCustomerButton": "Contatar Cliente"
+    "contactCustomerButton": "Contatar Cliente",
+    "whatsappMessage": "Olá! Atualização do seu pedido {{id}}: {{status}}."
   },
   "deleteModal": {
     "title": "Cancelar Pedido",

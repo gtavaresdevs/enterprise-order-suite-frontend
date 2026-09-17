@@ -20,6 +20,8 @@
     "startPreparing": "Iniciar Preparo",
     "markReady": "Marcar como Pronto",
     "completeOrder": "Concluir Pedido"
-  }
+  },
+  "notifyCustomer": "Notificar Cliente",
+  "whatsappMessage": "Olá! Atualização do seu pedido {{id}}."
 }
 
