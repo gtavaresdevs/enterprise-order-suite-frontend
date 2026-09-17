@@ -30,6 +30,8 @@ export const DEFAULT_PREFERENCES: PreferencesState = {
     storefrontLogo: null,
     storefrontCover: null,
     storefrontBrandColor: "#0f172a",
+    whatsappNumber: "",
+    deliveryZones: [],
 };
 
 interface PreferencesContextValue {

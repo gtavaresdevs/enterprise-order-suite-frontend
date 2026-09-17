@@ -5,6 +5,14 @@ export type PaymentStatus = "Paid" | "Pending" | "PayLater";
 export type PaymentMethod = "PIX" | "Card" | "Cash";
 export type CardType = "Credit" | "Debit";
 
+export interface DeliveryZone {
+  id: string;
+  neighborhood: string;
+  feeAmount: number;
+  etaMinutes: number;
+  active: boolean;
+}
+
 export interface Modifier {
   label: string;
   price: number;
@@ -23,6 +31,8 @@ export interface Order {
   channel: OrderChannel;
   fulfillment?: Fulfillment;
   table?: string;
+  deliveryZone?: string;
+  etaMinutes?: number;
   customerName: string;
   customerPhone: string;
   items: OrderLine[];
