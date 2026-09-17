@@ -4,6 +4,7 @@ import { User, Phone, Package, Plus, DollarSign, Minus, X, MapPin, Wallet } from
 import type { Order, OrderStatus, OrderLine, OrderChannel, Fulfillment, PaymentMethod, CardType } from "@/types/orders";
 import { useFormat } from "@/features/preferences/hooks/useFormat";
 import { useTables } from "@/features/tables/hooks/useTables";
+import { usePreferencesContext } from "@/app/providers/PreferencesProvider";
 import { PaymentMethodPicker } from "@/components/payment/PaymentMethodPicker";
 
 interface DraftItem { _key: string; name: string; quantity: string; unitPrice: string; }
@@ -14,12 +15,15 @@ export function CreateOrderModal({ onClose, onSave }: { onClose: () => void; onS
     const { t: tPayment } = useTranslation("payment");
     const { formatCurrency } = useFormat();
     const { tables } = useTables();
+    const { preferences } = usePreferencesContext();
+    const activeZones = preferences.deliveryZones.filter((z) => z.active);
     const [customerName, setCustomerName] = useState("");
     const [customerPhone, setCustomerPhone] = useState("");
     const [status, setStatus] = useState<OrderStatus>("New");
     const [channel, setChannel] = useState<OrderChannel>("Phone");
     const [fulfillment, setFulfillment] = useState<Fulfillment>("Pickup");
     const [tableId, setTableId] = useState("");
+    const [zoneId, setZoneId] = useState("");
     const [items, setItems] = useState<DraftItem[]>([emptyDraftItem()]);
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [submitted, setSubmitted] = useState(false);
@@ -34,6 +38,7 @@ export function CreateOrderModal({ onClose, onSave }: { onClose: () => void; onS
         if (!customerName.trim()) e.customerName = t("createModal.errors.nameRequired");
         if (!customerPhone.trim()) e.customerPhone = t("createModal.errors.phoneRequired");
         if (channel === "Dine-in" && !tableId) e.table = t("createModal.errors.tableRequired");
+        if (channel === "Phone" && fulfillment === "Delivery" && !zoneId) e.zone = t("createModal.errors.zoneRequired");
         if (!paymentMethod) e.paymentMethod = tPayment("errors.methodRequired");
         if (paymentMethod === "Card" && !cardType) e.cardType = tPayment("errors.cardTypeRequired");
         items.forEach((p, i) => {
@@ -57,11 +62,14 @@ export function CreateOrderModal({ onClose, onSave }: { onClose: () => void; onS
             modifiers: [],
         }));
         const selectedTable = tables.find((t) => t.id === tableId);
+        const selectedZone = activeZones.find((z) => z.id === zoneId);
         const parsedChangeFor = parseFloat(changeFor);
         onSave({
             channel,
             fulfillment: channel === "Phone" ? fulfillment : undefined,
             table: channel === "Dine-in" ? selectedTable?.name : undefined,
+            deliveryZone: channel === "Phone" && fulfillment === "Delivery" ? selectedZone?.neighborhood : undefined,
+            etaMinutes: channel === "Phone" && fulfillment === "Delivery" ? selectedZone?.etaMinutes : undefined,
             customerName: customerName.trim(),
             customerPhone: customerPhone.trim(),
             status,
@@ -127,12 +135,23 @@ export function CreateOrderModal({ onClose, onSave }: { onClose: () => void; onS
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className="col-span-2">
-                                        <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5">{t("createModal.fulfillmentLabel")}</label>
-                                        <select className={`${inputCls()} cursor-pointer`} value={fulfillment} onChange={(e) => setFulfillment(e.target.value as Fulfillment)}>
-                                            <option value="Pickup">{t("createModal.fulfillmentPickup")}</option>
-                                            <option value="Delivery">{t("createModal.fulfillmentDelivery")}</option>
-                                        </select>
+                                    <div className="col-span-2 space-y-3">
+                                        <div>
+                                            <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5">{t("createModal.fulfillmentLabel")}</label>
+                                            <select className={`${inputCls()} cursor-pointer`} value={fulfillment} onChange={(e) => setFulfillment(e.target.value as Fulfillment)}>
+                                                <option value="Pickup">{t("createModal.fulfillmentPickup")}</option>
+                                                <option value="Delivery" disabled={activeZones.length === 0}>{t("createModal.fulfillmentDelivery")}</option>
+                                            </select>
+                                        </div>
+                                        {fulfillment === "Delivery" && (
+                                            <div>
+                                                <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5">{t("createModal.zoneLabel")}</label>
+                                                <select className={`${inputCls(submitted ? errors.zone : undefined)} cursor-pointer`} value={zoneId} onChange={(e) => setZoneId(e.target.value)}>
+                                                    <option value="">{t("createModal.zonePlaceholder")}</option>
+                                                    {activeZones.map((z) => <option key={z.id} value={z.id}>{z.neighborhood}</option>)}
+                                                </select>
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                             </div>

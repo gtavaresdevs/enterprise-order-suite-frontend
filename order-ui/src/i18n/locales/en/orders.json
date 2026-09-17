@@ -79,6 +79,8 @@
     "fulfillmentLabel": "Fulfillment",
     "fulfillmentPickup": "Pickup",
     "fulfillmentDelivery": "Delivery",
+    "zoneLabel": "Neighborhood",
+    "zonePlaceholder": "Select neighborhood",
     "itemsSectionLabel": "Items",
     "paymentSectionLabel": "Payment",
     "addItemButton": "Add Item",
@@ -96,6 +98,7 @@
       "nameRequired": "Name required.",
       "phoneRequired": "Phone required.",
       "tableRequired": "Table required.",
+      "zoneRequired": "Select a delivery neighborhood.",
       "itemNameRequired": "Item name required.",
       "priceRequired": "Price required."
     }

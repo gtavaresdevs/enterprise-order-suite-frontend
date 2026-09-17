@@ -79,6 +79,8 @@
     "fulfillmentLabel": "Modalidade",
     "fulfillmentPickup": "Retirada",
     "fulfillmentDelivery": "Entrega",
+    "zoneLabel": "Bairro",
+    "zonePlaceholder": "Selecione o bairro",
     "itemsSectionLabel": "Itens",
     "paymentSectionLabel": "Pagamento",
     "addItemButton": "Adicionar Item",
@@ -96,6 +98,7 @@
       "nameRequired": "Nome obrigatório.",
       "phoneRequired": "Telefone obrigatório.",
       "tableRequired": "Mesa obrigatória.",
+      "zoneRequired": "Selecione um bairro de entrega.",
       "itemNameRequired": "Nome do item obrigatório.",
       "priceRequired": "Preço obrigatório."
     }
