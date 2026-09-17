@@ -39,6 +39,23 @@
     "saved": "Saved!",
     "save": "Save Preferences"
   },
+  "deliveryZonesSection": {
+    "title": "Delivery Zones",
+    "description": "Neighborhoods you deliver to, with a delivery fee and ETA for each.",
+    "empty": "No delivery zones configured yet — Delivery will be unavailable at checkout until you add one.",
+    "activeLabel": "Active",
+    "inactiveLabel": "Inactive",
+    "etaMinutesValue": "{{count}} min",
+    "namePlaceholder": "Neighborhood name",
+    "feePlaceholder": "Fee",
+    "etaPlaceholder": "ETA (min)",
+    "addButton": "Add Zone",
+    "errors": {
+      "nameRequired": "Enter a neighborhood name.",
+      "feeInvalid": "Enter a valid, non-negative fee.",
+      "etaInvalid": "Enter a valid ETA in minutes."
+    }
+  },
   "storefrontSection": {
     "title": "Storefront & White-label",
     "description": "Configure your public customer-facing store identity.",

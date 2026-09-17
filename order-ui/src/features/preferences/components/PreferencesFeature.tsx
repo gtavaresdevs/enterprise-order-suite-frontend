@@ -12,6 +12,7 @@ import { PreferencesSelect } from "@/features/preferences/components/Preferences
 import { PreferencesToggle } from "@/features/preferences/components/PreferencesToggle";
 import { PreferencesFooter } from "@/features/preferences/components/PreferencesFooter";
 import { StorefrontSection } from "@/features/preferences/components/StorefrontSection";
+import { DeliveryZonesSection } from "@/features/preferences/components/DeliveryZonesSection";
 import { Separator } from "@/components/ui/separator";
 import {
     TIMEZONES, LANGUAGES, DATE_FORMATS, CURRENCIES, FONT_SIZES,
@@ -37,6 +38,7 @@ export function PreferencesFeature() {
 
                 <div className="space-y-4">
                     <StorefrontSection />
+                    <DeliveryZonesSection />
 
                     <PreferenceSectionCard icon={Monitor} title={t("sections.interface.title")} description={t("sections.interface.description")}>
                         <PreferenceRow label={t("rows.colorTheme.label")} sub={t("rows.colorTheme.sub")}>

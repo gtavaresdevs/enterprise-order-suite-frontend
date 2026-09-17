@@ -39,6 +39,23 @@
     "saved": "Salvo!",
     "save": "Salvar Preferências"
   },
+  "deliveryZonesSection": {
+    "title": "Zonas de Entrega",
+    "description": "Bairros para os quais você entrega, com taxa e prazo estimado para cada um.",
+    "empty": "Nenhuma zona de entrega configurada ainda — a Entrega ficará indisponível no checkout até que você adicione uma.",
+    "activeLabel": "Ativa",
+    "inactiveLabel": "Inativa",
+    "etaMinutesValue": "{{count}} min",
+    "namePlaceholder": "Nome do bairro",
+    "feePlaceholder": "Taxa",
+    "etaPlaceholder": "Prazo (min)",
+    "addButton": "Adicionar Zona",
+    "errors": {
+      "nameRequired": "Informe o nome de um bairro.",
+      "feeInvalid": "Informe uma taxa válida e não negativa.",
+      "etaInvalid": "Informe um prazo válido em minutos."
+    }
+  },
   "storefrontSection": {
     "title": "Loja Virtual e White-label",
     "description": "Configure a identidade da sua loja voltada ao cliente.",
