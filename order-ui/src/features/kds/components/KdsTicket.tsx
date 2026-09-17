@@ -84,3 +84,5 @@ export const KdsTicket = ({ order, onAdvanceStatus }: KdsTicketProps) => {
         </Card>
     );
 };
+
+
