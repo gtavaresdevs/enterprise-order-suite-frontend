@@ -1,7 +1,7 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
-import { Store, Camera, ImagePlus, ExternalLink } from "lucide-react";
+import { Store, Camera, ImagePlus, ExternalLink, Phone, Copy, Check } from "lucide-react";
 import { usePreferencesContext } from "@/app/providers/PreferencesProvider";
 
 function readFileAsDataUrl(file: File): Promise<string> {
@@ -20,6 +20,18 @@ export function StorefrontSection() {
     const coverRef = useRef<HTMLInputElement>(null);
     const { preferences, updatePreference } = usePreferencesContext();
     const { storefrontLogo: logoSrc, storefrontCover: coverSrc, storefrontBrandColor: brandColor } = preferences;
+    const [linkCopied, setLinkCopied] = useState(false);
+    const orderingLink = `${window.location.origin}/storefront`;
+
+    const handleCopyLink = async () => {
+        try {
+            await navigator.clipboard.writeText(orderingLink);
+            setLinkCopied(true);
+            setTimeout(() => setLinkCopied(false), 2000);
+        } catch {
+            // Clipboard permission denied by the browser — nothing to recover here.
+        }
+    };
 
     const handleLogoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -114,6 +126,40 @@ export function StorefrontSection() {
                             className={`${inputCls} font-mono uppercase`}
                             readOnly
                         />
+                    </div>
+                </div>
+
+                <div className="border-t border-slate-50" />
+
+                <div>
+                    <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5">{t("storefrontSection.whatsappLabel")}</label>
+                    <div className="relative">
+                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
+                        <input
+                            type="tel"
+                            inputMode="numeric"
+                            value={preferences.whatsappNumber}
+                            onChange={(e) => updatePreference("whatsappNumber", e.target.value.replace(/[^\d]/g, ""))}
+                            placeholder={t("storefrontSection.whatsappPlaceholder")}
+                            className={`${inputCls} pl-8 font-mono`}
+                        />
+                    </div>
+                    <p className="text-[10px] text-slate-400 mt-1">{t("storefrontSection.whatsappHint")}</p>
+                </div>
+
+                <div className="border-t border-slate-50" />
+
+                <div>
+                    <label className="block text-xs font-semibold text-slate-600 uppercase tracking-wide mb-1.5">{t("storefrontSection.orderingLinkLabel")}</label>
+                    <div className="flex items-center gap-2">
+                        <input type="text" readOnly value={orderingLink} className={`${inputCls} font-mono text-xs`} />
+                        <button
+                            onClick={handleCopyLink}
+                            className="inline-flex items-center gap-1.5 h-9 px-3 rounded-[8px] border border-slate-200 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors flex-shrink-0"
+                        >
+                            {linkCopied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                            {linkCopied ? t("storefrontSection.linkCopied") : t("storefrontSection.copyLink")}
+                        </button>
                     </div>
                 </div>
             </div>

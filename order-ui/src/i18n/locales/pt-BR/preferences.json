@@ -51,6 +51,12 @@
     "coverHint": "JPG ou PNG · mín. 800×200px",
     "brandPrimaryColor": "Cor Primária da Marca",
     "logoAlt": "Logotipo",
-    "coverAlt": "Capa"
+    "coverAlt": "Capa",
+    "whatsappLabel": "Número do WhatsApp Business",
+    "whatsappPlaceholder": "5511999998888",
+    "whatsappHint": "Somente números, com código do país — usado para montar links de WhatsApp para notificar clientes.",
+    "orderingLinkLabel": "Link de Pedidos Compartilhável",
+    "copyLink": "Copiar Link",
+    "linkCopied": "Copiado!"
   }
 }
