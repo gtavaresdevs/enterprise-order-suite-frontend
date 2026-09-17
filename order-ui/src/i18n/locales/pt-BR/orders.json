@@ -46,6 +46,8 @@
     "fulfillmentLabel": "Modalidade",
     "emptyValue": "—",
     "phoneLabel": "Telefone",
+    "deliveryZoneLabel": "Zona de Entrega",
+    "etaValue": "{{count}} min",
     "paymentLabel": "Forma de Pagamento",
     "changeForValue": "Troco para {{amount}}",
     "orderItemsLabel": "Itens do Pedido",

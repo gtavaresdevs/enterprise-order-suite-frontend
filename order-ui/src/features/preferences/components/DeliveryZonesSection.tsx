@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { MapPinned, Plus, Trash2 } from "lucide-react";
 import { usePreferencesContext } from "@/app/providers/PreferencesProvider";
+import { useFormat } from "@/features/preferences/hooks/useFormat";
 import type { DeliveryZone } from "@/types/orders";
 
 function makeZoneId(): string {
@@ -10,6 +11,7 @@ function makeZoneId(): string {
 
 export function DeliveryZonesSection() {
     const { t } = useTranslation("preferences");
+    const { formatCurrency } = useFormat();
     const { preferences, updatePreference } = usePreferencesContext();
     const { deliveryZones } = preferences;
 
@@ -68,7 +70,7 @@ export function DeliveryZonesSection() {
                                         {zone.active ? t("deliveryZonesSection.activeLabel") : t("deliveryZonesSection.inactiveLabel")}
                                     </button>
                                     <p className="text-sm font-medium text-slate-800 truncate">{zone.neighborhood}</p>
-                                    <span className="text-xs text-slate-400 font-mono flex-shrink-0">${zone.feeAmount.toFixed(2)} · {t("deliveryZonesSection.etaMinutesValue", { count: zone.etaMinutes })}</span>
+                                    <span className="text-xs text-slate-400 font-mono flex-shrink-0">{formatCurrency(zone.feeAmount)} · {t("deliveryZonesSection.etaMinutesValue", { count: zone.etaMinutes })}</span>
                                 </div>
                                 <button onClick={() => handleRemove(zone.id)} className="w-7 h-7 flex-shrink-0 rounded-[6px] flex items-center justify-center text-slate-300 hover:text-red-500 hover:bg-red-50 transition-colors">
                                     <Trash2 className="w-3.5 h-3.5" />

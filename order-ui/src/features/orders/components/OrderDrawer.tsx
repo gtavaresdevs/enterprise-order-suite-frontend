@@ -58,6 +58,19 @@ export function OrderDrawer({ order, onClose }: { order: Order; onClose: () => v
                   <p className="text-sm font-medium text-slate-700 mt-0.5 font-mono">{order.customerPhone}</p>
                 </div>
               </div>
+              {order.deliveryZone && (
+                <div className="flex items-start gap-2.5">
+                  <div className="w-7 h-7 rounded-[8px] bg-slate-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <MapPin className="w-3.5 h-3.5 text-slate-500" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">{t("drawer.deliveryZoneLabel")}</p>
+                    <p className="text-sm font-medium text-slate-700 mt-0.5 leading-snug">
+                      {order.deliveryZone}{order.etaMinutes != null ? ` · ${t("drawer.etaValue", { count: order.etaMinutes })}` : ""}
+                    </p>
+                  </div>
+                </div>
+              )}
               {order.paymentMethod && (
                 <div className="flex items-start gap-2.5">
                   <div className="w-7 h-7 rounded-[8px] bg-slate-100 flex items-center justify-center flex-shrink-0 mt-0.5">

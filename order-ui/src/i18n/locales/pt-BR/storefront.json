@@ -34,6 +34,9 @@
     "zoneLabel": "Bairro",
     "zonePlaceholder": "Selecione seu bairro",
     "etaEstimate": "Estimativa de {{count}} min",
+    "subtotalLabel": "Subtotal",
+    "deliveryFeeLabel": "Taxa de Entrega",
+    "totalLabel": "Total",
     "placeOrderButton": "Fazer Pedido",
     "placingOrderButton": "Enviando Pedido...",
     "errors": {

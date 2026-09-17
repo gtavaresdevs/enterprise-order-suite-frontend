@@ -91,6 +91,7 @@ export const StorefrontFeature = () => {
                     <CheckoutFlow
                         zones={deliveryZones}
                         isPlacingOrder={isPlacingOrder}
+                        cartTotal={cartTotal}
                         onBack={() => setFlowState("cart")}
                         onPlaceOrder={(input) => {
                             placeOrder(input);

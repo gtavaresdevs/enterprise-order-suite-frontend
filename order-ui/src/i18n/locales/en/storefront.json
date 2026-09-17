@@ -34,6 +34,9 @@
     "zoneLabel": "Neighborhood",
     "zonePlaceholder": "Select your neighborhood",
     "etaEstimate": "Estimated {{count}} min",
+    "subtotalLabel": "Subtotal",
+    "deliveryFeeLabel": "Delivery Fee",
+    "totalLabel": "Total",
     "placeOrderButton": "Place Order",
     "placingOrderButton": "Placing Order...",
     "errors": {

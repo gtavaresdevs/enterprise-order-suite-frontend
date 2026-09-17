@@ -46,6 +46,8 @@
     "fulfillmentLabel": "Fulfillment",
     "emptyValue": "—",
     "phoneLabel": "Phone",
+    "deliveryZoneLabel": "Delivery Zone",
+    "etaValue": "{{count}} min",
     "paymentLabel": "Payment Method",
     "changeForValue": "Change for {{amount}}",
     "orderItemsLabel": "Order Items",

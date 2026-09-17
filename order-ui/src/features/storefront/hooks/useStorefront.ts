@@ -43,6 +43,7 @@ export const useStorefront = () => {
     });
 
     const placeOrder = (input: PlaceOrderInput) => {
+        createOrderMutation.reset();
         const etaMinutes = input.fulfillment === "Delivery" ? (input.deliveryZone?.etaMinutes ?? PICKUP_ETA_MINUTES) : PICKUP_ETA_MINUTES;
         const deliveryFee = input.fulfillment === "Delivery" ? (input.deliveryZone?.feeAmount ?? 0) : 0;
         const items: OrderLine[] = cart.map((c) => ({
@@ -61,7 +62,7 @@ export const useStorefront = () => {
             customerPhone: input.customerPhone,
             items,
             status: "New",
-            paymentStatus: "Paid",
+            paymentStatus: input.paymentMethod === "Cash" ? "PayLater" : "Paid",
             paymentMethod: input.paymentMethod,
             cardType: input.cardType,
             changeFor: input.changeFor,

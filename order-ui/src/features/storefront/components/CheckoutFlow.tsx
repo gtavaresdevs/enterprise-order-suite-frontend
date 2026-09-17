@@ -4,17 +4,20 @@ import { ArrowLeft, User, Phone, MapPin, Clock } from "lucide-react";
 import type { DeliveryZone, Fulfillment, PaymentMethod, CardType } from "@/types/orders";
 import type { PlaceOrderInput } from "@/types/storefront";
 import { PaymentMethodPicker } from "@/components/payment/PaymentMethodPicker";
+import { useFormat } from "@/features/preferences/hooks/useFormat";
 import { PICKUP_ETA_MINUTES } from "../constants/storefront.constants";
 
 interface CheckoutFlowProps {
     zones: DeliveryZone[];
     isPlacingOrder: boolean;
+    cartTotal: number;
     onBack: () => void;
     onPlaceOrder: (input: PlaceOrderInput) => void;
 }
 
-export const CheckoutFlow = ({ zones, isPlacingOrder, onBack, onPlaceOrder }: CheckoutFlowProps) => {
+export const CheckoutFlow = ({ zones, isPlacingOrder, cartTotal, onBack, onPlaceOrder }: CheckoutFlowProps) => {
     const { t } = useTranslation("storefront");
+    const { formatCurrency } = useFormat();
     const { t: tPayment } = useTranslation("payment");
     const activeZones = zones.filter((z) => z.active);
 
@@ -50,8 +53,8 @@ export const CheckoutFlow = ({ zones, isPlacingOrder, onBack, onPlaceOrder }: Ch
             fulfillment,
             deliveryZone: fulfillment === "Delivery" ? (selectedZone ?? undefined) : undefined,
             paymentMethod: paymentMethod as PaymentMethod,
-            cardType: cardType ?? undefined,
-            changeFor: parseFloat(changeFor) > 0 ? parseFloat(changeFor) : undefined,
+            cardType: paymentMethod === "Card" ? (cardType ?? undefined) : undefined,
+            changeFor: paymentMethod === "Cash" && parseFloat(changeFor) > 0 ? parseFloat(changeFor) : undefined,
         });
     };
 
@@ -152,6 +155,22 @@ export const CheckoutFlow = ({ zones, isPlacingOrder, onBack, onPlaceOrder }: Ch
             </div>
 
             <div className="p-4 bg-white border-t border-slate-100 flex-shrink-0 pb-8">
+                <div className="mb-3 space-y-1">
+                    <div className="flex items-center justify-between text-sm text-slate-600">
+                        <span>{t("checkout.subtotalLabel")}</span>
+                        <span className="font-mono">{formatCurrency(cartTotal)}</span>
+                    </div>
+                    {fulfillment === "Delivery" && selectedZone && (
+                        <div className="flex items-center justify-between text-sm text-slate-600">
+                            <span>{t("checkout.deliveryFeeLabel")}</span>
+                            <span className="font-mono">{formatCurrency(selectedZone.feeAmount)}</span>
+                        </div>
+                    )}
+                    <div className="flex items-center justify-between text-sm font-semibold text-slate-900">
+                        <span>{t("checkout.totalLabel")}</span>
+                        <span className="font-mono">{formatCurrency(cartTotal + (fulfillment === "Delivery" && selectedZone ? selectedZone.feeAmount : 0))}</span>
+                    </div>
+                </div>
                 <button onClick={handlePlaceOrder} disabled={isPlacingOrder} className="w-full h-[52px] bg-slate-950 text-slate-50 rounded-[8px] font-semibold text-[15px] hover:bg-slate-900 disabled:opacity-60 disabled:cursor-not-allowed">
                     {isPlacingOrder ? t("checkout.placingOrderButton") : t("checkout.placeOrderButton")}
                 </button>
