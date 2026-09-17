@@ -14,11 +14,12 @@ export const StorefrontFeature = () => {
     const { t } = useTranslation("storefront");
     const {
         menuItems, isLoading, activeCategory, setActiveCategory, selectedItem, setSelectedItem,
-        cart, setCart, cartTotal, cartCount, flowState, setFlowState, addToCart
+        cart, setCart, cartTotal, cartCount, flowState, setFlowState, addToCart,
+        placeOrder, placedOrder,
     } = useStorefront();
 
     const { preferences } = usePreferencesContext();
-    const { storefrontLogo, storefrontCover, storefrontBrandColor } = preferences;
+    const { storefrontLogo, storefrontCover, storefrontBrandColor, deliveryZones } = preferences;
 
     const visibleMenu = menuItems.filter((item) => item.category === activeCategory);
 
@@ -86,9 +87,18 @@ export const StorefrontFeature = () => {
                     <BottomSheet item={selectedItem} onClose={() => setSelectedItem(null)} onAddToCart={addToCart} />
                 )}
                 {flowState === "cart" && <CartOverlay cart={cart} total={cartTotal} onClose={() => setFlowState("feed")} onCheckout={() => setFlowState("checkout")} />}
-                {flowState === "checkout" && <CheckoutFlow onBack={() => setFlowState("cart")} onPlaceOrder={(method) => setFlowState(method === "PIX" ? "pixWaiting" : "success")} />}
+                {flowState === "checkout" && (
+                    <CheckoutFlow
+                        zones={deliveryZones}
+                        onBack={() => setFlowState("cart")}
+                        onPlaceOrder={(input) => {
+                            placeOrder(input);
+                            setFlowState(input.paymentMethod === "PIX" ? "pixWaiting" : "success");
+                        }}
+                    />
+                )}
                 {flowState === "pixWaiting" && <PixWaitingMock onConfirmed={() => setFlowState("success")} />}
-                {flowState === "success" && <SuccessView onBack={() => { setCart([]); setFlowState("feed"); }} />}
+                {flowState === "success" && <SuccessView order={placedOrder} onBack={() => { setCart([]); setFlowState("feed"); }} />}
             </div>
         </div>
     );

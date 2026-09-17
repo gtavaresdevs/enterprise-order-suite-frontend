@@ -34,19 +34,16 @@ export const CartOverlay = ({ cart, total, onClose, onCheckout }: CartOverlayPro
                 </div>
 
                 <div className="p-5 border-t border-slate-100 bg-slate-50/50">
-                    <div className="flex justify-between items-center mb-2">
+                    <div className="flex justify-between items-center">
                         <span className="text-sm text-slate-500 font-medium">{t("cart.subtotalLabel")}</span>
                         <span className="text-sm font-mono font-medium text-slate-900">${total.toFixed(2)}</span>
                     </div>
-                    <div className="flex justify-between items-center">
-                        <span className="text-sm text-slate-500 font-medium">{t("cart.deliveryFeeLabel")}</span>
-                        <span className="text-sm font-mono font-medium text-slate-900">$3.50</span>
-                    </div>
+                    <p className="text-[11px] text-slate-400 mt-1">{t("cart.feeNote")}</p>
                 </div>
 
                 <div className="p-5 pt-3 bg-white">
                     <button disabled={cart.length === 0} onClick={onCheckout} className="w-full h-[52px] bg-slate-950 text-slate-50 rounded-[8px] flex items-center justify-center gap-2 font-semibold text-[15px] hover:bg-slate-900 disabled:opacity-50 transition-all">
-                        {t("cart.checkoutButton")} • <span className="font-mono">${(total + 3.50).toFixed(2)}</span>
+                        {t("cart.checkoutButton")} • <span className="font-mono">${total.toFixed(2)}</span>
                     </button>
                 </div>
             </div>

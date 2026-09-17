@@ -16,14 +16,30 @@
     "empty": "Your cart is empty.",
     "subtotalLabel": "Subtotal",
     "deliveryFeeLabel": "Delivery Fee",
+    "feeNote": "Delivery fee (if any) is added at checkout based on your neighborhood.",
     "checkoutButton": "Go to Checkout"
   },
   "checkout": {
     "title": "Checkout",
-    "deliveryAddressLabel": "Delivery Address",
-    "customerName": "Marcus T.",
-    "addressLine1": "123 Main St, Apt 4B",
-    "placeOrderButton": "Place Order"
+    "yourDetailsLabel": "Your Details",
+    "nameLabel": "Full Name",
+    "namePlaceholder": "Your name",
+    "phoneLabel": "WhatsApp / Phone",
+    "phonePlaceholder": "+1 555 000 0000",
+    "phoneHint": "Used for order status updates.",
+    "fulfillmentLabel": "Pickup or Delivery",
+    "fulfillmentPickup": "Pickup",
+    "fulfillmentDelivery": "Delivery",
+    "noZonesAvailable": "Delivery isn't available yet — no delivery zones are configured.",
+    "zoneLabel": "Neighborhood",
+    "zonePlaceholder": "Select your neighborhood",
+    "etaEstimate": "Estimated {{count}} min",
+    "placeOrderButton": "Place Order",
+    "errors": {
+      "nameRequired": "Enter your name.",
+      "phoneRequired": "Enter a phone number.",
+      "zoneRequired": "Select a neighborhood."
+    }
   },
   "pixWaiting": {
     "title": "Waiting for payment confirmation...",
@@ -34,6 +50,8 @@
   "success": {
     "title": "Order Received!",
     "subtitle": "The kitchen is preparing your food.",
+    "orderIdLabel": "Order {{id}}",
+    "etaLabel": "{{count}} min",
     "trackOrderButton": "Track Order",
     "backToMenuButton": "Back to Menu"
   }
