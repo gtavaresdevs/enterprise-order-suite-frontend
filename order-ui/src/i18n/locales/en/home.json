@@ -7,7 +7,6 @@
       "afternoon": "Good afternoon, {{name}}",
       "evening": "Good evening, {{name}}"
     },
-    "fallbackName": "there",
     "newOrder": "New order"
   },
   "earnings": {

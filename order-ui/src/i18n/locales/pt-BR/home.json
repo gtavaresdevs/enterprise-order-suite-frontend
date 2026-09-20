@@ -7,7 +7,6 @@
       "afternoon": "Boa tarde, {{name}}",
       "evening": "Boa noite, {{name}}"
     },
-    "fallbackName": "você",
     "newOrder": "Novo pedido"
   },
   "earnings": {

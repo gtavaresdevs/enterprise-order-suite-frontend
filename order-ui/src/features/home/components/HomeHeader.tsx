@@ -2,13 +2,12 @@ import { Link } from "react-router";
 import { Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useTimestamp } from "../hooks/useTimestamp";
-import { useAuth } from "@/features/auth/hooks/useAuth";
+import { useProfileSummary } from "@/features/profile/hooks/useProfileSummary";
 
 export function HomeHeader() {
     const { t } = useTranslation("home");
     const { greetingPeriod, dateStr, timeStr } = useTimestamp();
-    const { user } = useAuth();
-    const displayName = [user?.firstName, user?.lastName].filter(Boolean).join(" ") || user?.email || t("header.fallbackName");
+    const { displayName } = useProfileSummary();
 
     return (
         <div className="flex items-start justify-between gap-4">
