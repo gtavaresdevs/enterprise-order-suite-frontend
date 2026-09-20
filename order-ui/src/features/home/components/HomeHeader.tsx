@@ -7,14 +7,20 @@ import { useProfileSummary } from "@/features/profile/hooks/useProfileSummary";
 export function HomeHeader() {
     const { t } = useTranslation("home");
     const { greetingPeriod, dateStr, timeStr } = useTimestamp();
-    const { displayName } = useProfileSummary();
+    const { fullName, displayName, isPending } = useProfileSummary();
+    // No name in the token yet and the profile is still loading: show a placeholder instead of a wrong name.
+    const waitingForName = isPending && !fullName;
 
     return (
         <div className="flex items-start justify-between gap-4">
             <div className="space-y-1">
-                <h1 className="text-2xl font-semibold text-slate-900 leading-tight">
-                    {t(`header.greeting.${greetingPeriod}`, { name: displayName })}
-                </h1>
+                {waitingForName ? (
+                    <div className="h-8 w-64 rounded bg-slate-100 animate-pulse" role="status" aria-label={t("loading")} />
+                ) : (
+                    <h1 className="text-2xl font-semibold text-slate-900 leading-tight">
+                        {t(`header.greeting.${greetingPeriod}`, { name: fullName || displayName })}
+                    </h1>
+                )}
                 <p className="text-sm text-slate-400 capitalize">
                     {dateStr} <span className="tabular-nums">· {timeStr}</span>
                 </p>

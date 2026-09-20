@@ -14,6 +14,7 @@ export function useLogout() {
       
       // Clear local storage / session state
       localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
       localStorage.removeItem('role');
       // Or any other relevant tokens/data
       
@@ -25,6 +26,7 @@ export function useLogout() {
       // Even if API call fails, we still want to force the user out on the client side
       queryClient.clear();
       localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
       localStorage.removeItem('role');
       navigate('/login', { replace: true });
     }

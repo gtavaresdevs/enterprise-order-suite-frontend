@@ -11,7 +11,7 @@ import { MOCK_PROFILE_SUMMARY } from "@/features/profile/constants/profile.const
 export function useProfileSummary() {
     const { user } = useAuth();
 
-    const { data } = useQuery({
+    const { data, isPending } = useQuery({
         queryKey: ["profile", "summary"],
         staleTime: 5 * 60_000,
         queryFn: async (): Promise<{ profile: ProfileResponse; isMock: boolean }> => {
@@ -26,6 +26,9 @@ export function useProfileSummary() {
 
     const profile = data?.profile ?? null;
     const isMock = data?.isMock ?? false;
+
+    const source = profile ?? user;
+    const fullName = `${source?.firstName || ""} ${source?.lastName || ""}`.trim();
 
     // While the request is in flight, fall back to the locally decoded JWT so
     // the menu doesn't flash an empty "Account" state before it resolves.
@@ -43,5 +46,5 @@ export function useProfileSummary() {
           ? ((user.firstName?.[0] || "") + (user.lastName?.[0] || "")).toUpperCase() || "U"
           : "U";
 
-    return { profile, isMock, displayName, email, role, initials };
+    return { profile, isMock, isPending, fullName, displayName, email, role, initials };
 }
