@@ -1,60 +1,59 @@
 {
+  "loading": "Carregando painel...",
+  "error": "Não foi possível carregar o painel. Atualize a página para tentar de novo.",
   "header": {
-    "brandLabel": "Enterprise Order Suite",
     "greeting": {
       "morning": "Bom dia, {{name}}",
       "afternoon": "Boa tarde, {{name}}",
       "evening": "Boa noite, {{name}}"
     },
-    "fallbackName": "você"
+    "fallbackName": "você",
+    "newOrder": "Novo pedido"
   },
-  "quickActions": {
-    "title": "Ações Rápidas",
-    "pathwaysCount_one": "{{count}} atalho",
-    "pathwaysCount_other": "{{count}} atalhos",
-    "copied": "Copiado!",
-    "copyLinkAction": "Copiar link",
-    "navigate": "Acessar",
-    "actions": {
-      "newOrder": {
-        "title": "Novo Pedido",
-        "description": "Registre um pedido por telefone ou presencial em nome de um cliente."
-      },
-      "openKds": {
-        "title": "Abrir Painel da Cozinha",
-        "description": "Visualize e avance a fila de pedidos da cozinha em tempo real."
-      },
-      "viewMenu": {
-        "title": "Ver Cardápio",
-        "description": "Gerencie itens, preços, disponibilidade e estoque."
-      },
-      "copyLink": {
-        "title": "Copiar Link de Pedidos",
-        "description": "Compartilhe o link público da loja virtual via WhatsApp ou Instagram."
-      }
+  "earnings": {
+    "title": "Ganhos",
+    "today": "Hoje",
+    "week": "Últimos 7 dias",
+    "month": "Este mês",
+    "orders_one": "{{count}} pedido",
+    "orders_other": "{{count}} pedidos",
+    "vsYesterday": "vs. ontem",
+    "vsLastWeek": "vs. 7 dias anteriores",
+    "vsLastMonth": "vs. mês passado",
+    "viewAnalytics": "Ver análises"
+  },
+  "launch": {
+    "title": "Atalhos",
+    "storefront": {
+      "title": "Loja virtual",
+      "description": "Sua página pública de pedidos.",
+      "open": "Abrir loja",
+      "copy": "Copiar link da loja",
+      "copied": "Link copiado"
+    },
+    "kds": {
+      "title": "Painel da cozinha",
+      "description": "Avance a fila de pedidos em tempo real.",
+      "queue_one": "pedido na fila",
+      "queue_other": "pedidos na fila"
+    },
+    "menu": {
+      "title": "Cardápio",
+      "description": "Itens, preços e estoque.",
+      "lowStock_one": "item com estoque baixo",
+      "lowStock_other": "itens com estoque baixo",
+      "stocked": "Estoque em dia"
     }
   },
-  "snapshot": {
-    "title": "Resumo de Hoje",
-    "loading": "Carregando resumo...",
-    "revenueLabel": "Receita",
-    "orderCountLabel": "Pedidos",
-    "avgOrderValueLabel": "Ticket Médio",
-    "ordersByChannel": "Pedidos por Canal"
-  },
-  "kitchenBacklog": {
-    "title": "Fila da Cozinha",
-    "subtitle_one": "Pedido Novo ou Em Preparo",
-    "subtitle_other": "Pedidos Novos ou Em Preparo",
-    "viewButton": "Ver Painel da Cozinha"
+  "activeOrders": {
+    "title": "Pedidos em andamento",
+    "byChannel": "Hoje por canal"
   },
   "lowStock": {
-    "title": "Alertas de Estoque Baixo",
+    "title": "Estoque baixo",
     "itemCount_one": "{{count}} item",
     "itemCount_other": "{{count}} itens",
-    "loading": "Carregando estoque do cardápio...",
     "empty": "Todos os itens do cardápio estão bem abastecidos.",
-    "stockLeft": "{{count}} restantes",
-    "manageButton": "Gerenciar Cardápio"
+    "stockLeft": "{{count}} restantes"
   }
 }

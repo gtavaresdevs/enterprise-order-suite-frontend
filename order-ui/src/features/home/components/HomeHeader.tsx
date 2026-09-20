@@ -1,4 +1,5 @@
-import { Layers } from "lucide-react";
+import { Link } from "react-router";
+import { Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useTimestamp } from "../hooks/useTimestamp";
 import { useAuth } from "@/features/auth/hooks/useAuth";
@@ -10,29 +11,23 @@ export function HomeHeader() {
     const displayName = [user?.firstName, user?.lastName].filter(Boolean).join(" ") || user?.email || t("header.fallbackName");
 
     return (
-        <div className="flex items-start justify-between mb-8">
-
-            <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                    <div className="w-5 h-5 rounded bg-slate-950 flex items-center justify-center flex-shrink-0">
-                        <Layers className="w-3 h-3 text-slate-100" />
-                    </div>
-
-                    <span className="text-xs font-medium text-slate-400 uppercase tracking-widest">
-                        {t("header.brandLabel")}
-                    </span>
-                </div>
-
+        <div className="flex items-start justify-between gap-4">
+            <div className="space-y-1">
                 <h1 className="text-2xl font-semibold text-slate-900 leading-tight">
                     {t(`header.greeting.${greetingPeriod}`, { name: displayName })}
                 </h1>
-
-                <div className="flex items-center gap-2">
-                    <span className="text-sm text-slate-400">{dateStr}</span>
-                    <span className="w-1 h-1 rounded-full bg-slate-300" />
-                    <span className="font-mono text-sm text-slate-400">{timeStr}</span>
-                </div>
+                <p className="text-sm text-slate-400 capitalize">
+                    {dateStr} <span className="tabular-nums">· {timeStr}</span>
+                </p>
             </div>
+
+            <Link
+                to="/orders?new=1"
+                className="inline-flex items-center gap-2 h-9 px-4 rounded-[8px] bg-slate-950 text-slate-50 text-sm font-semibold border border-slate-800 shadow-inner hover:bg-slate-800 active:scale-[0.98] transition-all flex-shrink-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-500"
+            >
+                <Plus className="w-4 h-4" />
+                {t("header.newOrder")}
+            </Link>
         </div>
     );
 }

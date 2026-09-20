@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router";
 import { useTranslation } from "react-i18next";
 import { ShoppingCart, Plus, Search, Package } from "lucide-react";
 import type { Order, OrderStatus } from "@/types/orders";
@@ -17,7 +18,13 @@ export function OrdersFeature() {
 
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
     const [deleteTarget, setDeleteTarget] = useState<Order | null>(null);
-    const [createOpen, setCreateOpen] = useState(false);
+    const [searchParams, setSearchParams] = useSearchParams();
+    // Home's "New order" button deep-links here with ?new=1 to open the create modal.
+    const [createOpen, setCreateOpen] = useState(searchParams.get("new") === "1");
+    const closeCreate = () => {
+        setCreateOpen(false);
+        if (searchParams.has("new")) setSearchParams({}, { replace: true });
+    };
 
     const statusLabel = (s: OrderStatus | "All") => (s === "All" ? t("filters.all") : t(`status.${s.toLowerCase()}`));
 
@@ -100,7 +107,7 @@ export function OrdersFeature() {
             </div>
             {selectedOrder && <OrderDrawer order={selectedOrder} onClose={() => setSelectedOrder(null)} />}
             {deleteTarget && <DeleteOrderModal order={deleteTarget} onConfirm={() => { updateOrderStatus(deleteTarget.id, "Cancelled"); setDeleteTarget(null); }} onCancel={() => setDeleteTarget(null)} />}
-            {createOpen && <CreateOrderModal onClose={() => setCreateOpen(false)} onSave={createOrder} />}
+            {createOpen && <CreateOrderModal onClose={closeCreate} onSave={createOrder} />}
         </div>
     );
 }

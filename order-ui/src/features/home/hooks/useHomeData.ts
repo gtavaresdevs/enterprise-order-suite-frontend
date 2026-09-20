@@ -7,10 +7,5 @@ export function useHomeData() {
     queryFn: homeService.getHomeDashboardData,
   });
 
-  return {
-    snapshot: data?.snapshot,
-    kitchenBacklogCount: data?.kitchenBacklogCount ?? 0,
-    lowStockItems: data?.lowStockItems ?? [],
-    isLoading,
-  };
+  return { data, isLoading };
 }

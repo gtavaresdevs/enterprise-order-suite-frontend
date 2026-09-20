@@ -1,60 +1,59 @@
 {
+  "loading": "Loading dashboard...",
+  "error": "Couldn't load the dashboard. Refresh to try again.",
   "header": {
-    "brandLabel": "Enterprise Order Suite",
     "greeting": {
       "morning": "Good morning, {{name}}",
       "afternoon": "Good afternoon, {{name}}",
       "evening": "Good evening, {{name}}"
     },
-    "fallbackName": "there"
+    "fallbackName": "there",
+    "newOrder": "New order"
   },
-  "quickActions": {
-    "title": "Quick Actions",
-    "pathwaysCount_one": "{{count}} pathway",
-    "pathwaysCount_other": "{{count}} pathways",
-    "copied": "Copied!",
-    "copyLinkAction": "Copy link",
-    "navigate": "Navigate",
-    "actions": {
-      "newOrder": {
-        "title": "New Order",
-        "description": "Enter a phone or dine-in order on a customer's behalf."
-      },
-      "openKds": {
-        "title": "Open Kitchen Display",
-        "description": "View and advance the live kitchen order queue."
-      },
-      "viewMenu": {
-        "title": "View Menu",
-        "description": "Manage items, prices, availability, and stock."
-      },
-      "copyLink": {
-        "title": "Copy Ordering Link",
-        "description": "Share the public storefront link via WhatsApp or Instagram."
-      }
+  "earnings": {
+    "title": "Earnings",
+    "today": "Today",
+    "week": "Last 7 days",
+    "month": "This month",
+    "orders_one": "{{count}} order",
+    "orders_other": "{{count}} orders",
+    "vsYesterday": "vs. yesterday",
+    "vsLastWeek": "vs. previous 7 days",
+    "vsLastMonth": "vs. last month",
+    "viewAnalytics": "View analytics"
+  },
+  "launch": {
+    "title": "Shortcuts",
+    "storefront": {
+      "title": "Storefront",
+      "description": "Your public ordering page.",
+      "open": "Open storefront",
+      "copy": "Copy storefront link",
+      "copied": "Link copied"
+    },
+    "kds": {
+      "title": "Kitchen display",
+      "description": "Advance the live order queue.",
+      "queue_one": "order in the queue",
+      "queue_other": "orders in the queue"
+    },
+    "menu": {
+      "title": "Menu",
+      "description": "Items, prices and stock.",
+      "lowStock_one": "item low on stock",
+      "lowStock_other": "items low on stock",
+      "stocked": "Stock is healthy"
     }
   },
-  "snapshot": {
-    "title": "Today's Snapshot",
-    "loading": "Loading snapshot...",
-    "revenueLabel": "Revenue",
-    "orderCountLabel": "Orders",
-    "avgOrderValueLabel": "Avg Order Value",
-    "ordersByChannel": "Orders by Channel"
-  },
-  "kitchenBacklog": {
-    "title": "Kitchen Backlog",
-    "subtitle_one": "Order New or Preparing",
-    "subtitle_other": "Orders New or Preparing",
-    "viewButton": "View Kitchen Display"
+  "activeOrders": {
+    "title": "Orders in progress",
+    "byChannel": "Today by channel"
   },
   "lowStock": {
-    "title": "Low-Stock Alerts",
+    "title": "Low stock",
     "itemCount_one": "{{count}} item",
     "itemCount_other": "{{count}} items",
-    "loading": "Loading menu stock...",
     "empty": "All menu items are well stocked.",
-    "stockLeft": "{{count}} left",
-    "manageButton": "Manage Menu"
+    "stockLeft": "{{count}} left"
   }
 }
