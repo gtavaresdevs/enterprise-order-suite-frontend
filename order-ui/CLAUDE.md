@@ -78,6 +78,14 @@ Feature services are **not uniformly wired to a real backend yet**. Only `auth` 
   mismatched endpoint.
 - **Types/service lockstep**: `src/types/<feature>.ts` changes and `services/<feature>.service.ts`
   changes land together — never one without the other.
+- **Backend integration manifest stays in lockstep too**: `docs/superpowers/specs/2026-09-14-backend-integration-manifest.openapi.yaml` is
+  the contract the backend team (and its Claude) builds against. Any change that alters what the
+  backend must provide — a field added/renamed on a shared type in `src/types/`, a new or changed
+  endpoint, an auth/CORS/cookie decision, a business rule the server must enforce — patches that
+  file **in the same commit**. Patch only what the decision touches, bump `info.version`, add an
+  `x-changelog` entry, and put anything not yet final under `x-open-decisions`. Never rewrite the
+  file or drop a superseded decision (record it in the changelog). The rules live in its
+  `x-maintenance` block — read it before editing. Purely visual/frontend-only changes don't touch it.
 - **No new data-fetching/state library**: TanStack React Query is the standard here; don't introduce
   SWR, Redux, Zustand, etc.
 - **Auth-sensitive files** (`src/api/client.ts`, `features/auth/**`, anything touching the
