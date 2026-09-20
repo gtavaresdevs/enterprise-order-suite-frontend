@@ -117,3 +117,15 @@ Feature services are **not uniformly wired to a real backend yet**. Only `auth` 
   already paid for. Reach for a fresh `general-purpose`/custom agent only when the task doesn't
   need conversation context (it starts cold either way) or when you deliberately want the noisy
   transcript kept out of both this session and a fork's shared history.
+
+## Git workflow
+
+- **Branch:** all work is committed to `Claude-Assisted-Development` and pushed to
+  `origin/Claude-Assisted-Development`. `main` stays untouched until there is something concrete
+  to release — never commit to, merge into, or push `main`.
+- **Commit at the end of every task**, after `yarn build` and `yarn lint` are clean. Use an
+  explicit pathspec (`git commit -m "..." -- <files>`) and a conventional message (`feat(...)`,
+  `fix(...)`, `docs(...)`). Never `git add -A`.
+- **Push** to `origin/Claude-Assisted-Development` after committing (plain push, never force).
+- **Only the main agent commits/pushes.** Subagents never run git write commands; the main agent
+  reviews their work first. Never `git stash` (shared `.git` across worktrees).
