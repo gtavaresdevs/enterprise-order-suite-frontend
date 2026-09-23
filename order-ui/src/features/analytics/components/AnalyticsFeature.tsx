@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { useFormat } from "@/features/preferences/hooks/useFormat";
 import { useAnalytics } from "../hooks/useAnalytics";
 import { KPICard } from "./KPICard";
 import { RevenueChart } from "./RevenueChart";
@@ -19,6 +20,7 @@ const KPI_LABEL_KEYS: Record<string, string> = {
 
 export const AnalyticsFeature = () => {
     const { t } = useTranslation("analytics");
+    const { formatCurrency } = useFormat();
     const { kpis, revenue, channels, topItems, heatmap } = useAnalytics();
 
     return (
@@ -35,7 +37,14 @@ export const AnalyticsFeature = () => {
 
             <div className="grid grid-cols-4 gap-4 mb-6">
                 {kpis.data?.map((kpi, idx) => (
-                    <KPICard key={idx} data={{ ...kpi, label: t(KPI_LABEL_KEYS[kpi.label] ?? kpi.label) }} />
+                    <KPICard
+                        key={idx}
+                        data={{
+                            ...kpi,
+                            label: t(KPI_LABEL_KEYS[kpi.label] ?? kpi.label),
+                            value: kpi.isCurrency ? formatCurrency(Number(kpi.value)) : kpi.value,
+                        }}
+                    />
                 ))}
             </div>
 

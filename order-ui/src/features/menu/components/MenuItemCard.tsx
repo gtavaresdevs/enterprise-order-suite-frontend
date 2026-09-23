@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Pencil, Trash2, SlidersHorizontal, Boxes } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { LOW_STOCK_THRESHOLD } from "../constants/menu.constants";
+import { useFormat } from "@/features/preferences/hooks/useFormat";
 import type { MenuItem } from "@/types/menu";
 
 interface MenuItemCardProps {
@@ -13,8 +14,8 @@ interface MenuItemCardProps {
 
 export function MenuItemCard({ item, onEdit, onDelete, onToggleAvailable }: MenuItemCardProps) {
     const { t } = useTranslation("menu");
+    const { formatCurrency } = useFormat();
     const hasAddons = item.addons && item.addons.length > 0;
-    const formatPrice = (n: number) => `$${n.toFixed(2)}`;
     const lowStock = item.stockQuantity > 0 && item.stockQuantity <= LOW_STOCK_THRESHOLD;
 
     return (
@@ -66,7 +67,7 @@ export function MenuItemCard({ item, onEdit, onDelete, onToggleAvailable }: Menu
 
                 <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-100">
                     <span className="font-mono text-base font-semibold text-slate-900">
-                        {formatPrice(item.price)}
+                        {formatCurrency(item.price)}
                     </span>
                     <div className="flex items-center gap-1.5">
                         {hasAddons && (

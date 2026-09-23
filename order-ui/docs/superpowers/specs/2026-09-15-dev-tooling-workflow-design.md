@@ -1,5 +1,13 @@
 # Dev tooling workflow: Graphify, ponytail, wshobson/agents
 
+> **Status:** Implemented 2026-09-15 — see `docs/superpowers/plans/2026-09-15-dev-tooling-workflow-design.md`.
+> Two deviations from the plan as installed, both documented in the plan: Graphify's Claude
+> integration is skill-only (CLI-invoked), no separate MCP server exists for it; its default
+> `claude install` also registers an auto-sync `PreToolUse` hook + `CLAUDE.md` directive, which
+> was explicitly uninstalled (`graphify claude uninstall`) to honor "manual refresh only, no
+> hook." `.claude/` is already git-ignored repo-wide in this project, so project-scoped installs
+> here are local-machine state, not shared via git, despite Claude Code's "project scope" naming.
+
 ## Context
 
 The restaurant-ops redesign is mid-flight (see `2026-09-09-restaurant-ops-redesign-design.md` and

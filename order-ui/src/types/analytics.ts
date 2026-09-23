@@ -3,7 +3,8 @@ import type { OrderChannel } from "@/types/orders";
 
 export type AnalyticsKPI = {
   label: string;
-  value: string;
+  value: string | number;
+  isCurrency?: boolean;
   icon: ElementType;
 };
 

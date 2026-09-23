@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { Star } from "lucide-react";
 import { usePreferencesContext } from "@/app/providers/PreferencesProvider";
+import { useFormat } from "@/features/preferences/hooks/useFormat";
 import { useStorefront } from "../hooks/useStorefront";
-import { CATEGORIES } from "../constants/storefront.constants";
 import { MenuCard } from "./MenuCard";
 import { BottomSheet } from "./BottomSheet";
 import { CartOverlay } from "./CartOverlay";
@@ -13,12 +13,13 @@ import { SuccessView } from "./SuccessView";
 export const StorefrontFeature = () => {
     const { t } = useTranslation("storefront");
     const {
-        menuItems, isLoading, activeCategory, setActiveCategory, selectedItem, setSelectedItem,
+        menuItems, isLoading, categories, activeCategory, setActiveCategory, selectedItem, setSelectedItem,
         cart, setCart, cartTotal, cartCount, flowState, setFlowState, addToCart,
         placeOrder, placedOrder, isPlacingOrder,
     } = useStorefront();
 
     const { preferences } = usePreferencesContext();
+    const { formatCurrency } = useFormat();
     const { storefrontLogo, storefrontCover, storefrontBrandColor, deliveryZones } = preferences;
 
     const visibleMenu = menuItems.filter((item) => item.category === activeCategory);
@@ -53,7 +54,7 @@ export const StorefrontFeature = () => {
                 {/* Categories */}
                 <div className="flex-shrink-0 bg-white border-b border-slate-100 sticky top-0 z-20">
                     <div className="flex gap-2 px-4 py-3 overflow-x-auto">
-                        {CATEGORIES.map((cat) => (
+                        {categories.map((cat) => (
                             <button key={cat} onClick={() => setActiveCategory(cat)} className={`flex-shrink-0 h-7 px-3 rounded-full text-xs font-medium ${activeCategory === cat ? "text-white" : "bg-slate-100 text-slate-500"}`} style={activeCategory === cat ? { backgroundColor: storefrontBrandColor } : undefined}>
                                 {cat}
                             </button>
@@ -77,7 +78,7 @@ export const StorefrontFeature = () => {
                     <div className="absolute bottom-0 left-0 right-0 px-4 pb-5 pt-3 bg-gradient-to-t from-white via-white to-transparent z-30">
                         <button onClick={() => setFlowState("cart")} className="w-full h-14 rounded-[8px] text-white font-semibold flex items-center justify-between px-5" style={{ backgroundColor: storefrontBrandColor }}>
                             <span>{t("feed.viewCartButton", { count: cartCount })}</span>
-                            <span className="font-mono">${cartTotal.toFixed(2)}</span>
+                            <span className="font-mono">{formatCurrency(cartTotal)}</span>
                         </button>
                     </div>
                 )}

@@ -1,7 +1,10 @@
 import { Plus } from "lucide-react";
+import { useFormat } from "@/features/preferences/hooks/useFormat";
 import type { MenuItem } from "@/types/menu";
 
 export const MenuCard = ({ item, onSelect }: { item: MenuItem; onSelect: () => void }) => {
+    const { formatCurrency } = useFormat();
+
     return (
         <button
             onClick={onSelect}
@@ -11,7 +14,7 @@ export const MenuCard = ({ item, onSelect }: { item: MenuItem; onSelect: () => v
                 <h3 className="text-sm font-semibold text-slate-900 leading-snug" style={{ fontFamily: "'Outfit', sans-serif" }}>{item.name}</h3>
                 <p className="text-xs text-slate-400 mt-1 leading-relaxed line-clamp-2">{item.description}</p>
                 <div className="flex items-center gap-2 mt-3">
-                    <span className="font-mono text-sm font-semibold text-slate-900">${item.price.toFixed(2)}</span>
+                    <span className="font-mono text-sm font-semibold text-slate-900">{formatCurrency(item.price)}</span>
                 </div>
             </div>
             <div className="w-24 h-24 flex-shrink-0 relative self-center mr-3">

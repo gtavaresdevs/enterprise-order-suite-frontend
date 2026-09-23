@@ -21,9 +21,9 @@ export const analyticsService = {
         const cancellationRate = orders.length > 0 ? (cancelledCount / orders.length) * 100 : 0;
 
         return [
-            { label: "Total Revenue", value: `$${revenue.toFixed(2)}`, icon: DollarSign },
+            { label: "Total Revenue", value: revenue, isCurrency: true, icon: DollarSign },
             { label: "Total Orders", value: String(orders.length), icon: BarChart3 },
-            { label: "Avg Order Value", value: `$${avgOrderValue.toFixed(2)}`, icon: Calculator },
+            { label: "Avg Order Value", value: avgOrderValue, isCurrency: true, icon: Calculator },
             { label: "Cancellation Rate", value: `${cancellationRate.toFixed(1)}%`, icon: Percent },
         ];
     },

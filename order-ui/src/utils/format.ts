@@ -27,6 +27,17 @@ export function formatCurrency(value: number, currency: string, language: string
     }
 }
 
+export function getCurrencySymbol(currency: string, language: string): string {
+    const code = currency.split(" — ")[0]?.trim() || "USD";
+    const locale = LOCALE_MAP[language] ?? "en-US";
+    try {
+        const part = new Intl.NumberFormat(locale, { style: "currency", currency: code }).formatToParts(0).find((p) => p.type === "currency");
+        return part?.value ?? "$";
+    } catch {
+        return "$";
+    }
+}
+
 export function formatDate(iso: string, dateFormat: string, timezone: string): string {
     const offsetMinutes = TIMEZONE_OFFSET_MINUTES[timezone] ?? 0;
     const shifted = new Date(new Date(iso).getTime() + offsetMinutes * 60_000);

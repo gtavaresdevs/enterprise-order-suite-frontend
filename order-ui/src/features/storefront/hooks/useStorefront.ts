@@ -8,7 +8,7 @@ import { ordersService } from "@/features/orders/services/orders.service";
 import { PICKUP_ETA_MINUTES } from "../constants/storefront.constants";
 
 export const useStorefront = () => {
-    const [activeCategory, setActiveCategory] = useState("Burgers");
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
     const [cart, setCart] = useState<CartItem[]>([]);
     const [flowState, setFlowState] = useState<FlowState>("feed");
@@ -19,6 +19,9 @@ export const useStorefront = () => {
         queryFn: storefrontService.getMenu,
         select: (items) => items.filter((item) => item.available),
     });
+
+    const categories = Array.from(new Set(menuItems.map((item) => item.category)));
+    const activeCategory = selectedCategory && categories.includes(selectedCategory) ? selectedCategory : (categories[0] ?? "");
 
     const cartTotal = cart.reduce((s, i) => s + i.price * i.quantity, 0);
     const cartCount = cart.reduce((s, i) => s + i.quantity, 0);
@@ -74,8 +77,9 @@ export const useStorefront = () => {
     return {
         menuItems,
         isLoading,
+        categories,
         activeCategory,
-        setActiveCategory,
+        setActiveCategory: setSelectedCategory,
         selectedItem,
         setSelectedItem,
         cart,

@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Plus, Search, UtensilsCrossed } from "lucide-react";
-import { CATEGORIES, LOW_STOCK_THRESHOLD } from "../constants/menu.constants";
+import { Plus, Search, Tags, UtensilsCrossed } from "lucide-react";
+import { LOW_STOCK_THRESHOLD } from "../constants/menu.constants";
 import { useMenu } from "../hooks/useMenu";
 import { MenuItemCard } from "./MenuItemCard";
 import { MenuItemModal } from "./MenuItemModal";
+import { CategoryManagerModal } from "./CategoryManagerModal";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import type { MenuItem } from "@/types/menu";
+
+const ALL_CATEGORY = "All";
 
 const DOT_BG = {
     backgroundImage: "radial-gradient(#0f172a 1px, transparent 1px)",
@@ -18,11 +21,15 @@ const DOT_BG = {
 export function MenuFeature() {
     const { t } = useTranslation("menu");
     const [search, setSearch] = useState("");
-    const [activeCategory, setActiveCat] = useState("All");
+    const [activeCategory, setActiveCat] = useState(ALL_CATEGORY);
     const [addOpen, setAddOpen] = useState(false);
     const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
+    const [manageCategoriesOpen, setManageCategoriesOpen] = useState(false);
 
-    const { menuItems, isLoading, createMenuItem, isCreating, updateMenuItem, isUpdating, deleteMenuItem } = useMenu();
+    const {
+        menuItems, isLoading, createMenuItem, isCreating, updateMenuItem, isUpdating, deleteMenuItem,
+        categories, createCategory, renameCategory, deleteCategory,
+    } = useMenu();
 
     const filtered = menuItems.filter((item) => {
         const q = search.toLowerCase();
@@ -30,9 +37,14 @@ export function MenuFeature() {
             item.name.toLowerCase().includes(q) ||
             item.category.toLowerCase().includes(q) ||
             item.description.toLowerCase().includes(q);
-        const matchCat = activeCategory === "All" || item.category === activeCategory;
+        const matchCat = activeCategory === ALL_CATEGORY || item.category === activeCategory;
         return matchSearch && matchCat;
     });
+
+    const itemCountByCategory = menuItems.reduce<Record<string, number>>((acc, item) => {
+        acc[item.category] = (acc[item.category] ?? 0) + 1;
+        return acc;
+    }, {});
 
     const availableCount = menuItems.filter((item) => item.available).length;
     const lowStockCount = menuItems.filter((item) => item.available && item.stockQuantity > 0 && item.stockQuantity <= LOW_STOCK_THRESHOLD).length;
@@ -53,12 +65,21 @@ export function MenuFeature() {
                             {t("feature.subtitle")}
                         </p>
                     </div>
-                    <Button
-                        onClick={() => setAddOpen(true)}
-                        className="inline-flex items-center gap-2 rounded-[8px] h-9 bg-slate-950 text-slate-50 border-slate-800 shadow-inner hover:bg-slate-800 transition-all mt-1"
-                    >
-                        <Plus className="w-3.5 h-3.5" /> {t("feature.addItemButton")}
-                    </Button>
+                    <div className="flex items-center gap-2 mt-1">
+                        <Button
+                            variant="outline"
+                            onClick={() => setManageCategoriesOpen(true)}
+                            className="inline-flex items-center gap-2 rounded-[8px] h-9 border-slate-200 text-slate-600 hover:bg-slate-100"
+                        >
+                            <Tags className="w-3.5 h-3.5" /> {t("feature.manageCategoriesButton")}
+                        </Button>
+                        <Button
+                            onClick={() => setAddOpen(true)}
+                            className="inline-flex items-center gap-2 rounded-[8px] h-9 bg-slate-950 text-slate-50 border-slate-800 shadow-inner hover:bg-slate-800 transition-all"
+                        >
+                            <Plus className="w-3.5 h-3.5" /> {t("feature.addItemButton")}
+                        </Button>
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-3 gap-3 mb-6">
@@ -90,7 +111,7 @@ export function MenuFeature() {
                         </div>
                         <div className="w-px h-5 bg-slate-200" />
                         <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
-                            {CATEGORIES.map((c) => (
+                            {[ALL_CATEGORY, ...categories].map((c) => (
                                 <button
                                     key={c}
                                     onClick={() => setActiveCat(c)}
@@ -137,6 +158,7 @@ export function MenuFeature() {
 
             {addOpen && (
                 <MenuItemModal
+                    categories={categories}
                     onClose={() => setAddOpen(false)}
                     onSubmit={(data) => {
                         createMenuItem(data);
@@ -146,9 +168,21 @@ export function MenuFeature() {
                 />
             )}
 
+            {manageCategoriesOpen && (
+                <CategoryManagerModal
+                    categories={categories}
+                    itemCountByCategory={itemCountByCategory}
+                    onClose={() => setManageCategoriesOpen(false)}
+                    createCategory={createCategory}
+                    renameCategory={renameCategory}
+                    deleteCategory={deleteCategory}
+                />
+            )}
+
             {editingItem && (
                 <MenuItemModal
                     item={editingItem}
+                    categories={categories}
                     onClose={() => setEditingItem(null)}
                     onSubmit={(data) => {
                         updateMenuItem({ ...data, id: editingItem.id });

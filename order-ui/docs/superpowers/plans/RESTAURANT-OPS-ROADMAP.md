@@ -220,28 +220,53 @@ exist yet, not just unscheduled — don't write a plan for either until its depe
 `Claude-Assisted-Development` is merged locally with Phase 9; **not pushed to origin yet** — push is
 the user's call, not something to do without being asked.
 
-### New direction: audit + refinement pass (no plan written yet)
+### Audit + refinement pass — Stage 1 (business rules & data flow) DONE, Stage 2 (fix pass) NOT STARTED
 
-With the spec's original phased buildout complete, the user's stated next initiative (2026-09-16) is
-different in kind from Phases 0-9: not new spec-mandated features, but a **cross-cutting audit of
-the app as it now stands** — catch things across the whole app that don't make sense (dead UI,
-inconsistent behavior between similar flows, leftover placeholders, mismatched conventions between
-features that were built in different phases), refine them against real restaurant business rules
-(not just the spec's literal text — judgment calls about what a restaurant actually needs), and
-improve the overall workflow/UX coherence now that every feature module exists and can be looked at
-as a whole system rather than one phase at a time.
+The cross-cutting audit called for below was completed on 2026-09-16/17, **not just scoped**. Do
+NOT re-run `superpowers:brainstorming` for this at the start of the next session — that step is
+done. Go straight to `superpowers:writing-plans` using the pointers below; re-brainstorming or
+re-auditing from scratch would re-spend the tokens this section exists to save.
 
-This is NOT yet broken into a plan or phase list — start the next session with
-`superpowers:brainstorming` (per this project's own process: brainstorming before writing a plan,
-per `superpowers:using-superpowers`) to scope what "doesn't make sense" actually means concretely
-before reaching for `superpowers:writing-plans`. Good starting material for that brainstorm:
-- Phase 6's summary above already flagged ~28 pre-existing lint errors in `profile`/`settings`/`auth`
-  files predating this whole initiative (commit `9eff1f2`) — never fixed, still present as of Phase 9.
-- Phase 9's final review (see its summary above) surfaced several "gaps, not bugs" that were
-  deliberately left out of that phase's scope rather than fixed: `CartOverlay`'s hardcoded `$`
-  outside the admin surface, `/track-order`'s public unauthenticated page fetching the entire orders
-  list client-side rather than a scoped lookup (fine for mock, a real-backend concern), and a few pt-BR
-  wording choices ("Cardápio" vs "Menu") that trade natural Portuguese for anglicisms.
-- Each phase's summary section above (Phase 0 through Phase 9) is worth a fresh read specifically
-  looking for seams between features built in different phases — that's exactly where "doesn't make
-  sense" tends to hide, since each phase was reviewed in isolation, never against the others at once.
+**What was produced (read these, don't re-derive them):**
+- `docs/superpowers/specs/2026-09-16-regras-de-negocio.md` — 97 business rules across every
+  feature area (built + Phase 10/11 planned), each tagged Implementado / Parcialmente implementado
+  / Planejado / **Diverge do código atual** / [NOVO]. **Its final section, "Resumo de prioridades
+  para a próxima etapa de correção," is the fix-pass scope — start `writing-plans` from that list,
+  not from a fresh audit.**
+- `docs/superpowers/specs/2026-09-16-fluxo-de-dados.md` — the data-flow/architecture companion
+  (layering, mock-vs-real-backend boundary, shared TanStack Query cache keys, Mermaid diagrams).
+- `docs/superpowers/specs/2026-09-16-business-rules-master-en.md` — the English source both PT-BR
+  docs were translated from; also the source fed into the graphify knowledge graph (see below).
+  Only re-read this one if a PT-BR rule's wording is ambiguous — the two PT-BR docs are the
+  user-facing deliverables.
+
+**Known high-confidence bugs already located (file:line evidence is in `regras-de-negocio.md`,
+items 15/33/58/86/18/53/54/56/88) — these don't need re-discovery, only fixing:**
+- `CreateOrderModal` hardcodes `paymentStatus: "PayLater"` regardless of chosen payment method.
+- Hardcoded `$` bypassing `formatCurrency`/i18n in three places: Menu admin cards, Storefront
+  cart/checkout zone picker, Analytics KPIs.
+- `CreateOrderModal` exposes a full status selector (including Cancelled) at order-creation time.
+- No delivery street-address field exists at all (bairro only); no "bairro not covered → switch to
+  pickup" fallback in Storefront checkout.
+- Customer-facing "Continuar no WhatsApp" link missing from the Storefront confirmation screen
+  (only the staff-side deep links exist).
+- `features/notifications` is still 100% unmigrated pre-redesign B2B demo content, fully
+  disconnected from the real WhatsApp flow Phase 9 built elsewhere.
+
+**Graphify knowledge graph**: `graphify-out/graph.json` was fully re-synced on 2026-09-17
+(`/graphify --update`, 911 nodes / 1253 edges / 121 communities) — it now includes the business
+rules above as queryable concept/rationale nodes, not just code. On this Windows machine the
+graphify Python interpreter is plain `python` (not `python3`, which isn't on PATH) — check
+`graphify-out/.graphify_python` first rather than re-discovering this. One known extraction
+blind spot, already diagnosed, don't re-investigate it as a bug: TypeScript `interface XProps`
+nodes (and their owning component functions) frequently land with **zero edges** — this is a gap
+in graphify's AST edge extraction for TSX prop types, not a real orphan in the code.
+
+Original scoping material (still valid background, but the concrete list above supersedes it as
+the actual fix-pass input):
+- Phase 6's summary above flagged ~28 pre-existing lint errors in `profile`/`settings`/`auth` files
+  predating this whole initiative (commit `9eff1f2`) — never fixed, still present as of Phase 9.
+  Not re-verified during the 2026-09-16 audit; confirm still-present status before planning a fix.
+- Phase 9's final review surfaced a few pt-BR wording choices ("Cardápio" vs "Menu") trading
+  natural Portuguese for anglicisms — not re-audited as formal rules; a judgment call for whoever
+  plans the fix pass.

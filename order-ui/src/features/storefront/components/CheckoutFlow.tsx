@@ -121,7 +121,7 @@ export const CheckoutFlow = ({ zones, isPlacingOrder, cartTotal, onBack, onPlace
                                 <select className={`${inputCls(errors.zone)} pl-8 cursor-pointer`} value={zoneId} onChange={(e) => setZoneId(e.target.value)}>
                                     <option value="">{t("checkout.zonePlaceholder")}</option>
                                     {activeZones.map((z) => (
-                                        <option key={z.id} value={z.id}>{z.neighborhood} — ${z.feeAmount.toFixed(2)}</option>
+                                        <option key={z.id} value={z.id}>{z.neighborhood} — {formatCurrency(z.feeAmount)}</option>
                                     ))}
                                 </select>
                             </div>

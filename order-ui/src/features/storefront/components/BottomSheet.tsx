@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ChevronLeft, Minus, Plus } from "lucide-react";
+import { useFormat } from "@/features/preferences/hooks/useFormat";
 import type { CartItem } from "@/types/storefront";
 import type { MenuItem } from "@/types/menu";
 
@@ -14,11 +15,12 @@ export const BottomSheet = ({
     onAddToCart: (item: CartItem) => void;
 }) => {
     const { t } = useTranslation("storefront");
+    const { formatCurrency } = useFormat();
     const [selectedSize, setSelectedSize] = useState(item.sizes?.[0]?.id ?? null);
     const [selectedAddons, setSelectedAddons] = useState<string[]>([]);
     const [quantity, setQuantity] = useState(1);
 
-    const fmt = (n: number) => n >= 0 ? `+$${n.toFixed(2)}` : `-$${Math.abs(n).toFixed(2)}`;
+    const fmt = (n: number) => n >= 0 ? `+${formatCurrency(n)}` : formatCurrency(n);
 
     const sizePrice = item.sizes?.find((s) => s.id === selectedSize)?.price ?? 0;
     const addonPrice = selectedAddons.reduce((s, id) => {
@@ -83,7 +85,7 @@ export const BottomSheet = ({
                                                 </div>
                                                 <span className={`text-sm ${checked ? "font-medium" : ""}`}>{addon.label}</span>
                                             </div>
-                                            <span className="font-mono text-xs text-emerald-600 font-medium">+${addon.price.toFixed(2)}</span>
+                                            <span className="font-mono text-xs text-emerald-600 font-medium">+{formatCurrency(addon.price)}</span>
                                         </label>
                                     );
                                 })}
@@ -100,7 +102,7 @@ export const BottomSheet = ({
                     </div>
                     <button onClick={() => { onAddToCart({ menuId: item.id, name: item.name, price: unitPrice, quantity }); onClose(); }} className="w-full h-12 rounded-[8px] bg-slate-950 text-white font-semibold flex items-center justify-between px-4">
                         <span>{t("itemDetail.addToCartButton")}</span>
-                        <span className="font-mono">${total.toFixed(2)}</span>
+                        <span className="font-mono">{formatCurrency(total)}</span>
                     </button>
                 </div>
             </div>
