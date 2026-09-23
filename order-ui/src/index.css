@@ -1,3 +1,21 @@
 @import "./styles/fonts.css";
 @import "tailwindcss";
 @import "./styles/theme.css";
+
+.fade-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.fade-scrollbar:hover {
+  scrollbar-color: rgb(203 213 225) transparent;
+}
+.fade-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.fade-scrollbar::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 9999px;
+}
+.fade-scrollbar:hover::-webkit-scrollbar-thumb {
+  background: rgb(203 213 225);
+}

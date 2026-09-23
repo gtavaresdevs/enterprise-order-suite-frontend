@@ -1,0 +1,19 @@
+{
+  "title": "Track Your Order",
+  "subtitle": "Enter your order ID and phone number to see its status.",
+  "orderIdPlaceholder": "Order ID (e.g. DEL-2024-8801)",
+  "phonePlaceholder": "Phone number used at checkout",
+  "lookupButton": "Track Order",
+  "loading": "Looking up your order...",
+  "notFound": "No order found matching that ID and phone number.",
+  "orderIdLabel": "Order {{id}}",
+  "etaLabel": "Estimated {{count}} min",
+  "cancelled": "This order was cancelled.",
+  "itemsLabel": "Items",
+  "steps": {
+    "New": "Order received",
+    "Preparing": "Preparing",
+    "Ready": "Ready",
+    "Completed": "Completed"
+  }
+}

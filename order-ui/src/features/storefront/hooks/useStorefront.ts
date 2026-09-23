@@ -1,20 +1,27 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import type { CartItem, FlowState } from "@/types/storefront";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { CartItem, FlowState, PlaceOrderInput } from "@/types/storefront";
 import type { MenuItem } from "@/types/menu";
+import type { Order, OrderLine } from "@/types/orders";
 import { storefrontService } from "../services/storefront.service";
+import { ordersService } from "@/features/orders/services/orders.service";
+import { PICKUP_ETA_MINUTES } from "../constants/storefront.constants";
 
 export const useStorefront = () => {
-    const [activeCategory, setActiveCategory] = useState("Burgers");
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
     const [cart, setCart] = useState<CartItem[]>([]);
     const [flowState, setFlowState] = useState<FlowState>("feed");
+    const queryClient = useQueryClient();
 
     const { data: menuItems = [], isLoading } = useQuery({
         queryKey: ["menuItems"],
         queryFn: storefrontService.getMenu,
         select: (items) => items.filter((item) => item.available),
     });
+
+    const categories = Array.from(new Set(menuItems.map((item) => item.category)));
+    const activeCategory = selectedCategory && categories.includes(selectedCategory) ? selectedCategory : (categories[0] ?? "");
 
     const cartTotal = cart.reduce((s, i) => s + i.price * i.quantity, 0);
     const cartCount = cart.reduce((s, i) => s + i.quantity, 0);
@@ -31,11 +38,48 @@ export const useStorefront = () => {
         });
     };
 
+    const createOrderMutation = useMutation({
+        mutationFn: (input: Omit<Order, "id">) => ordersService.createOrder(input),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["orders"] });
+        },
+    });
+
+    const placeOrder = (input: PlaceOrderInput) => {
+        createOrderMutation.reset();
+        const etaMinutes = input.fulfillment === "Delivery" ? (input.deliveryZone?.etaMinutes ?? PICKUP_ETA_MINUTES) : PICKUP_ETA_MINUTES;
+        const deliveryFee = input.fulfillment === "Delivery" ? (input.deliveryZone?.feeAmount ?? 0) : 0;
+        const items: OrderLine[] = cart.map((c) => ({
+            menuItemId: c.menuId,
+            name: c.name,
+            quantity: c.quantity,
+            unitPrice: c.price,
+            modifiers: [],
+        }));
+        createOrderMutation.mutate({
+            channel: "Online",
+            fulfillment: input.fulfillment,
+            deliveryZone: input.deliveryZone?.neighborhood,
+            etaMinutes,
+            customerName: input.customerName,
+            customerPhone: input.customerPhone,
+            items,
+            status: "New",
+            paymentStatus: input.paymentMethod === "Cash" ? "PayLater" : "Paid",
+            paymentMethod: input.paymentMethod,
+            cardType: input.cardType,
+            changeFor: input.changeFor,
+            createdAt: new Date().toISOString().slice(0, 10),
+            total: cartTotal + deliveryFee,
+        });
+    };
+
     return {
         menuItems,
         isLoading,
+        categories,
         activeCategory,
-        setActiveCategory,
+        setActiveCategory: setSelectedCategory,
         selectedItem,
         setSelectedItem,
         cart,
@@ -44,6 +88,9 @@ export const useStorefront = () => {
         cartCount,
         flowState,
         setFlowState,
-        addToCart
+        addToCart,
+        placeOrder,
+        placedOrder: createOrderMutation.data ?? null,
+        isPlacingOrder: createOrderMutation.isPending,
     };
 };

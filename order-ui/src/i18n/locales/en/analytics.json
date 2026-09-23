@@ -1,0 +1,37 @@
+{
+  "header": {
+    "title": "Analytics & Performance",
+    "subtitle": "Monitor your restaurant's key metrics and sales trends.",
+    "dateRangeButton": "All Recorded Orders",
+    "exportButton": "Export Report (CSV)"
+  },
+  "kpi": {
+    "totalRevenue": "Total Revenue",
+    "totalOrders": "Total Orders",
+    "avgOrderValue": "Avg Order Value",
+    "cancellationRate": "Cancellation Rate"
+  },
+  "sections": {
+    "revenue": {
+      "title": "Revenue over Time",
+      "subtitle": "Daily revenue breakdown for the recorded period."
+    },
+    "heatmap": {
+      "title": "Order Volume by Day",
+      "subtitle": "Order count intensity across the recorded period."
+    },
+    "channels": {
+      "title": "Sales by Channel",
+      "subtitle": "Order share by origin."
+    }
+  },
+  "chart": {
+    "revenueTooltipLabel": "Revenue"
+  },
+  "topItems": {
+    "title": "Top Items",
+    "empty": "No item sales recorded yet.",
+    "unitsSold_one": "{{count}} unit sold",
+    "unitsSold_other": "{{count}} units sold"
+  }
+}

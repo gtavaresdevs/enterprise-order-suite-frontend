@@ -1,18 +1,5 @@
-import type { ElementType } from "react";
 import type { OrderChannel } from "@/types/orders";
 import type { MenuItem } from "@/types/menu";
-
-// ── Action Contracts ─────────────────────────────────────────────────────────
-
-export interface ActionCard {
-  icon: ElementType;
-  label: string;
-  description: string;
-  to?: string;
-  copyValue?: string;
-  accent: string;
-  iconBg: string;
-}
 
 // ── Dashboard Data Contracts ────────────────────────────────────────────────
 
@@ -21,16 +8,38 @@ export interface ChannelCount {
   count: number;
 }
 
-export interface HomeSnapshot {
-  snapshotDate: string;
-  channelCounts: ChannelCount[];
-  totalOrders: number;
+export type ActiveStatus = "New" | "Preparing" | "Ready";
+
+export interface StatusCount {
+  status: ActiveStatus;
+  count: number;
+}
+
+export interface EarningsPeriod {
   revenue: number;
-  avgOrderValue: number;
+  orders: number;
+  /** % change vs the previous equivalent period; null when there is nothing to compare against. */
+  deltaPct: number | null;
+}
+
+export interface DailyRevenue {
+  date: string;
+  revenue: number;
+}
+
+export interface HomeEarnings {
+  today: EarningsPeriod;
+  week: EarningsPeriod;
+  month: EarningsPeriod;
+  /** Last 7 days ending on the snapshot date, oldest first. */
+  trend: DailyRevenue[];
 }
 
 export interface HomeDashboardData {
-  snapshot: HomeSnapshot;
+  snapshotDate: string;
+  earnings: HomeEarnings;
+  channelCounts: ChannelCount[];
+  statusCounts: StatusCount[];
   kitchenBacklogCount: number;
   lowStockItems: MenuItem[];
 }

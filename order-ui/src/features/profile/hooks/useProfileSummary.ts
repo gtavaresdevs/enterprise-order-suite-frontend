@@ -1,41 +1,34 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import type { ProfileResponse } from "@/types/profile";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { profileService } from "@/features/profile/services/profile.service";
 import { MOCK_PROFILE_SUMMARY } from "@/features/profile/constants/profile.constants";
 
-// Lightweight profile summary for chrome like the account menu — fetches the
-// real GET /me/profile once, and falls back to mock data if it fails so the
+// Lightweight profile summary for chrome (account menu, sidebar, home greeting).
+// Backed by one shared query so every consumer reads the same cached GET /me/profile
+// instead of each firing its own request. Falls back to mock data if it fails so the
 // header stays usable during a backend outage instead of crashing.
 export function useProfileSummary() {
     const { user } = useAuth();
 
-    const [profile, setProfile] = useState<ProfileResponse | null>(null);
-    const [isMock, setIsMock] = useState(false);
-
-    useEffect(() => {
-        let cancelled = false;
-
-        profileService
-            .getProfile()
-            .then((data) => {
-                if (!cancelled) {
-                    setProfile(data);
-                    setIsMock(false);
-                }
-            })
-            .catch((err) => {
+    const { data, isPending } = useQuery({
+        queryKey: ["profile", "summary"],
+        staleTime: 5 * 60_000,
+        queryFn: async (): Promise<{ profile: ProfileResponse; isMock: boolean }> => {
+            try {
+                return { profile: await profileService.getProfile(), isMock: false };
+            } catch (err) {
                 console.error("Failed to load profile for account menu, falling back to mock data:", err);
-                if (!cancelled) {
-                    setProfile(MOCK_PROFILE_SUMMARY);
-                    setIsMock(true);
-                }
-            });
+                return { profile: MOCK_PROFILE_SUMMARY, isMock: true };
+            }
+        },
+    });
 
-        return () => {
-            cancelled = true;
-        };
-    }, []);
+    const profile = data?.profile ?? null;
+    const isMock = data?.isMock ?? false;
+
+    const source = profile ?? user;
+    const fullName = `${source?.firstName || ""} ${source?.lastName || ""}`.trim();
 
     // While the request is in flight, fall back to the locally decoded JWT so
     // the menu doesn't flash an empty "Account" state before it resolves.
@@ -53,5 +46,5 @@ export function useProfileSummary() {
           ? ((user.firstName?.[0] || "") + (user.lastName?.[0] || "")).toUpperCase() || "U"
           : "U";
 
-    return { profile, isMock, displayName, email, role, initials };
+    return { profile, isMock, isPending, fullName, displayName, email, role, initials };
 }

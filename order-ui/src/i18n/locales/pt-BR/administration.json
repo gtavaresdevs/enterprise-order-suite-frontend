@@ -1,0 +1,74 @@
+{
+  "team": {
+    "title": "Equipe",
+    "description": "Gerencie contas de usuário, convites, funções e acesso.",
+    "inviteButton": "Convidar Usuário",
+    "colEmail": "Email",
+    "colRole": "Função",
+    "colStatus": "Status",
+    "colCreated": "Criado em",
+    "loading": "Carregando equipe...",
+    "loadError": "Não foi possível carregar a lista de equipe.",
+    "empty": "Nenhum usuário ainda."
+  },
+  "roles": {
+    "title": "Funções",
+    "description": "Lista de referência das funções disponíveis na sua organização.",
+    "readOnlyNote": "Somente leitura — atualmente o backend expõe apenas nomes de funções, não conjuntos de permissões personalizados.",
+    "loading": "Carregando funções...",
+    "empty": "Nenhuma função encontrada."
+  },
+  "auditLog": {
+    "title": "Registro de Auditoria",
+    "description": "Quem fez o quê a quem, e quando — mudanças de identidade e acesso.",
+    "colEvent": "Evento",
+    "colActor": "Autor",
+    "colTarget": "Alvo",
+    "colWhen": "Quando",
+    "loading": "Carregando registro de auditoria...",
+    "loadError": "Não foi possível carregar o registro de auditoria.",
+    "empty": "Nenhum evento de auditoria ainda.",
+    "emptyValue": "—"
+  },
+  "statusPill": {
+    "active": "Ativo",
+    "inactive": "Inativo"
+  },
+  "pagination": {
+    "pageOf": "Página {{current}} de {{total}}"
+  },
+  "inviteModal": {
+    "title": "Convidar Usuário",
+    "emailLabel": "Email",
+    "firstNameLabel": "Nome",
+    "lastNameLabel": "Sobrenome",
+    "roleLabel": "Função",
+    "rolePlaceholder": "Função padrão",
+    "rolesLoadError": "Não foi possível carregar as opções de função.",
+    "sendSetupEmailLabel": "Enviar email de configuração de senha",
+    "cancelButton": "Cancelar",
+    "inviteButton": "Convidar",
+    "invitingButton": "Convidando...",
+    "requiredFieldsError": "Email, nome e sobrenome são obrigatórios.",
+    "inviteError": "Não foi possível convidar este usuário. Verifique se o email já não está em uso."
+  },
+  "userDetail": {
+    "loading": "Carregando usuário...",
+    "joinedLabel": "Ingressou em {{date}}",
+    "emailLabel": "Email",
+    "firstNameLabel": "Nome",
+    "lastNameLabel": "Sobrenome",
+    "saveButton": "Salvar alterações",
+    "savingButton": "Salvando...",
+    "saveError": "Não foi possível salvar as alterações. Verifique se o email já não está em uso.",
+    "roleLabel": "Função",
+    "rolesLoadError": "Não foi possível carregar as opções de função.",
+    "roleUpdateError": "Não foi possível atualizar a função.",
+    "deactivateButton": "Desativar",
+    "deactivatingButton": "Desativando...",
+    "reactivateButton": "Reativar",
+    "reactivatingButton": "Reativando...",
+    "resendSetupButton": "Reenviar email de configuração de senha",
+    "sendingButton": "Enviando..."
+  }
+}

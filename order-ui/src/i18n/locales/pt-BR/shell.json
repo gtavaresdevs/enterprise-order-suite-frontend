@@ -1,0 +1,34 @@
+{
+  "nav": {
+    "dashboard": "Painel",
+    "orders": "Pedidos",
+    "menu": "Cardápio",
+    "tables": "Mesas",
+    "analytics": "Relatórios",
+    "administration": "Administração",
+    "team": "Equipe",
+    "roles": "Funções",
+    "auditLog": "Registro de Auditoria",
+    "notifications": "Notificações",
+    "preferences": "Preferências",
+    "settings": "Configurações",
+    "navigationSection": "Navegação",
+    "accountSection": "Conta"
+  },
+  "account": {
+    "viewProfile": "Ver Perfil",
+    "signOut": "Sair",
+    "enterpriseRole": "Enterprise · {{role}}"
+  },
+  "brand": {
+    "enterprise": "Enterprise",
+    "orderSuite": "Order Suite"
+  },
+  "mobileHeader": {
+    "openMenu": "Abrir menu de navegação"
+  },
+  "notificationBell": {
+    "title": "Notificações",
+    "newCount": "{{count}} novas"
+  }
+}

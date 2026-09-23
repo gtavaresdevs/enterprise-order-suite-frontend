@@ -44,6 +44,14 @@ features/<feature>/
 
 `src/pages/*.tsx` are thin route entry points that just render the feature's top-level component (e.g. `pages/Orders.tsx` renders `<OrdersFeature />` from `features/orders`). Route → page → feature is the standard chain; put logic in the feature, not the page.
 
+`src/components/` holds code that lives outside any single feature. `src/components/ui/` is
+presentational UI primitives (shadcn-based: Button, Card, Input, etc.). `src/components/<domain>/`
+is for a domain component genuinely shared by 2+ feature modules (e.g.
+`src/components/payment/PaymentMethodPicker.tsx`, shared by `orders` and `storefront`). Anything
+with only one feature consumer stays inside that feature's own `components/` folder — don't
+promote something to `src/components/` just because it might be reused later; the bar is an actual
+second consumer today.
+
 ### Mock data vs. real backend — important
 
 Feature services are **not uniformly wired to a real backend yet**. Only `auth` and `profile` services call the real API (`src/api/client.ts` → `axios`). Every other feature's service (`orders`, `inventory`, `administration`, `analytics`, `home`, `kds`, `notifications`, `preferences`, `settings`, `storefront`) returns static/mock data from its `constants/` file, sometimes wrapped in an artificial `setTimeout` to simulate latency, with the real `api.get/post/...` calls left commented out as TODOs. When touching one of these features, check the service file first to see whether you're editing mock plumbing or a real integration — don't assume network calls exist just because a hook looks like it's fetching.
@@ -70,6 +78,14 @@ Feature services are **not uniformly wired to a real backend yet**. Only `auth` 
   mismatched endpoint.
 - **Types/service lockstep**: `src/types/<feature>.ts` changes and `services/<feature>.service.ts`
   changes land together — never one without the other.
+- **Backend integration manifest stays in lockstep too**: `docs/superpowers/specs/2026-09-14-backend-integration-manifest.openapi.yaml` is
+  the contract the backend team (and its Claude) builds against. Any change that alters what the
+  backend must provide — a field added/renamed on a shared type in `src/types/`, a new or changed
+  endpoint, an auth/CORS/cookie decision, a business rule the server must enforce — patches that
+  file **in the same commit**. Patch only what the decision touches, bump `info.version`, add an
+  `x-changelog` entry, and put anything not yet final under `x-open-decisions`. Never rewrite the
+  file or drop a superseded decision (record it in the changelog). The rules live in its
+  `x-maintenance` block — read it before editing. Purely visual/frontend-only changes don't touch it.
 - **No new data-fetching/state library**: TanStack React Query is the standard here; don't introduce
   SWR, Redux, Zustand, etc.
 - **Auth-sensitive files** (`src/api/client.ts`, `features/auth/**`, anything touching the
@@ -109,3 +125,15 @@ Feature services are **not uniformly wired to a real backend yet**. Only `auth` 
   already paid for. Reach for a fresh `general-purpose`/custom agent only when the task doesn't
   need conversation context (it starts cold either way) or when you deliberately want the noisy
   transcript kept out of both this session and a fork's shared history.
+
+## Git workflow
+
+- **Branch:** all work is committed to `Claude-Assisted-Development` and pushed to
+  `origin/Claude-Assisted-Development`. `main` stays untouched until there is something concrete
+  to release — never commit to, merge into, or push `main`.
+- **Commit at the end of every task**, after `yarn build` and `yarn lint` are clean. Use an
+  explicit pathspec (`git commit -m "..." -- <files>`) and a conventional message (`feat(...)`,
+  `fix(...)`, `docs(...)`). Never `git add -A`.
+- **Push** to `origin/Claude-Assisted-Development` after committing (plain push, never force).
+- **Only the main agent commits/pushes.** Subagents never run git write commands; the main agent
+  reviews their work first. Never `git stash` (shared `.git` across worktrees).

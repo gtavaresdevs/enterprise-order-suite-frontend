@@ -1,0 +1,62 @@
+{
+  "feed": {
+    "bannerAlt": "Banner",
+    "logoAlt": "Logo da loja",
+    "businessName": "The Urban Grill",
+    "loadingMenu": "Carregando cardápio...",
+    "viewCartButton": "Ver Carrinho ({{count}})"
+  },
+  "itemDetail": {
+    "sizeLabel": "Tamanho",
+    "addonsLabel": "Adicionais",
+    "addToCartButton": "Adicionar ao Carrinho"
+  },
+  "cart": {
+    "title": "Seu Carrinho",
+    "empty": "Seu carrinho está vazio.",
+    "subtotalLabel": "Subtotal",
+    "deliveryFeeLabel": "Taxa de Entrega",
+    "feeNote": "A taxa de entrega (se houver) é adicionada no checkout, de acordo com o seu bairro.",
+    "checkoutButton": "Ir para o Checkout"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "yourDetailsLabel": "Seus Dados",
+    "nameLabel": "Nome Completo",
+    "namePlaceholder": "Seu nome",
+    "phoneLabel": "WhatsApp / Telefone",
+    "phonePlaceholder": "+55 11 90000-0000",
+    "phoneHint": "Usado para atualizações do status do pedido.",
+    "fulfillmentLabel": "Retirada ou Entrega",
+    "fulfillmentPickup": "Retirada",
+    "fulfillmentDelivery": "Entrega",
+    "noZonesAvailable": "Entrega ainda não disponível — nenhuma zona de entrega configurada.",
+    "zoneLabel": "Bairro",
+    "zonePlaceholder": "Selecione seu bairro",
+    "etaEstimate": "Estimativa de {{count}} min",
+    "subtotalLabel": "Subtotal",
+    "deliveryFeeLabel": "Taxa de Entrega",
+    "totalLabel": "Total",
+    "placeOrderButton": "Fazer Pedido",
+    "placingOrderButton": "Enviando Pedido...",
+    "errors": {
+      "nameRequired": "Informe seu nome.",
+      "phoneRequired": "Informe um número de telefone.",
+      "zoneRequired": "Selecione um bairro."
+    }
+  },
+  "pixWaiting": {
+    "title": "Aguardando confirmação de pagamento...",
+    "copyCodeButton": "Copiar código PIX",
+    "copied": "Copiado!",
+    "waitingMessage": "Isso não vai demorar"
+  },
+  "success": {
+    "title": "Pedido Recebido!",
+    "subtitle": "A cozinha está preparando sua comida.",
+    "orderIdLabel": "Pedido {{id}}",
+    "etaLabel": "{{count}} min",
+    "trackOrderButton": "Acompanhar Pedido",
+    "backToMenuButton": "Voltar ao Menu"
+  }
+}

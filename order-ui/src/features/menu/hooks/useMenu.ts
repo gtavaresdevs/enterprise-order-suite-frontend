@@ -9,6 +9,11 @@ export const useMenu = () => {
         queryFn: menuService.getMenuItems,
     });
 
+    const { data: categories = [], isLoading: isLoadingCategories } = useQuery({
+        queryKey: ["menuCategories"],
+        queryFn: menuService.getCategories,
+    });
+
     const createMutation = useMutation({
         mutationFn: menuService.createMenuItem,
         onSuccess: () => {
@@ -30,6 +35,28 @@ export const useMenu = () => {
         },
     });
 
+    const createCategoryMutation = useMutation({
+        mutationFn: menuService.createCategory,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["menuCategories"] });
+        },
+    });
+
+    const renameCategoryMutation = useMutation({
+        mutationFn: menuService.renameCategory,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["menuCategories"] });
+            queryClient.invalidateQueries({ queryKey: ["menuItems"] });
+        },
+    });
+
+    const deleteCategoryMutation = useMutation({
+        mutationFn: menuService.deleteCategory,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["menuCategories"] });
+        },
+    });
+
     return {
         menuItems,
         isLoading,
@@ -40,5 +67,10 @@ export const useMenu = () => {
         isUpdating: updateMutation.isPending,
         deleteMenuItem: deleteMutation.mutate,
         isDeleting: deleteMutation.isPending,
+        categories,
+        isLoadingCategories,
+        createCategory: createCategoryMutation.mutateAsync,
+        renameCategory: renameCategoryMutation.mutateAsync,
+        deleteCategory: deleteCategoryMutation.mutateAsync,
     };
 };

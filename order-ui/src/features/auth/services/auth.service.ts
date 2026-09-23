@@ -26,9 +26,7 @@ export const resetPasswordRequest = async (data: ResetPasswordFields): Promise<v
 };
 
 export const logoutRequest = async (): Promise<void> => {
-  // If your backend supports blacklisting tokens on logout, call the endpoint:
-  // await api.post('/auth/logout');
-  
-  // As a fallback or if it's purely client-side, we can just resolve immediately
-  return Promise.resolve();
+  // POST /auth/logout revokes the refresh token server-side (idempotent per the spec).
+  const refreshToken = localStorage.getItem('refreshToken');
+  if (refreshToken) await api.post('/auth/logout', { refreshToken });
 };

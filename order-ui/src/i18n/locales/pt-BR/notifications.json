@@ -1,0 +1,22 @@
+{
+  "header": {
+    "title": "Notificações",
+    "subtitle": "Controle quais eventos disparam alertas de logística, sistema e conta."
+  },
+  "groupCard": {
+    "all": "Todos",
+    "activeCount": "{{active}}/{{total}} ativos"
+  },
+  "statusBanner": {
+    "mutedTitle": "Todas as notificações silenciadas",
+    "activeTitle": "Notificações ativas",
+    "mutedDescription": "Você não receberá nenhum alerta até que isso seja desativado.",
+    "activeDescription": "{{active}} de {{total}} tipos de notificação ativados.",
+    "unmuteAll": "Reativar todas",
+    "muteAll": "Silenciar todas"
+  },
+  "saveButton": {
+    "saved": "Preferências Salvas",
+    "save": "Salvar Preferências"
+  }
+}

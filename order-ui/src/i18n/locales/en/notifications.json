@@ -1,0 +1,22 @@
+{
+  "header": {
+    "title": "Notifications",
+    "subtitle": "Control which events trigger alerts across logistics, system, and account activity."
+  },
+  "groupCard": {
+    "all": "All",
+    "activeCount": "{{active}}/{{total}} on"
+  },
+  "statusBanner": {
+    "mutedTitle": "All notifications muted",
+    "activeTitle": "Notifications active",
+    "mutedDescription": "You will not receive any alerts until this is turned off.",
+    "activeDescription": "{{active}} of {{total}} notification types enabled.",
+    "unmuteAll": "Unmute all",
+    "muteAll": "Mute all"
+  },
+  "saveButton": {
+    "saved": "Preferences Saved",
+    "save": "Save Preferences"
+  }
+}

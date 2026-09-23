@@ -1,7 +1,9 @@
+import { useTranslation } from "react-i18next";
 import { AlertTriangle } from "lucide-react";
 import type { Order } from "@/types/orders";
 
 export function DeleteOrderModal({ order, onConfirm, onCancel }: { order: Order; onConfirm: () => void; onCancel: () => void }) {
+    const { t } = useTranslation("orders");
     return (
         <>
             <div className="fixed inset-0 bg-slate-950/40 backdrop-blur-[2px] z-50" onClick={onCancel} />
@@ -13,17 +15,17 @@ export function DeleteOrderModal({ order, onConfirm, onCancel }: { order: Order;
                                 <AlertTriangle className="w-4 h-4 text-red-500" />
                             </div>
                             <div>
-                                <h3 className="text-sm font-semibold text-slate-900">Cancel Order</h3>
-                                <p className="text-xs text-slate-500 mt-0.5">This will mark the order as Cancelled.</p>
+                                <h3 className="text-sm font-semibold text-slate-900">{t("deleteModal.title")}</h3>
+                                <p className="text-xs text-slate-500 mt-0.5">{t("deleteModal.description", { status: t("status.cancelled") })}</p>
                             </div>
                         </div>
                     </div>
                     <div className="px-6 py-4">
-                        <p className="text-sm text-slate-600">Cancel <span className="font-mono font-medium text-slate-800">{order.id}</span> for <span className="font-medium text-slate-800">{order.customerName}</span>?</p>
+                        <p className="text-sm text-slate-600">{t("deleteModal.confirmMessage", { orderId: order.id, customerName: order.customerName })}</p>
                     </div>
                     <div className="px-6 py-4 border-t border-slate-100 flex justify-end gap-2">
-                        <button onClick={onCancel} className="h-8 px-4 rounded-[8px] border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">Keep Order</button>
-                        <button onClick={onConfirm} className="h-8 px-4 rounded-[8px] bg-red-600 text-white text-sm font-semibold border border-red-700/50 hover:bg-red-700 transition-colors">Cancel Order</button>
+                        <button onClick={onCancel} className="h-8 px-4 rounded-[8px] border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors">{t("deleteModal.keepButton")}</button>
+                        <button onClick={onConfirm} className="h-8 px-4 rounded-[8px] bg-red-600 text-white text-sm font-semibold border border-red-700/50 hover:bg-red-700 transition-colors">{t("deleteModal.confirmButton")}</button>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,141 @@
+- generic [ref=f1e2]:
+  - generic [ref=f1e141]:
+    - complementary [ref=f1e142]:
+      - generic [ref=f1e143]:
+        - generic [ref=f1e151]:
+          - paragraph [ref=f1e152]: Enterprise
+          - paragraph [ref=f1e153]: Order Suite
+        - navigation [ref=f1e154]:
+          - paragraph [ref=f1e155]: Navegação
+          - link "Painel" [ref=f1e156] [cursor=pointer]:
+            - /url: /home
+          - link "Pedidos" [ref=f1e163] [cursor=pointer]:
+            - /url: /orders
+          - link "Cardápio" [ref=f1e169] [cursor=pointer]:
+            - /url: /menu
+          - link "Mesas" [ref=f1e176] [cursor=pointer]:
+            - /url: /tables
+          - link "Relatórios" [ref=f1e184] [cursor=pointer]:
+            - /url: /analytics
+          - generic [ref=f1e188]:
+            - paragraph [ref=f1e189]: Administração
+            - link "Equipe" [ref=f1e190] [cursor=pointer]:
+              - /url: /administration/team
+            - link "Funções" [ref=f1e197] [cursor=pointer]:
+              - /url: /administration/roles
+            - link "Registro de Auditoria" [ref=f1e203] [cursor=pointer]:
+              - /url: /administration/audit-log
+          - generic [ref=f1e208]:
+            - paragraph [ref=f1e209]: Conta
+            - link "Ver Perfil" [ref=f1e210] [cursor=pointer]:
+              - /url: /profile
+            - link "Notificações" [ref=f1e215] [cursor=pointer]:
+              - /url: /notifications
+            - link "Preferências" [ref=f1e220] [cursor=pointer]:
+              - /url: /preferences
+            - link "Configurações" [ref=f1e223] [cursor=pointer]:
+              - /url: /settings
+        - button "GT Gabriel Tavares Almeida Enterprise · SUPER_ADMIN" [ref=f1e230]:
+          - generic [ref=f1e231]: GT
+          - generic [ref=f1e233]:
+            - paragraph [ref=f1e234]: Gabriel Tavares Almeida
+            - paragraph [ref=f1e235]: Enterprise · SUPER_ADMIN
+    - generic [ref=f1e238]:
+      - banner [ref=f1e239]:
+        - generic [ref=f1e240]:
+          - button [ref=f1e241]
+          - button "GT Gabriel Tavares Almeida Enterprise · SUPER_ADMIN" [ref=f1e243]:
+            - generic [ref=f1e244]: GT
+            - generic [ref=f1e246]:
+              - paragraph [ref=f1e247]: Gabriel Tavares Almeida
+              - paragraph [ref=f1e248]: Enterprise · SUPER_ADMIN
+      - main [ref=f1e251]:
+        - generic [ref=f1e253]:
+          - generic [ref=f1e254]:
+            - generic [ref=f1e255]:
+              - heading "Bom dia, Gabriel Tavares Almeida" [level=1] [ref=f1e256]
+              - paragraph [ref=f1e257]:
+                - text: domingo, 20 de setembro
+                - generic [ref=f1e258]: · 01:01
+            - link "Novo pedido" [ref=f1e259] [cursor=pointer]:
+              - /url: /orders?new=1
+          - region "Ganhos" [ref=f1e261]:
+            - generic [ref=f1e264]:
+              - paragraph [ref=f1e265]: Hoje
+              - paragraph [ref=f1e266]: R$ 263,85
+              - paragraph [ref=f1e267]: 7 pedidos
+              - generic [ref=f1e268]:
+                - text: +923%
+                - generic [ref=f1e272]: vs. ontem
+            - generic [ref=f1e282]:
+              - paragraph [ref=f1e283]: Últimos 7 dias
+              - paragraph [ref=f1e284]: R$ 289,63
+              - paragraph [ref=f1e285]: 8 pedidos
+              - generic [ref=f1e286]: vs. 7 dias anteriores
+            - generic [ref=f1e288]:
+              - paragraph [ref=f1e289]: Este mês
+              - paragraph [ref=f1e290]: R$ 289,63
+              - paragraph [ref=f1e291]: 8 pedidos
+              - generic [ref=f1e292]: vs. mês passado
+            - link "Ver análises" [ref=f1e293] [cursor=pointer]:
+              - /url: /analytics
+          - region "Atalhos" [ref=f1e294]:
+            - generic [ref=f1e296]:
+              - generic [ref=f1e303]:
+                - heading "Loja virtual" [level=3] [ref=f1e304]
+                - paragraph [ref=f1e305]: Sua página pública de pedidos.
+              - generic [ref=f1e306]:
+                - link "Abrir loja" [ref=f1e307] [cursor=pointer]:
+                  - /url: /storefront
+                - button "Copiar link da loja" [ref=f1e312]
+            - link [ref=f1e316] [cursor=pointer]:
+              - /url: /kds
+              - generic [ref=f1e318]:
+                - generic [ref=f1e324]:
+                  - heading "Painel da cozinha" [level=3] [ref=f1e325]
+                  - paragraph [ref=f1e326]: Avance a fila de pedidos em tempo real.
+                - paragraph [ref=f1e330]: 4pedidos na fila
+            - link [ref=f1e331] [cursor=pointer]:
+              - /url: /menu
+              - generic [ref=f1e333]:
+                - generic [ref=f1e342]:
+                  - heading "Cardápio" [level=3] [ref=f1e343]
+                  - paragraph [ref=f1e344]: Itens, preços e estoque.
+                - paragraph [ref=f1e348]: 1item com estoque baixo
+          - generic [ref=f1e349]:
+            - generic [ref=f1e350]:
+              - heading "Pedidos em andamento" [level=2] [ref=f1e351]
+              - generic [ref=f1e353]:
+                - generic [ref=f1e354]:
+                  - link [ref=f1e355] [cursor=pointer]:
+                    - /url: /orders
+                    - paragraph [ref=f1e356]: "2"
+                    - paragraph [ref=f1e357]: Novo
+                  - link [ref=f1e358] [cursor=pointer]:
+                    - /url: /orders
+                    - paragraph [ref=f1e359]: "2"
+                    - paragraph [ref=f1e360]: Preparando
+                  - link [ref=f1e361] [cursor=pointer]:
+                    - /url: /orders
+                    - paragraph [ref=f1e362]: "2"
+                    - paragraph [ref=f1e363]: Pronto
+                - generic [ref=f1e364]:
+                  - paragraph [ref=f1e365]: Hoje por canal
+                  - generic [ref=f1e367]:
+                    - generic [ref=f1e368]: Online
+                    - generic [ref=f1e369]: "6"
+                  - generic [ref=f1e373]:
+                    - generic [ref=f1e374]: Dine-in
+                    - generic [ref=f1e375]: "0"
+                  - generic [ref=f1e378]:
+                    - generic [ref=f1e379]: Phone
+                    - generic [ref=f1e380]: "1"
+            - generic [ref=f1e383]:
+              - generic [ref=f1e384]:
+                - heading "Estoque baixo" [level=2] [ref=f1e385]
+                - generic [ref=f1e386]: 1 item
+              - link "Truffle Loaded Fries 4 restantes" [ref=f1e389] [cursor=pointer]:
+                - /url: /menu
+                - generic [ref=f1e390]: Truffle Loaded Fries
+                - generic [ref=f1e398]: 4 restantes
+  - button "Open Tanstack query devtools" [ref=f1e92] [cursor=pointer]

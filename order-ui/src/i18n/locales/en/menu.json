@@ -1,0 +1,79 @@
+{
+  "feature": {
+    "brandLabel": "Enterprise Order Suite",
+    "title": "Menu",
+    "subtitle": "The single catalog served on the storefront, QR tables, and staff order entry.",
+    "addItemButton": "Add Menu Item",
+    "manageCategoriesButton": "Manage Categories",
+    "searchPlaceholder": "Search menu items by name, category, or description...",
+    "stats": {
+      "totalItems": "Total Items",
+      "available": "Available",
+      "lowStock": "Low Stock"
+    },
+    "loading": "Loading menu...",
+    "emptyText": "No menu items match your search.",
+    "itemsShown_one": "{{count}} item shown",
+    "itemsShown_other": "{{count}} items shown"
+  },
+  "card": {
+    "eightySixed": "86'd",
+    "lowStockBadge": "Low stock",
+    "addonCount_one": "{{count}} addon",
+    "addonCount_other": "{{count}} addons",
+    "available": "Available"
+  },
+  "modal": {
+    "titleCreate": "Add Menu Item",
+    "titleEdit": "Edit Menu Item",
+    "subtitleCreate": "Add a new item to the menu.",
+    "subtitleEdit": "Update this item's listing.",
+    "photoLabel": "Photo",
+    "photoUploadHint": "Click to upload or drag & drop",
+    "photoFormatHint": "PNG, JPG · Recommended 4:3 ratio",
+    "nameLabel": "Item Name",
+    "namePlaceholder": "e.g. Double Smash Burger",
+    "categoryLabel": "Category",
+    "priceLabel": "Price",
+    "stockQuantityLabel": "Stock Quantity",
+    "availableToggleLabel": "Available for sale",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Brief description of the item...",
+    "cancelButton": "Cancel",
+    "savingButton": "Saving...",
+    "saveChangesButton": "Save Changes",
+    "addToMenuButton": "Add to Menu",
+    "sizesLabel": "Sizes",
+    "addSizeButton": "Add size",
+    "sizesEmpty": "No sizes configured. Item is sold at a single size.",
+    "sizeLabelPlaceholder": "e.g. Large (16oz)",
+    "addonsLabel": "Additionals",
+    "addAddonButton": "Add additional",
+    "addonsEmpty": "No additionals configured for this item.",
+    "addonLabelPlaceholder": "e.g. Extra Cheese",
+    "addonMaxQuantityLabel": "Max qty",
+    "columnLabel": "Name",
+    "columnPrice": "Price",
+    "columnPriceDelta": "Price change",
+    "columnMaxQuantity": "Max qty",
+    "errors": {
+      "nameRequired": "Item name is required."
+    }
+  },
+  "categoryManager": {
+    "title": "Manage Categories",
+    "subtitle": "Renaming or adding a category reflects everywhere it's used.",
+    "empty": "No categories yet. Add one below.",
+    "itemCount_one": "{{count}} item",
+    "itemCount_other": "{{count}} items",
+    "newCategoryPlaceholder": "New category name",
+    "deleteBlockedTooltip_one": "{{count}} item uses this category. Reassign or delete it first.",
+    "deleteBlockedTooltip_other": "{{count}} items use this category. Reassign or delete them first.",
+    "errors": {
+      "nameRequired": "Category name is required.",
+      "nameTaken": "A category with this name already exists.",
+      "inUse": "This category is still used by one or more items.",
+      "generic": "Something went wrong. Please try again."
+    }
+  }
+}

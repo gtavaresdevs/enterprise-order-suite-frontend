@@ -67,9 +67,9 @@ export function extractUserFromStorage(): User | null {
 
   return {
     id: payload.sub || payload.id || payload.userId || 'user-1',
-    email: payload.email || payload.sub || 'user@enterprise.io',
-    firstName: payload.firstName || payload.given_name || 'Alex',
-    lastName: payload.lastName || payload.family_name || 'Watson',
+    email: payload.email || payload.sub || '',
+    firstName: payload.firstName || payload.given_name || '',
+    lastName: payload.lastName || payload.family_name || '',
     roles,
   };
 }

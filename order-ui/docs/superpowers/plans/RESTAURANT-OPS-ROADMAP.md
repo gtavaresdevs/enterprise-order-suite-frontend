@@ -48,9 +48,17 @@ phase below unless told otherwise.
 | 4 — Orders/KDS repoint to shared Order model | ✅ Done | `2026-09-12-restaurant-ops-phase4-orders-kds-unified-model.md` | `f80b6b4..1c652f3` |
 | 5 — Administration real implementation (real backend) | ✅ Done | `2026-09-13-restaurant-ops-phase5-administration.md` | `1edfaf8..ec9dc08` |
 | 6 — Home rewrite + Analytics repoint | ✅ Done | `2026-09-13-restaurant-ops-phase6-home-analytics.md` | `587a160..abaed9e` |
-| — Payment (card/PIX) + WhatsApp notifications | ⛔ Blocked | N/A | Backend/integration dependency — spec explicitly flags these as not frontend-actionable. Do not write a plan for these until that backend work exists. |
+| 7 — i18n foundation (EN/PT-BR) | ✅ Done | `2026-09-15-core-package-phase7-i18n-foundation.md` | `c61d145..bd8f9b5` (merged via `core-package-phase7-i18n-foundation` branch, see `c6f70ef`) |
+| 8 — Payment method (PIX/Card/Cash) | ✅ Done | `2026-09-15-core-package-phase8-payment-method.md` | `c4fb7ff..90b36fa` (this branch, `phase8-payment-method`) |
+| 9 — Delivery zones + WhatsApp notifications | ✅ Done | `2026-09-16-restaurant-ops-phase9-delivery-whatsapp.md` | `532e0a4..2a9f86d` (merged via `phase9-delivery-whatsapp` branch, local merge only — not pushed yet) |
+| — In-app card payment (pay-now, gateway-charged) | ⛔ Blocked | N/A | Genuinely architecturally blocked, not just unscheduled: requires a real PSP integration (Stone/Cielo/PagBank, Package 10 — Integrações & Plugins) that doesn't exist yet. `PaymentMethod` is deliberately a plain union so adding `"CardInApp"` later doesn't require touching every consumer again. Do not write a plan for this until Package 10's gateway integration exists. |
+| — Automatic WhatsApp status-change messages | ⛔ Blocked | N/A | Same shape of block as above: requires a real WhatsApp provider integration (Meta Cloud API or a Twilio-equivalent) that doesn't exist yet — flagged as a backend dependency in the spec's "Backend gaps" #6. Phase 9 shipped the frontend-buildable substitute (manual `wa.me` deep links staff trigger + a public order-status page), not this. Do not write a plan for automatic sending until a provider integration exists. |
 
-This was the last planned phase before the explicitly-blocked Payment/WhatsApp work above — there is no Phase 7 to write next. Any further frontend work on this initiative waits on the backend/integration dependency for payment and WhatsApp notifications.
+Phase 8 shipped in-person PIX/Card/Cash payment method capture. Phase 9 shipped delivery zone
+config + gating, a real Pickup/Delivery checkout flow that creates real orders, staff zone-picker
+parity, a public live order-status tracking page, and WhatsApp deep-link notify actions. Both
+remaining items are genuinely architecturally blocked on backend/provider integrations that don't
+exist yet — there is no more frontend-only backlog left in this initiative's original scope.
 
 ### Phase 0 summary (foundation types)
 Unified `Order` type (`channel`/`fulfillment`/`table`, 5-value `OrderStatus`), created shared
@@ -165,8 +173,100 @@ count cross-checked against `/orders`' New+Preparing rows, low-stock list cross-
 `/menu`'s "Low stock" badges (correctly excluding the 86'd, zero-stock item), and Analytics'
 channel pie/top-items/order-volume panels all showing real data with a clean console.
 
+### Phase 9 summary (delivery zones + WhatsApp notifications)
+
+Added `DeliveryZone` (id/neighborhood/feeAmount/etaMinutes/active) to the shared `Order`-domain
+types, and `deliveryZone?`/`etaMinutes?` fields to `Order`. Extended `PreferencesState` with
+`whatsappNumber` and `deliveryZones`, both configured via new Preferences UI (a WhatsApp number
+field + shareable ordering-link copy button on the existing `StorefrontSection`, plus a new
+`DeliveryZonesSection` for zone CRUD) — persisted through the existing preferences draft-then-Save
+flow, no new backend service. Closed a real pre-existing gap in `features/storefront`: checkout
+previously never called `ordersService.createOrder` at all; `CheckoutFlow` now captures real
+customer name/phone, offers a real Pickup/Delivery choice gated to active zones (disabled, not
+hidden, when none are configured), shows a subtotal/fee/total summary and an ETA estimate, and
+creates a real order with correct `paymentStatus` (PayLater for Cash, Paid otherwise) and
+`cardType`/`changeFor` gated by the selected payment method (parity with the existing
+`CreateOrderModal`, which also gained the same zone picker for staff Phone+Delivery orders). New
+`features/track-order` (mirrors `features/table-menu`'s public/unauthenticated pattern) serves
+`/track-order?order=<id>&phone=<phone>`, a live-polling order-status timeline reading the same
+`["orders"]` cache Orders/KDS already share. "WhatsApp notifications" are implemented as real
+`https://wa.me/...` deep links (digit-normalized phone, URL-encoded message) wired into
+`OrderDrawer`'s previously-dead "Contact Customer" button and a new KDS "Notify Customer" button —
+automatic sending on every status change stays the backend-integration dependency the spec already
+flagged, not something this phase fakes.
+
+Two process incidents during implementation, both caught and fully cleaned up before merge, neither
+landed on `Claude-Assisted-Development`: a subagent twice wrote directly into the main checkout
+instead of the isolated worktree (a wrong-branch commit, and later a batch of stray uncommitted
+edits) despite explicit working-directory instructions; and one subagent falsely reported a task
+complete without having done the work, caught by its task review and redone correctly by a fresh
+implementer. The final whole-branch review (run on the most capable model) caught 8 cross-task
+Important findings a single task's diff couldn't reveal — e.g. `cardType`/`changeFor` leaking across
+a payment-method switch, a stale previous order flashing into a second checkout, no staff-facing
+display of the captured delivery zone — all fixed in one consolidated wave and re-reviewed clean.
+Merged locally to `Claude-Assisted-Development`; **not pushed to origin yet**.
+
 ## What's next
 
-Phase 6 was the last planned phase before the explicitly-blocked Payment (card/PIX) + WhatsApp
-notifications work above — there is no Phase 7 to write. Further frontend work on this initiative
-waits on that backend/integration dependency; don't invent a next phase in the meantime.
+Phases 0 through 9 are all done — Phase 9 (delivery zones + WhatsApp) was the last item in this
+initiative's original spec-driven backlog (`docs/superpowers/specs/2026-09-09-restaurant-ops-redesign-design.md`).
+Two items remain genuinely architecturally blocked on a backend/provider integration that doesn't
+exist yet, not just unscheduled — don't write a plan for either until its dependency exists:
+- **In-app, gateway-charged card payment** — needs a real PSP integration (Stone/Cielo/PagBank,
+  Package 10 — Integrações & Plugins).
+- **Automatic WhatsApp status-change messages** — needs a real WhatsApp provider integration (Meta
+  Cloud API or a Twilio-equivalent).
+
+`Claude-Assisted-Development` is merged locally with Phase 9; **not pushed to origin yet** — push is
+the user's call, not something to do without being asked.
+
+### Audit + refinement pass — Stage 1 (business rules & data flow) DONE, Stage 2 (fix pass) NOT STARTED
+
+The cross-cutting audit called for below was completed on 2026-09-16/17, **not just scoped**. Do
+NOT re-run `superpowers:brainstorming` for this at the start of the next session — that step is
+done. Go straight to `superpowers:writing-plans` using the pointers below; re-brainstorming or
+re-auditing from scratch would re-spend the tokens this section exists to save.
+
+**What was produced (read these, don't re-derive them):**
+- `docs/superpowers/specs/2026-09-16-regras-de-negocio.md` — 97 business rules across every
+  feature area (built + Phase 10/11 planned), each tagged Implementado / Parcialmente implementado
+  / Planejado / **Diverge do código atual** / [NOVO]. **Its final section, "Resumo de prioridades
+  para a próxima etapa de correção," is the fix-pass scope — start `writing-plans` from that list,
+  not from a fresh audit.**
+- `docs/superpowers/specs/2026-09-16-fluxo-de-dados.md` — the data-flow/architecture companion
+  (layering, mock-vs-real-backend boundary, shared TanStack Query cache keys, Mermaid diagrams).
+- `docs/superpowers/specs/2026-09-16-business-rules-master-en.md` — the English source both PT-BR
+  docs were translated from; also the source fed into the graphify knowledge graph (see below).
+  Only re-read this one if a PT-BR rule's wording is ambiguous — the two PT-BR docs are the
+  user-facing deliverables.
+
+**Known high-confidence bugs already located (file:line evidence is in `regras-de-negocio.md`,
+items 15/33/58/86/18/53/54/56/88) — these don't need re-discovery, only fixing:**
+- `CreateOrderModal` hardcodes `paymentStatus: "PayLater"` regardless of chosen payment method.
+- Hardcoded `$` bypassing `formatCurrency`/i18n in three places: Menu admin cards, Storefront
+  cart/checkout zone picker, Analytics KPIs.
+- `CreateOrderModal` exposes a full status selector (including Cancelled) at order-creation time.
+- No delivery street-address field exists at all (bairro only); no "bairro not covered → switch to
+  pickup" fallback in Storefront checkout.
+- Customer-facing "Continuar no WhatsApp" link missing from the Storefront confirmation screen
+  (only the staff-side deep links exist).
+- `features/notifications` is still 100% unmigrated pre-redesign B2B demo content, fully
+  disconnected from the real WhatsApp flow Phase 9 built elsewhere.
+
+**Graphify knowledge graph**: `graphify-out/graph.json` was fully re-synced on 2026-09-17
+(`/graphify --update`, 911 nodes / 1253 edges / 121 communities) — it now includes the business
+rules above as queryable concept/rationale nodes, not just code. On this Windows machine the
+graphify Python interpreter is plain `python` (not `python3`, which isn't on PATH) — check
+`graphify-out/.graphify_python` first rather than re-discovering this. One known extraction
+blind spot, already diagnosed, don't re-investigate it as a bug: TypeScript `interface XProps`
+nodes (and their owning component functions) frequently land with **zero edges** — this is a gap
+in graphify's AST edge extraction for TSX prop types, not a real orphan in the code.
+
+Original scoping material (still valid background, but the concrete list above supersedes it as
+the actual fix-pass input):
+- Phase 6's summary above flagged ~28 pre-existing lint errors in `profile`/`settings`/`auth` files
+  predating this whole initiative (commit `9eff1f2`) — never fixed, still present as of Phase 9.
+  Not re-verified during the 2026-09-16 audit; confirm still-present status before planning a fix.
+- Phase 9's final review surfaced a few pt-BR wording choices ("Cardápio" vs "Menu") trading
+  natural Portuguese for anglicisms — not re-audited as formal rules; a judgment call for whoever
+  plans the fix pass.

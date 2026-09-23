@@ -8,6 +8,7 @@ export interface AddonOption {
   id: string;
   label: string;
   price: number;
+  maxQuantity?: number;
 }
 
 export interface MenuItem {

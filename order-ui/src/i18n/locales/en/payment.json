@@ -1,0 +1,20 @@
+{
+  "methodLabel": "Payment Method",
+  "methods": {
+    "PIX": "PIX",
+    "Card": "Card",
+    "Cash": "Cash"
+  },
+  "cardTypeLabel": "Card Type",
+  "cardTypes": {
+    "Credit": "Credit",
+    "Debit": "Debit"
+  },
+  "changeForLabel": "Change for how much?",
+  "changeForPlaceholder": "e.g. 50.00",
+  "changeForHint": "Optional — leave blank if paying the exact amount",
+  "errors": {
+    "methodRequired": "Select a payment method.",
+    "cardTypeRequired": "Select credit or debit."
+  }
+}

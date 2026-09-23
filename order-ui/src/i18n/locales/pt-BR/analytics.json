@@ -1,0 +1,37 @@
+{
+  "header": {
+    "title": "Relatórios e Desempenho",
+    "subtitle": "Acompanhe as principais métricas e tendências de vendas do seu restaurante.",
+    "dateRangeButton": "Todos os Pedidos Registrados",
+    "exportButton": "Exportar Relatório (CSV)"
+  },
+  "kpi": {
+    "totalRevenue": "Receita Total",
+    "totalOrders": "Total de Pedidos",
+    "avgOrderValue": "Ticket Médio",
+    "cancellationRate": "Taxa de Cancelamento"
+  },
+  "sections": {
+    "revenue": {
+      "title": "Receita ao Longo do Tempo",
+      "subtitle": "Detalhamento da receita diária do período registrado."
+    },
+    "heatmap": {
+      "title": "Volume de Pedidos por Dia",
+      "subtitle": "Intensidade da quantidade de pedidos ao longo do período registrado."
+    },
+    "channels": {
+      "title": "Vendas por Canal",
+      "subtitle": "Participação de pedidos por origem."
+    }
+  },
+  "chart": {
+    "revenueTooltipLabel": "Receita"
+  },
+  "topItems": {
+    "title": "Itens Mais Vendidos",
+    "empty": "Nenhuma venda de item registrada ainda.",
+    "unitsSold_one": "{{count}} unidade vendida",
+    "unitsSold_other": "{{count}} unidades vendidas"
+  }
+}

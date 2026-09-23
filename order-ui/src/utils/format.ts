@@ -1,12 +1,7 @@
 const LOCALE_MAP: Record<string, string> = {
     "English (US)": "en-US",
-    "English (UK)": "en-GB",
-    "Français": "fr-FR",
-    "Deutsch": "de-DE",
-    "日本語": "ja-JP",
-    "한국어": "ko-KR",
-    "中文 (简体)": "zh-CN",
-    "Español": "es-ES",
+    "English": "en-US",
+    "Português (Brasil)": "pt-BR",
 };
 
 const TIMEZONE_OFFSET_MINUTES: Record<string, number> = {
@@ -29,6 +24,17 @@ export function formatCurrency(value: number, currency: string, language: string
         return new Intl.NumberFormat(locale, { style: "currency", currency: code, minimumFractionDigits: 2 }).format(value);
     } catch {
         return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 2 }).format(value);
+    }
+}
+
+export function getCurrencySymbol(currency: string, language: string): string {
+    const code = currency.split(" — ")[0]?.trim() || "USD";
+    const locale = LOCALE_MAP[language] ?? "en-US";
+    try {
+        const part = new Intl.NumberFormat(locale, { style: "currency", currency: code }).formatToParts(0).find((p) => p.type === "currency");
+        return part?.value ?? "$";
+    } catch {
+        return "$";
     }
 }
 

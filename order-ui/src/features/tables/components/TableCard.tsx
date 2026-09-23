@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { Download, Trash2 } from "lucide-react";
 import { QRCodeCanvas } from "qrcode.react";
 import type { Table } from "@/types/tables";
@@ -9,6 +10,7 @@ interface TableCardProps {
 }
 
 export function TableCard({ table, onDelete }: TableCardProps) {
+    const { t } = useTranslation("tables");
     const containerRef = useRef<HTMLDivElement>(null);
     const qrValue = `${window.location.origin}${table.qrCodeUrl}`;
 
@@ -33,7 +35,7 @@ export function TableCard({ table, onDelete }: TableCardProps) {
                     onClick={handleDownload}
                     className="flex-1 inline-flex items-center justify-center gap-1.5 h-8 px-3 rounded-[8px] bg-slate-100 hover:bg-slate-200 text-xs font-medium text-slate-600 transition-colors"
                 >
-                    <Download className="w-3 h-3" /> Download
+                    <Download className="w-3 h-3" /> {t("card.downloadButton")}
                 </button>
                 <button
                     onClick={() => onDelete(table.id)}

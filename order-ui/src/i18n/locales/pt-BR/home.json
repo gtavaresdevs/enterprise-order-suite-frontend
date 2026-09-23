@@ -1,0 +1,58 @@
+{
+  "loading": "Carregando painel...",
+  "error": "Não foi possível carregar o painel. Atualize a página para tentar de novo.",
+  "header": {
+    "greeting": {
+      "morning": "Bom dia, {{name}}",
+      "afternoon": "Boa tarde, {{name}}",
+      "evening": "Boa noite, {{name}}"
+    },
+    "newOrder": "Novo pedido"
+  },
+  "earnings": {
+    "title": "Ganhos",
+    "today": "Hoje",
+    "week": "Últimos 7 dias",
+    "month": "Este mês",
+    "orders_one": "{{count}} pedido",
+    "orders_other": "{{count}} pedidos",
+    "vsYesterday": "vs. ontem",
+    "vsLastWeek": "vs. 7 dias anteriores",
+    "vsLastMonth": "vs. mês passado",
+    "viewAnalytics": "Ver análises"
+  },
+  "launch": {
+    "title": "Atalhos",
+    "storefront": {
+      "title": "Loja virtual",
+      "description": "Sua página pública de pedidos.",
+      "open": "Abrir loja",
+      "copy": "Copiar link da loja",
+      "copied": "Link copiado"
+    },
+    "kds": {
+      "title": "Painel da cozinha",
+      "description": "Avance a fila de pedidos em tempo real.",
+      "queue_one": "pedido na fila",
+      "queue_other": "pedidos na fila"
+    },
+    "menu": {
+      "title": "Cardápio",
+      "description": "Itens, preços e estoque.",
+      "lowStock_one": "item com estoque baixo",
+      "lowStock_other": "itens com estoque baixo",
+      "stocked": "Estoque em dia"
+    }
+  },
+  "activeOrders": {
+    "title": "Pedidos em andamento",
+    "byChannel": "Hoje por canal"
+  },
+  "lowStock": {
+    "title": "Estoque baixo",
+    "itemCount_one": "{{count}} item",
+    "itemCount_other": "{{count}} itens",
+    "empty": "Todos os itens do cardápio estão bem abastecidos.",
+    "stockLeft": "{{count}} restantes"
+  }
+}

@@ -1,6 +1,8 @@
+import { useTranslation } from "react-i18next";
 import { Pencil, Trash2, SlidersHorizontal, Boxes } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { LOW_STOCK_THRESHOLD } from "../constants/menu.constants";
+import { useFormat } from "@/features/preferences/hooks/useFormat";
 import type { MenuItem } from "@/types/menu";
 
 interface MenuItemCardProps {
@@ -11,8 +13,9 @@ interface MenuItemCardProps {
 }
 
 export function MenuItemCard({ item, onEdit, onDelete, onToggleAvailable }: MenuItemCardProps) {
+    const { t } = useTranslation("menu");
+    const { formatCurrency } = useFormat();
     const hasAddons = item.addons && item.addons.length > 0;
-    const formatPrice = (n: number) => `$${n.toFixed(2)}`;
     const lowStock = item.stockQuantity > 0 && item.stockQuantity <= LOW_STOCK_THRESHOLD;
 
     return (
@@ -39,12 +42,12 @@ export function MenuItemCard({ item, onEdit, onDelete, onToggleAvailable }: Menu
                 </div>
                 {!item.available && (
                     <div className="absolute top-2 left-2 bg-slate-900/80 text-slate-200 text-[10px] font-semibold px-2 py-0.5 rounded-[8px] backdrop-blur-sm">
-                        86'd
+                        {t("card.eightySixed")}
                     </div>
                 )}
                 {item.available && lowStock && (
                     <div className="absolute top-2 left-2 bg-amber-500/90 text-white text-[10px] font-semibold px-2 py-0.5 rounded-[8px] backdrop-blur-sm">
-                        Low stock
+                        {t("card.lowStockBadge")}
                     </div>
                 )}
                 <div className="absolute top-2 right-2 bg-white/90 text-slate-600 text-[10px] font-semibold px-2 py-0.5 rounded-[8px] backdrop-blur-sm border border-white/50">
@@ -64,13 +67,13 @@ export function MenuItemCard({ item, onEdit, onDelete, onToggleAvailable }: Menu
 
                 <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-100">
                     <span className="font-mono text-base font-semibold text-slate-900">
-                        {formatPrice(item.price)}
+                        {formatCurrency(item.price)}
                     </span>
                     <div className="flex items-center gap-1.5">
                         {hasAddons && (
                             <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-violet-700 bg-violet-50 border border-violet-100 px-1.5 py-0.5 rounded-[8px]">
                                 <SlidersHorizontal className="w-2.5 h-2.5" />
-                                {item.addons!.length} addon{item.addons!.length !== 1 ? "s" : ""}
+                                {t("card.addonCount", { count: item.addons!.length })}
                             </span>
                         )}
                         <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-slate-500 bg-slate-50 border border-slate-100 px-1.5 py-0.5 rounded-[8px]">
@@ -81,7 +84,7 @@ export function MenuItemCard({ item, onEdit, onDelete, onToggleAvailable }: Menu
                 </div>
 
                 <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-100">
-                    <span className="text-xs font-medium text-slate-500">{item.available ? "Available" : "86'd"}</span>
+                    <span className="text-xs font-medium text-slate-500">{item.available ? t("card.available") : t("card.eightySixed")}</span>
                     <Switch checked={item.available} onCheckedChange={() => onToggleAvailable(item)} />
                 </div>
             </div>

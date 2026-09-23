@@ -1,3 +1,5 @@
+import type { DeliveryZone } from "@/types/orders";
+
 export type ThemeOption = "light" | "dark" | "system";
 export type SidebarOption = "expanded" | "collapsed" | "auto";
 
@@ -15,4 +17,6 @@ export interface PreferencesState {
     storefrontLogo: string | null;
     storefrontCover: string | null;
     storefrontBrandColor: string;
+    whatsappNumber: string;
+    deliveryZones: DeliveryZone[];
 }

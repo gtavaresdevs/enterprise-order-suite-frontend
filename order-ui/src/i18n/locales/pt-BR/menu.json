@@ -1,0 +1,79 @@
+{
+  "feature": {
+    "brandLabel": "Enterprise Order Suite",
+    "title": "Cardápio",
+    "subtitle": "O catálogo único servido na loja virtual, nas mesas com QR code e na entrada de pedidos da equipe.",
+    "addItemButton": "Adicionar Item",
+    "manageCategoriesButton": "Gerenciar Categorias",
+    "searchPlaceholder": "Buscar itens do cardápio por nome, categoria ou descrição...",
+    "stats": {
+      "totalItems": "Total de Itens",
+      "available": "Disponíveis",
+      "lowStock": "Estoque Baixo"
+    },
+    "loading": "Carregando cardápio...",
+    "emptyText": "Nenhum item do cardápio corresponde à sua busca.",
+    "itemsShown_one": "{{count}} item exibido",
+    "itemsShown_other": "{{count}} itens exibidos"
+  },
+  "card": {
+    "eightySixed": "Esgotado",
+    "lowStockBadge": "Estoque baixo",
+    "addonCount_one": "{{count}} adicional",
+    "addonCount_other": "{{count}} adicionais",
+    "available": "Disponível"
+  },
+  "modal": {
+    "titleCreate": "Adicionar Item do Cardápio",
+    "titleEdit": "Editar Item do Cardápio",
+    "subtitleCreate": "Adicione um novo item ao cardápio.",
+    "subtitleEdit": "Atualize os dados deste item.",
+    "photoLabel": "Foto",
+    "photoUploadHint": "Clique para enviar ou arraste e solte",
+    "photoFormatHint": "PNG, JPG · Proporção recomendada 4:3",
+    "nameLabel": "Nome do Item",
+    "namePlaceholder": "ex. Double Smash Burger",
+    "categoryLabel": "Categoria",
+    "priceLabel": "Preço",
+    "stockQuantityLabel": "Quantidade em Estoque",
+    "availableToggleLabel": "Disponível para venda",
+    "descriptionLabel": "Descrição",
+    "descriptionPlaceholder": "Breve descrição do item...",
+    "cancelButton": "Cancelar",
+    "savingButton": "Salvando...",
+    "saveChangesButton": "Salvar Alterações",
+    "addToMenuButton": "Adicionar ao Cardápio",
+    "sizesLabel": "Tamanhos",
+    "addSizeButton": "Adicionar tamanho",
+    "sizesEmpty": "Nenhum tamanho configurado. O item é vendido em tamanho único.",
+    "sizeLabelPlaceholder": "ex. Grande (16oz)",
+    "addonsLabel": "Adicionais",
+    "addAddonButton": "Adicionar adicional",
+    "addonsEmpty": "Nenhum adicional configurado para este item.",
+    "addonLabelPlaceholder": "ex. Queijo Extra",
+    "addonMaxQuantityLabel": "Qtd. máx.",
+    "columnLabel": "Nome",
+    "columnPrice": "Preço",
+    "columnPriceDelta": "Variação de preço",
+    "columnMaxQuantity": "Qtd. máx.",
+    "errors": {
+      "nameRequired": "O nome do item é obrigatório."
+    }
+  },
+  "categoryManager": {
+    "title": "Gerenciar Categorias",
+    "subtitle": "Renomear ou adicionar uma categoria reflete em todos os lugares onde ela é usada.",
+    "empty": "Nenhuma categoria ainda. Adicione uma abaixo.",
+    "itemCount_one": "{{count}} item",
+    "itemCount_other": "{{count}} itens",
+    "newCategoryPlaceholder": "Nome da nova categoria",
+    "deleteBlockedTooltip_one": "{{count}} item usa esta categoria. Reatribua ou exclua-o primeiro.",
+    "deleteBlockedTooltip_other": "{{count}} itens usam esta categoria. Reatribua ou exclua-os primeiro.",
+    "errors": {
+      "nameRequired": "O nome da categoria é obrigatório.",
+      "nameTaken": "Já existe uma categoria com esse nome.",
+      "inUse": "Esta categoria ainda é usada por um ou mais itens.",
+      "generic": "Algo deu errado. Tente novamente."
+    }
+  }
+}

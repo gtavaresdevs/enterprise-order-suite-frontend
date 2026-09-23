@@ -1,0 +1,12 @@
+{
+  "menu": {
+    "bannerAlt": "Banner",
+    "logoAlt": "Logo da loja",
+    "defaultTitle": "Cardápio",
+    "loading": "Carregando cardápio...",
+    "noItems": "Nenhum item nesta categoria."
+  },
+  "notFound": {
+    "title": "Mesa não encontrada"
+  }
+}

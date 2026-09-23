@@ -1,0 +1,58 @@
+{
+  "loading": "Loading dashboard...",
+  "error": "Couldn't load the dashboard. Refresh to try again.",
+  "header": {
+    "greeting": {
+      "morning": "Good morning, {{name}}",
+      "afternoon": "Good afternoon, {{name}}",
+      "evening": "Good evening, {{name}}"
+    },
+    "newOrder": "New order"
+  },
+  "earnings": {
+    "title": "Earnings",
+    "today": "Today",
+    "week": "Last 7 days",
+    "month": "This month",
+    "orders_one": "{{count}} order",
+    "orders_other": "{{count}} orders",
+    "vsYesterday": "vs. yesterday",
+    "vsLastWeek": "vs. previous 7 days",
+    "vsLastMonth": "vs. last month",
+    "viewAnalytics": "View analytics"
+  },
+  "launch": {
+    "title": "Shortcuts",
+    "storefront": {
+      "title": "Storefront",
+      "description": "Your public ordering page.",
+      "open": "Open storefront",
+      "copy": "Copy storefront link",
+      "copied": "Link copied"
+    },
+    "kds": {
+      "title": "Kitchen display",
+      "description": "Advance the live order queue.",
+      "queue_one": "order in the queue",
+      "queue_other": "orders in the queue"
+    },
+    "menu": {
+      "title": "Menu",
+      "description": "Items, prices and stock.",
+      "lowStock_one": "item low on stock",
+      "lowStock_other": "items low on stock",
+      "stocked": "Stock is healthy"
+    }
+  },
+  "activeOrders": {
+    "title": "Orders in progress",
+    "byChannel": "Today by channel"
+  },
+  "lowStock": {
+    "title": "Low stock",
+    "itemCount_one": "{{count}} item",
+    "itemCount_other": "{{count}} items",
+    "empty": "All menu items are well stocked.",
+    "stockLeft": "{{count}} left"
+  }
+}

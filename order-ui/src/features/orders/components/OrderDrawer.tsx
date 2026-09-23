@@ -1,9 +1,13 @@
-import { X, ChevronRight, Phone, MapPin } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { X, ChevronRight, Phone, MapPin, Wallet, MessageCircle } from "lucide-react";
 import type { Order, OrderLine } from "@/types/orders";
 import { useFormat } from "@/features/preferences/hooks/useFormat";
 import { StatusBadge } from "./StatusBadge";
+import { buildWhatsAppLink } from "@/utils/whatsapp";
 
 export function OrderDrawer({ order, onClose }: { order: Order; onClose: () => void }) {
+  const { t } = useTranslation("orders");
+  const { t: tPayment } = useTranslation("payment");
   const { formatCurrency, formatDate } = useFormat();
   const lineTotal = (p: OrderLine) => {
     const modTotal = (p.modifiers ?? []).reduce((s, m) => s + m.price, 0);
@@ -17,7 +21,7 @@ export function OrderDrawer({ order, onClose }: { order: Order; onClose: () => v
         <div className="px-6 py-5 border-b border-slate-100 flex items-start justify-between gap-4">
           <div>
             <div className="flex items-center gap-2.5 mb-1">
-              <span className="font-mono text-xs text-slate-400 tracking-wider uppercase">{order.channel} Order</span>
+              <span className="font-mono text-xs text-slate-400 tracking-wider uppercase">{t("drawer.channelOrder", { channel: order.channel })}</span>
               <ChevronRight className="w-3 h-3 text-slate-300" />
               <span className="font-mono text-xs font-medium text-slate-600">{order.id}</span>
             </div>
@@ -34,15 +38,15 @@ export function OrderDrawer({ order, onClose }: { order: Order; onClose: () => v
 
         <div className="flex-1 overflow-y-auto">
           <div className="px-6 py-5 border-b border-slate-100">
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Order Details</p>
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">{t("drawer.orderDetailsLabel")}</p>
             <div className="space-y-3">
               <div className="flex items-start gap-2.5">
                 <div className="w-7 h-7 rounded-[8px] bg-slate-100 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <MapPin className="w-3.5 h-3.5 text-slate-500" />
                 </div>
                 <div>
-                  <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">{order.table ? "Table" : "Fulfillment"}</p>
-                  <p className="text-sm font-medium text-slate-700 mt-0.5 leading-snug">{order.table ?? order.fulfillment ?? "—"}</p>
+                  <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">{order.table ? t("drawer.tableLabel") : t("drawer.fulfillmentLabel")}</p>
+                  <p className="text-sm font-medium text-slate-700 mt-0.5 leading-snug">{order.table ?? order.fulfillment ?? t("drawer.emptyValue")}</p>
                 </div>
               </div>
               <div className="flex items-start gap-2.5">
@@ -50,17 +54,45 @@ export function OrderDrawer({ order, onClose }: { order: Order; onClose: () => v
                   <Phone className="w-3.5 h-3.5 text-slate-500" />
                 </div>
                 <div>
-                  <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">Phone</p>
+                  <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">{t("drawer.phoneLabel")}</p>
                   <p className="text-sm font-medium text-slate-700 mt-0.5 font-mono">{order.customerPhone}</p>
                 </div>
               </div>
+              {order.deliveryZone && (
+                <div className="flex items-start gap-2.5">
+                  <div className="w-7 h-7 rounded-[8px] bg-slate-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <MapPin className="w-3.5 h-3.5 text-slate-500" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">{t("drawer.deliveryZoneLabel")}</p>
+                    <p className="text-sm font-medium text-slate-700 mt-0.5 leading-snug">
+                      {order.deliveryZone}{order.etaMinutes != null ? ` · ${t("drawer.etaValue", { count: order.etaMinutes })}` : ""}
+                    </p>
+                  </div>
+                </div>
+              )}
+              {order.paymentMethod && (
+                <div className="flex items-start gap-2.5">
+                  <div className="w-7 h-7 rounded-[8px] bg-slate-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Wallet className="w-3.5 h-3.5 text-slate-500" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wide">{t("drawer.paymentLabel")}</p>
+                    <p className="text-sm font-medium text-slate-700 mt-0.5 leading-snug">
+                      {tPayment(`methods.${order.paymentMethod}`)}
+                      {order.cardType ? ` · ${tPayment(`cardTypes.${order.cardType}`)}` : ""}
+                      {order.changeFor != null ? ` · ${t("drawer.changeForValue", { amount: formatCurrency(order.changeFor) })}` : ""}
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
           <div className="px-6 py-5">
             <div className="flex items-center justify-between mb-4">
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Order Items</p>
-              <span className="text-xs text-slate-400 font-mono">{order.items.length} line{order.items.length !== 1 ? "s" : ""}</span>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{t("drawer.orderItemsLabel")}</p>
+              <span className="text-xs text-slate-400 font-mono">{t("drawer.lineCount", { count: order.items.length })}</span>
             </div>
 
             <div className="flex flex-col gap-2.5">
@@ -75,7 +107,7 @@ export function OrderDrawer({ order, onClose }: { order: Order; onClose: () => v
                           <span className="font-mono text-xs font-bold text-slate-600 bg-slate-200 px-1.5 py-0.5 rounded">×{p.quantity}</span>
                           <p className="text-sm font-semibold text-slate-800">{p.name}</p>
                         </div>
-                        <p className="text-[11px] text-slate-400 font-mono mt-0.5">{formatCurrency(p.unitPrice)} each</p>
+                        <p className="text-[11px] text-slate-400 font-mono mt-0.5">{t("drawer.unitPriceEach", { price: formatCurrency(p.unitPrice) })}</p>
                       </div>
                       <div className="text-right flex-shrink-0">
                         <p className="text-sm font-semibold text-slate-900 font-mono">{formatCurrency(total)}</p>
@@ -100,12 +132,15 @@ export function OrderDrawer({ order, onClose }: { order: Order; onClose: () => v
 
         <div className="px-6 py-4 border-t border-slate-100 bg-slate-50/80 flex items-center justify-between">
           <div>
-            <p className="text-xs text-slate-400 font-medium uppercase tracking-wider">Order Total</p>
+            <p className="text-xs text-slate-400 font-medium uppercase tracking-wider">{t("drawer.orderTotalLabel")}</p>
             <p className="text-2xl font-semibold text-slate-900 font-mono mt-0.5">{formatCurrency(order.total)}</p>
           </div>
           <div className="flex gap-2">
-            <button className="h-9 px-4 rounded-[8px] border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors">
-              Contact Customer
+            <button
+              onClick={() => window.open(buildWhatsAppLink(order.customerPhone, t("drawer.whatsappMessage", { id: order.id, status: t(`status.${order.status.toLowerCase()}`) })), "_blank", "noopener,noreferrer")}
+              className="h-9 px-4 rounded-[8px] border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors flex items-center gap-1.5"
+            >
+              <MessageCircle className="w-3.5 h-3.5" /> {t("drawer.contactCustomerButton")}
             </button>
           </div>
         </div>
@@ -113,3 +148,4 @@ export function OrderDrawer({ order, onClose }: { order: Order; onClose: () => v
     </>
   );
 }
+

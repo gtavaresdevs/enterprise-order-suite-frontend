@@ -17,6 +17,12 @@ coverage/
 .claude/
 .playwright-mcp/
 
+# Graphify knowledge graph output (manual refresh only, not synced to git)
+graphify-out/
+
+# Local git worktrees (superpowers:using-git-worktrees)
+.worktrees/
+
 # Environment files
 .env
 .env.*

@@ -1,0 +1,25 @@
+{
+  "feature": {
+    "brandLabel": "Enterprise Order Suite",
+    "title": "Mesas",
+    "subtitle": "Códigos QR para imprimir e colocar em cada mesa, vinculados à visualização somente leitura do cardápio.",
+    "addTableButton": "Adicionar Mesa",
+    "loading": "Carregando mesas...",
+    "emptyText": "Nenhuma mesa ainda. Adicione uma para gerar seu QR code."
+  },
+  "card": {
+    "downloadButton": "Baixar"
+  },
+  "modal": {
+    "title": "Adicionar Mesa",
+    "subtitle": "Gera um QR code vinculado à visualização somente leitura do cardápio.",
+    "nameLabel": "Nome da Mesa",
+    "namePlaceholder": "ex. Mesa 6, Varanda 3",
+    "cancelButton": "Cancelar",
+    "addingButton": "Adicionando...",
+    "addButton": "Adicionar Mesa",
+    "errors": {
+      "nameRequired": "O nome da mesa é obrigatório."
+    }
+  }
+}

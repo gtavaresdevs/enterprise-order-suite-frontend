@@ -1,11 +1,39 @@
 import { ordersService } from "@/features/orders/services/orders.service";
 import { menuService } from "@/features/menu/services/menu.service";
 import { LOW_STOCK_THRESHOLD } from "@/features/menu/constants/menu.constants";
-import type { HomeDashboardData, ChannelCount } from "@/types/home";
-import type { OrderChannel } from "@/types/orders";
+import type {
+  HomeDashboardData,
+  ChannelCount,
+  StatusCount,
+  EarningsPeriod,
+  ActiveStatus,
+} from "@/types/home";
+import type { Order, OrderChannel } from "@/types/orders";
 
 const CHANNELS: OrderChannel[] = ["Online", "Dine-in", "Phone"];
-const KITCHEN_BACKLOG_STATUSES = new Set(["New", "Preparing"]);
+const ACTIVE_STATUSES: ActiveStatus[] = ["New", "Preparing", "Ready"];
+const DAY_MS = 86_400_000;
+
+// createdAt is a date-only ISO string, so all period math is done on "YYYY-MM-DD" strings in UTC.
+const addDays = (iso: string, days: number) =>
+  new Date(Date.parse(iso) + days * DAY_MS).toISOString().slice(0, 10);
+
+const monthOf = (iso: string, offset = 0) => {
+  const d = new Date(Date.parse(iso));
+  return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + offset, 1)).toISOString().slice(0, 7);
+};
+
+const sum = (orders: Order[]) => orders.reduce((total, o) => total + o.total, 0);
+
+function period(current: Order[], previous: Order[]): EarningsPeriod {
+  const revenue = sum(current);
+  const before = sum(previous);
+  return {
+    revenue,
+    orders: current.length,
+    deltaPct: before > 0 ? ((revenue - before) / before) * 100 : null,
+  };
+}
 
 export const homeService = {
   /**
@@ -18,43 +46,58 @@ export const homeService = {
       menuService.getMenuItems(),
     ]);
 
-    // Order.createdAt is date-only and the mock fixture is fixed in the past
-    // (see orders.constants.ts) — "today" is the most recent date actually
-    // present in the data, not the real calendar date, or every stat below
-    // would read zero against this fixture.
+    // ponytail: "today" is the newest date in the data, not the calendar date — the mock
+    // fixture is fixed in the past and would read zero otherwise. Swap for
+    // new Date().toISOString().slice(0, 10) once orders come from the real backend.
     const snapshotDate = orders.reduce(
       (latest, o) => (o.createdAt > latest ? o.createdAt : latest),
       orders[0]?.createdAt ?? ""
     );
-    const todaysOrders = orders.filter((o) => o.createdAt === snapshotDate);
 
+    const billable = orders.filter((o) => o.status !== "Cancelled");
+    const between = (from: string, to: string) =>
+      billable.filter((o) => o.createdAt > from && o.createdAt <= to);
+
+    const yesterday = addDays(snapshotDate, -1);
+    const weekStart = addDays(snapshotDate, -7);
+    const prevWeekStart = addDays(snapshotDate, -14);
+
+    const earnings = {
+      today: period(
+        billable.filter((o) => o.createdAt === snapshotDate),
+        billable.filter((o) => o.createdAt === yesterday)
+      ),
+      week: period(between(weekStart, snapshotDate), between(prevWeekStart, weekStart)),
+      month: period(
+        billable.filter((o) => o.createdAt.startsWith(monthOf(snapshotDate))),
+        billable.filter((o) => o.createdAt.startsWith(monthOf(snapshotDate, -1)))
+      ),
+      trend: Array.from({ length: 7 }, (_, i) => {
+        const date = addDays(snapshotDate, i - 6);
+        return { date, revenue: sum(billable.filter((o) => o.createdAt === date)) };
+      }),
+    };
+
+    const todaysOrders = orders.filter((o) => o.createdAt === snapshotDate);
     const channelCounts: ChannelCount[] = CHANNELS.map((channel) => ({
       channel,
       count: todaysOrders.filter((o) => o.channel === channel).length,
     }));
 
-    const billableOrders = todaysOrders.filter((o) => o.status !== "Cancelled");
-    const revenue = billableOrders.reduce((sum, o) => sum + o.total, 0);
-    const avgOrderValue = billableOrders.length > 0 ? revenue / billableOrders.length : 0;
+    // Status counts are a right-now concept, not scoped to "today".
+    const statusCounts: StatusCount[] = ACTIVE_STATUSES.map((status) => ({
+      status,
+      count: orders.filter((o) => o.status === status).length,
+    }));
 
-    // Kitchen backlog is a right-now concept, not scoped to "today" — it
-    // covers every order still in New/Preparing regardless of its date.
-    const kitchenBacklogCount = orders.filter((o) => KITCHEN_BACKLOG_STATUSES.has(o.status)).length;
+    const kitchenBacklogCount = statusCounts
+      .filter((s) => s.status !== "Ready")
+      .reduce((total, s) => total + s.count, 0);
 
     const lowStockItems = menuItems.filter(
       (item) => item.available && item.stockQuantity > 0 && item.stockQuantity <= LOW_STOCK_THRESHOLD
     );
 
-    return {
-      snapshot: {
-        snapshotDate,
-        channelCounts,
-        totalOrders: todaysOrders.length,
-        revenue,
-        avgOrderValue,
-      },
-      kitchenBacklogCount,
-      lowStockItems,
-    };
+    return { snapshotDate, earnings, channelCounts, statusCounts, kitchenBacklogCount, lowStockItems };
   },
 };

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import type { NotificationGroup } from "@/types/notifications";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
@@ -23,6 +24,7 @@ export function NotificationGroupCard({
     onToggleGroup,
     onToggleItem,
 }: NotificationGroupCardProps) {
+    const { t } = useTranslation("notifications");
     const activeItemsCount = group.items.filter((i) => enabled[i.id]).length;
 
     return (
@@ -33,11 +35,11 @@ export function NotificationGroupCard({
                         {group.category}
                     </Badge>
                     <span className="font-mono text-[11px] text-slate-400">
-                        {activeItemsCount}/{group.items.length} on
+                        {t("groupCard.activeCount", { active: activeItemsCount, total: group.items.length })}
                     </span>
                 </div>
                 <div className="flex items-center gap-2">
-                    <Label className="text-xs text-slate-400 cursor-pointer">All</Label>
+                    <Label className="text-xs text-slate-400 cursor-pointer">{t("groupCard.all")}</Label>
                     <Switch
                         checked={isGroupOn && !globalMute}
                         onCheckedChange={onToggleGroup}

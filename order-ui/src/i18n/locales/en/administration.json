@@ -1,0 +1,74 @@
+{
+  "team": {
+    "title": "Team",
+    "description": "Manage user accounts, invitations, roles, and access.",
+    "inviteButton": "Invite User",
+    "colEmail": "Email",
+    "colRole": "Role",
+    "colStatus": "Status",
+    "colCreated": "Created",
+    "loading": "Loading team...",
+    "loadError": "Couldn't load the team list.",
+    "empty": "No users yet."
+  },
+  "roles": {
+    "title": "Roles",
+    "description": "Reference list of roles available in your organization.",
+    "readOnlyNote": "Read-only — the backend currently exposes role names only, not custom permission sets.",
+    "loading": "Loading roles...",
+    "empty": "No roles found."
+  },
+  "auditLog": {
+    "title": "Audit Log",
+    "description": "Who did what to whom, and when — identity and access changes.",
+    "colEvent": "Event",
+    "colActor": "Actor",
+    "colTarget": "Target",
+    "colWhen": "When",
+    "loading": "Loading audit log...",
+    "loadError": "Couldn't load the audit log.",
+    "empty": "No audit events yet.",
+    "emptyValue": "—"
+  },
+  "statusPill": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "pagination": {
+    "pageOf": "Page {{current}} of {{total}}"
+  },
+  "inviteModal": {
+    "title": "Invite User",
+    "emailLabel": "Email",
+    "firstNameLabel": "First name",
+    "lastNameLabel": "Last name",
+    "roleLabel": "Role",
+    "rolePlaceholder": "Default role",
+    "rolesLoadError": "Couldn't load role options.",
+    "sendSetupEmailLabel": "Send password setup email",
+    "cancelButton": "Cancel",
+    "inviteButton": "Invite",
+    "invitingButton": "Inviting...",
+    "requiredFieldsError": "Email, first name, and last name are required.",
+    "inviteError": "Couldn't invite this user. Check the email isn't already in use."
+  },
+  "userDetail": {
+    "loading": "Loading user...",
+    "joinedLabel": "Joined {{date}}",
+    "emailLabel": "Email",
+    "firstNameLabel": "First name",
+    "lastNameLabel": "Last name",
+    "saveButton": "Save changes",
+    "savingButton": "Saving...",
+    "saveError": "Couldn't save changes. Check the email isn't already in use.",
+    "roleLabel": "Role",
+    "rolesLoadError": "Couldn't load role options.",
+    "roleUpdateError": "Couldn't update the role.",
+    "deactivateButton": "Deactivate",
+    "deactivatingButton": "Deactivating...",
+    "reactivateButton": "Reactivate",
+    "reactivatingButton": "Reactivating...",
+    "resendSetupButton": "Resend password setup email",
+    "sendingButton": "Sending..."
+  }
+}

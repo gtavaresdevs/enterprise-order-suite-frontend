@@ -4,22 +4,22 @@ import { NAVIGATION_ITEMS, ADMINISTRATION_ITEMS, type NavItem } from "./navigati
 import { useState, useSyncExternalStore } from "react";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { usePreferencesContext } from "@/app/providers/PreferencesProvider";
-import { useTranslation } from "@/features/preferences/hooks/useTranslation";
+import { useTranslation } from "react-i18next";
 import { useProfileSummary } from "@/features/profile/hooks/useProfileSummary";
 import type { Role } from "@/types/auth";
 
 const ACCOUNT_NAV = [
-  { to: "/profile",       label: "View Profile",    icon: User         },
-  { to: "/notifications", label: "Notifications",   icon: Bell         },
-  { to: "/preferences",   label: "Preferences",     icon: Sliders      },
-  { to: "/settings",      label: "Settings",        icon: Settings     },
+  { to: "/profile",       label: "View Profile",    labelKey: "account.viewProfile", icon: User         },
+  { to: "/notifications", label: "Notifications",   labelKey: "nav.notifications",   icon: Bell         },
+  { to: "/preferences",   label: "Preferences",     labelKey: "nav.preferences",     icon: Sliders      },
+  { to: "/settings",      label: "Settings",        labelKey: "nav.settings",        icon: Settings     },
 ];
 
 function UserChip({ onNavigate }: { onNavigate?: () => void }) {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { t } = useTranslation();
+  const { t } = useTranslation("shell");
   const { displayName, email, role, initials } = useProfileSummary();
 
   function go(path: string) {
@@ -41,7 +41,7 @@ function UserChip({ onNavigate }: { onNavigate?: () => void }) {
         </div>
         <div className="min-w-0 flex-1 text-left">
           <p className="text-xs font-semibold text-slate-700 truncate leading-none">{displayName}</p>
-          <p className="text-[10px] text-slate-400 mt-0.5 truncate">Enterprise · {role}</p>
+          <p className="text-[10px] text-slate-400 mt-0.5 truncate">{t("account.enterpriseRole", { role })}</p>
         </div>
         <ChevronRight className={`w-3 h-3 text-slate-400 flex-shrink-0 transition-transform ${open ? "-rotate-90" : "rotate-90"}`} />
       </button>
@@ -55,14 +55,14 @@ function UserChip({ onNavigate }: { onNavigate?: () => void }) {
               <p className="text-[11px] text-slate-400 mt-0.5 font-mono">{email}</p>
             </div>
             <div className="py-1">
-              {ACCOUNT_NAV.map(({ to, label, icon: Icon }) => (
+              {ACCOUNT_NAV.map(({ to, labelKey, icon: Icon }) => (
                 <button
                   key={to}
                   onClick={() => go(to)}
                   className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors text-left"
                 >
                   <Icon className="w-3.5 h-3.5 text-slate-400" />
-                  {t(label)}
+                  {t(labelKey)}
                 </button>
               ))}
             </div>
@@ -78,7 +78,7 @@ function UserChip({ onNavigate }: { onNavigate?: () => void }) {
                 className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors text-left"
               >
                 <LogOut className="w-3.5 h-3.5" />
-                {t("Sign out")}
+                {t("account.signOut")}
               </button>
             </div>
           </div>
@@ -95,7 +95,7 @@ interface SidebarContentProps {
 
 export function SidebarContent({ onNavigate, collapsed = false }: SidebarContentProps) {
   const { user } = useAuth();
-  const { t } = useTranslation();
+  const { t } = useTranslation("shell");
 
   const hasAccess = (roles?: Role[]) => {
     if (!roles || !roles.length) return true;
@@ -103,8 +103,9 @@ export function SidebarContent({ onNavigate, collapsed = false }: SidebarContent
     return roles.some((role) => user.roles.includes(role));
   };
 
-  const renderNavItem = ({ to, label, icon: Icon, end }: NavItem, collapsed: boolean) => {
+  const renderNavItem = ({ to, labelKey, icon: Icon, end }: NavItem, collapsed: boolean) => {
     if (!to) return null;
+    const label = t(labelKey);
     return (
       <NavLink
         key={to}
@@ -123,7 +124,7 @@ export function SidebarContent({ onNavigate, collapsed = false }: SidebarContent
         {({ isActive }) => (
           <>
             <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? "text-slate-300" : "text-slate-400 group-hover:text-slate-600"}`} />
-            <span className={`flex-1 truncate ${collapsed ? "sr-only" : ""}`}>{t(label)}</span>
+            <span className={`flex-1 truncate ${collapsed ? "sr-only" : ""}`}>{label}</span>
             {isActive && !collapsed && <ChevronRight className="w-3 h-3 text-slate-500 flex-shrink-0" />}
           </>
         )}
@@ -141,8 +142,8 @@ export function SidebarContent({ onNavigate, collapsed = false }: SidebarContent
           </div>
           {!collapsed && (
             <div className="min-w-0">
-              <p className="text-sm font-semibold text-foreground leading-none truncate">Enterprise</p>
-              <p className="text-[10px] text-muted-foreground mt-0.5 font-medium tracking-wide uppercase">Order Suite</p>
+              <p className="text-sm font-semibold text-foreground leading-none truncate">{t("brand.enterprise")}</p>
+              <p className="text-[10px] text-muted-foreground mt-0.5 font-medium tracking-wide uppercase">{t("brand.orderSuite")}</p>
             </div>
           )}
         </div>
@@ -150,20 +151,20 @@ export function SidebarContent({ onNavigate, collapsed = false }: SidebarContent
 
       {/* Navigation Area */}
       <nav className="app-shell-padded flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
-        {!collapsed && <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mb-2">{t("Navigation")}</p>}
+        {!collapsed && <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mb-2">{t("nav.navigationSection")}</p>}
         {NAVIGATION_ITEMS.map((item) => renderNavItem(item, collapsed))}
 
         {/* Administration Section */}
         {ADMINISTRATION_ITEMS.filter(item => hasAccess(item.roles)).map(section => (
           <div key={section.label} className="pt-4">
-            {!collapsed && <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mb-2">{t(section.label)}</p>}
+            {!collapsed && <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mb-2">{t(section.labelKey)}</p>}
             {section.children?.filter(child => hasAccess(child.roles)).map((item) => renderNavItem(item, collapsed))}
           </div>
         ))}
 
         {/* Account section */}
         <div className="pt-4">
-          {!collapsed && <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mb-2">{t("Account")}</p>}
+          {!collapsed && <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-2 mb-2">{t("nav.accountSection")}</p>}
           {ACCOUNT_NAV.map((item) => renderNavItem(item, collapsed))}
         </div>
       </nav>
