@@ -4,6 +4,9 @@
     "logoAlt": "Logo da loja",
     "businessName": "The Urban Grill",
     "loadingMenu": "Carregando cardápio...",
+    "searchPlaceholder": "Buscar no cardápio",
+    "allCategory": "Todos",
+    "noResults": "Nenhum item encontrado.",
     "viewCartButton": "Ver Carrinho ({{count}})"
   },
   "itemDetail": {

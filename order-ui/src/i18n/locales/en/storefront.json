@@ -4,6 +4,9 @@
     "logoAlt": "Store logo",
     "businessName": "The Urban Grill",
     "loadingMenu": "Loading menu...",
+    "searchPlaceholder": "Search the menu",
+    "allCategory": "All",
+    "noResults": "No items match your search.",
     "viewCartButton": "View Cart ({{count}})"
   },
   "itemDetail": {

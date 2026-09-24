@@ -1,5 +1,6 @@
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Star } from "lucide-react";
+import { Search, Star } from "lucide-react";
 import { usePreferencesContext } from "@/app/providers/PreferencesProvider";
 import { useFormat } from "@/features/preferences/hooks/useFormat";
 import { useStorefront } from "../hooks/useStorefront";
@@ -13,7 +14,7 @@ import { SuccessView } from "./SuccessView";
 export const StorefrontFeature = () => {
     const { t } = useTranslation("storefront");
     const {
-        menuItems, isLoading, categories, activeCategory, setActiveCategory, selectedItem, setSelectedItem,
+        isLoading, sections, search, setSearch, selectedItem, setSelectedItem,
         cart, setCart, cartTotal, cartCount, flowState, setFlowState, addToCart,
         placeOrder, placedOrder, isPlacingOrder,
     } = useStorefront();
@@ -22,11 +23,41 @@ export const StorefrontFeature = () => {
     const { formatCurrency } = useFormat();
     const { storefrontLogo, storefrontCover, storefrontBrandColor, deliveryZones } = preferences;
 
-    const visibleMenu = menuItems.filter((item) => item.category === activeCategory);
+    // null = "All" (top of the menu). Chips scroll to their section instead of filtering; the active chip follows the scroll.
+    const [activeCategory, setActiveCategory] = useState<string | null>(null);
+    const headerRef = useRef<HTMLDivElement>(null);
+    const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
+
+    useEffect(() => {
+        const onScroll = () => {
+            const headerBottom = headerRef.current?.getBoundingClientRect().bottom ?? 0;
+            let current: string | null = null;
+            for (const [category, el] of Object.entries(sectionRefs.current)) {
+                if (el && el.getBoundingClientRect().top <= headerBottom + 8) current = category;
+            }
+            setActiveCategory(current);
+        };
+        window.addEventListener("scroll", onScroll, { passive: true });
+        return () => window.removeEventListener("scroll", onScroll);
+    }, []);
+
+    const scrollToCategory = (category: string | null) => {
+        if (!category) {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            return;
+        }
+        const el = sectionRefs.current[category];
+        if (!el) return;
+        el.style.scrollMarginTop = `${headerRef.current?.offsetHeight ?? 0}px`;
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+
+    const chipClass = (active: boolean) => `flex-shrink-0 h-7 px-3 rounded-full text-xs font-medium ${active ? "text-white" : "bg-slate-100 text-slate-500"}`;
+    const chipStyle = (active: boolean) => (active ? { backgroundColor: storefrontBrandColor } : undefined);
 
     return (
         <div className="min-h-screen flex items-start justify-center py-8 px-4 bg-[#f8fafc] [background-image:radial-gradient(#0f172a_1px,transparent_1px)] [background-size:32px_32px]">
-            <div className="relative w-full bg-white overflow-hidden shadow-2xl shadow-slate-900/25 flex flex-col" style={{ maxWidth: 390, minHeight: "85vh", borderRadius: 32, border: "1px solid rgba(15,23,42,0.1)" }}>
+            <div className="relative w-full bg-white overflow-clip shadow-2xl shadow-slate-900/25 flex flex-col" style={{ maxWidth: 390, minHeight: "85vh", borderRadius: 32, border: "1px solid rgba(15,23,42,0.1)" }}>
 
                 {/* Banner */}
                 <div className="relative h-40 flex-shrink-0 bg-slate-900">
@@ -51,12 +82,26 @@ export const StorefrontFeature = () => {
                     </div>
                 </div>
 
-                {/* Categories */}
-                <div className="flex-shrink-0 bg-white border-b border-slate-100 sticky top-0 z-20">
+                {/* Search + Categories */}
+                <div ref={headerRef} className="flex-shrink-0 bg-white border-b border-slate-100 sticky top-0 z-20">
+                    <div className="px-4 pt-3 relative">
+                        <Search className="w-4 h-4 text-slate-400 absolute left-7 top-1/2 translate-y-[-25%] pointer-events-none" />
+                        <input
+                            type="search"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            placeholder={t("feed.searchPlaceholder")}
+                            aria-label={t("feed.searchPlaceholder")}
+                            className="w-full h-9 pl-9 pr-3 rounded-full bg-slate-100 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-slate-200"
+                        />
+                    </div>
                     <div className="flex gap-2 px-4 py-3 overflow-x-auto">
-                        {categories.map((cat) => (
-                            <button key={cat} onClick={() => setActiveCategory(cat)} className={`flex-shrink-0 h-7 px-3 rounded-full text-xs font-medium ${activeCategory === cat ? "text-white" : "bg-slate-100 text-slate-500"}`} style={activeCategory === cat ? { backgroundColor: storefrontBrandColor } : undefined}>
-                                {cat}
+                        <button onClick={() => scrollToCategory(null)} className={chipClass(activeCategory === null)} style={chipStyle(activeCategory === null)}>
+                            {t("feed.allCategory")}
+                        </button>
+                        {sections.map(({ category }) => (
+                            <button key={category} onClick={() => scrollToCategory(category)} className={chipClass(activeCategory === category)} style={chipStyle(activeCategory === category)}>
+                                {category}
                             </button>
                         ))}
                     </div>
@@ -64,11 +109,18 @@ export const StorefrontFeature = () => {
 
                 {/* Menu Items */}
                 <div className="flex-1 overflow-y-auto pb-24">
-                    <div className="px-4 pt-4 space-y-3">
+                    <div className="px-4 pt-4 space-y-6">
                         {isLoading ? (
                             <p className="text-xs text-slate-400 text-center py-8">{t("feed.loadingMenu")}</p>
+                        ) : sections.length === 0 ? (
+                            <p className="text-xs text-slate-400 text-center py-8">{t("feed.noResults")}</p>
                         ) : (
-                            visibleMenu.map((item) => <MenuCard key={item.id} item={item} onSelect={() => setSelectedItem(item)} />)
+                            sections.map(({ category, items }) => (
+                                <section key={category} ref={(el) => { sectionRefs.current[category] = el; }} className="space-y-3">
+                                    <h2 className="text-base font-semibold text-slate-900" style={{ fontFamily: "'Outfit', sans-serif" }}>{category}</h2>
+                                    {items.map((item) => <MenuCard key={item.id} item={item} onSelect={() => setSelectedItem(item)} />)}
+                                </section>
+                            ))
                         )}
                     </div>
                 </div>
