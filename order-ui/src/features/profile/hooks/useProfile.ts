@@ -18,6 +18,11 @@ function formatDate(dateStr?: string): string {
     }
 }
 
+function errorMessage(err: unknown, fallback: string): string {
+    const e = err as { response?: { data?: { message?: string } }; message?: string } | null;
+    return e?.response?.data?.message || e?.message || fallback;
+}
+
 export function useProfile() {
     const { user } = useAuth();
 
@@ -45,7 +50,7 @@ export function useProfile() {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     // Snapshot of the last-saved editable values for dirty comparison
-    const savedSnapshot = useRef<UpdateProfileRequest>({
+    const [savedSnapshot, setSavedSnapshot] = useState<UpdateProfileRequest>({
         department: "",
         phone: "",
         country: "",
@@ -54,12 +59,9 @@ export function useProfile() {
         bio: "",
     });
 
-    // Fetch profile data from backend on mount
-    const fetchProfile = useCallback(async () => {
-        setIsLoading(true);
-        setFetchError(null);
-        try {
-            const data = await profileService.getProfile();
+    // Loads the profile; state is only touched in the promise callbacks, so it's safe to call from an effect.
+    const loadProfile = useCallback(() => profileService.getProfile()
+        .then((data) => {
             const populatedForm: UserProfileForm = {
                 id: data.id,
                 firstName: data.firstName || user?.firstName || "",
@@ -78,36 +80,40 @@ export function useProfile() {
 
             setForm(populatedForm);
 
-            savedSnapshot.current = {
+            setFetchError(null);
+            setSavedSnapshot({
                 department: data.department || "",
                 phone: data.phone || "",
                 country: data.country || "",
                 timezone: data.timezone || "",
                 office: data.office || "",
                 bio: data.bio || "",
-            };
-        } catch (err: any) {
+            });
+        })
+        .catch((err) => {
             console.error("Failed to load profile:", err);
-            setFetchError(
-                err?.response?.data?.message || err?.message || "Failed to load profile from server."
-            );
-        } finally {
-            setIsLoading(false);
-        }
-    }, [user]);
+            setFetchError(errorMessage(err, "Failed to load profile from server."));
+        })
+        .finally(() => setIsLoading(false)), [user]);
 
     useEffect(() => {
-        fetchProfile();
-    }, [fetchProfile]);
+        loadProfile();
+    }, [loadProfile]);
+
+    const fetchProfile = useCallback(() => {
+        setIsLoading(true);
+        setFetchError(null);
+        return loadProfile();
+    }, [loadProfile]);
 
     // Track dirty state by comparing editable fields to the saved snapshot
     const isDirty =
-        form.department !== (savedSnapshot.current.department ?? "") ||
-        form.phone !== (savedSnapshot.current.phone ?? "") ||
-        form.country !== (savedSnapshot.current.country ?? "") ||
-        form.timezone !== (savedSnapshot.current.timezone ?? "") ||
-        form.office !== (savedSnapshot.current.office ?? "") ||
-        form.bio !== (savedSnapshot.current.bio ?? "") ||
+        form.department !== (savedSnapshot.department ?? "") ||
+        form.phone !== (savedSnapshot.phone ?? "") ||
+        form.country !== (savedSnapshot.country ?? "") ||
+        form.timezone !== (savedSnapshot.timezone ?? "") ||
+        form.office !== (savedSnapshot.office ?? "") ||
+        form.bio !== (savedSnapshot.bio ?? "") ||
         stagedAvatarFile !== null;
 
     const updateField = useCallback(<K extends keyof UserProfileForm>(
@@ -158,14 +164,14 @@ export function useProfile() {
             }));
 
             // Update saved snapshot so dirty state resets
-            savedSnapshot.current = {
+            setSavedSnapshot({
                 department: updatedProfile.department ?? form.department,
                 phone: updatedProfile.phone ?? form.phone,
                 country: updatedProfile.country ?? form.country,
                 timezone: updatedProfile.timezone ?? form.timezone,
                 office: updatedProfile.office ?? form.office,
                 bio: updatedProfile.bio ?? form.bio,
-            };
+            });
 
             if (stagedAvatarFile) {
                 await profileService.updateAvatar(stagedAvatarFile);
@@ -174,11 +180,9 @@ export function useProfile() {
 
             setSaved(true);
             setTimeout(() => setSaved(false), 2200);
-        } catch (err: any) {
+        } catch (err) {
             console.error("Failed to save profile:", err);
-            setSaveError(
-                err?.response?.data?.message || err?.message || "Failed to save profile changes."
-            );
+            setSaveError(errorMessage(err, "Failed to save profile changes."));
         } finally {
             setIsSaving(false);
         }

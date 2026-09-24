@@ -8,6 +8,7 @@ function normalizeRole(roleStr: string): Role | null {
   return null;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- untrusted JWT claims, narrowed field by field below
 export function parseJwt(token: string): Record<string, any> | null {
   try {
     const base64Url = token.split('.')[1];
@@ -57,8 +58,8 @@ export function extractUserFromStorage(): User | null {
   // 3. From payload.authorities array
   else if (Array.isArray(payload.authorities)) {
     roles = payload.authorities
-      .map((a: any) => (typeof a === 'string' ? a : a?.authority))
-      .filter((a: any) => typeof a === 'string')
+      .map((a: unknown) => (typeof a === 'string' ? a : (a as { authority?: unknown } | null)?.authority))
+      .filter((a): a is string => typeof a === 'string')
       .map(normalizeRole)
       .filter((r): r is Role => r !== null);
   }

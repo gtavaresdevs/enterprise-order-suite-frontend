@@ -4,13 +4,10 @@ import { extractUserFromStorage } from "../utils/auth.utils";
 
 export function useAuth() {
     const [user, setUser] = useState<User | null>(() => extractUserFromStorage());
-    const [isLoading, setIsLoading] = useState(false);
+    const isLoading = false;
 
+    // Initial user comes from the lazy useState initializer; only cross-tab changes need syncing.
     useEffect(() => {
-        const currentUser = extractUserFromStorage();
-        setUser(currentUser);
-        setIsLoading(false);
-
         const handleStorageChange = () => {
             setUser(extractUserFromStorage());
         };

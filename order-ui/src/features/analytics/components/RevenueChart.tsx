@@ -20,7 +20,7 @@ export const RevenueChart = ({ data }: RevenueChartProps) => {
                     <Tooltip
                         cursor={{ fill: '#f8fafc' }}
                         contentStyle={{ borderRadius: '8px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', fontFamily: 'DM Mono', fontSize: '14px' }}
-                        formatter={(value: any) => [`$${value}`, t("chart.revenueTooltipLabel")]}
+                        formatter={(value) => [`$${value}`, t("chart.revenueTooltipLabel")]}
                     />
                     <Bar dataKey="revenue" fill="#0f172a" radius={[4, 4, 0, 0]} maxBarSize={48} />
                 </BarChart>
