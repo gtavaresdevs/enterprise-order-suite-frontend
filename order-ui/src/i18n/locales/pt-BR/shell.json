@@ -27,6 +27,11 @@
   "mobileHeader": {
     "openMenu": "Abrir menu de navegação"
   },
+  "serviceUnavailable": {
+    "title": "Ops, algo deu errado",
+    "description": "Não conseguimos acessar o servidor para carregar sua conta. Tente novamente em instantes. Se o problema persistir, entre em contato com o administrador.",
+    "retry": "Tentar novamente"
+  },
   "notificationBell": {
     "title": "Notificações",
     "newCount": "{{count}} novas"

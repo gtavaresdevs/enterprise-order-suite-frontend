@@ -6,6 +6,7 @@ import { useAuth } from "@/features/auth/hooks/useAuth";
 import { usePreferencesContext } from "@/app/providers/PreferencesProvider";
 import { useTranslation } from "react-i18next";
 import { useProfileSummary } from "@/features/profile/hooks/useProfileSummary";
+import { useLogout } from "@/features/auth/hooks/useLogout";
 import type { Role } from "@/types/auth";
 
 const ACCOUNT_NAV = [
@@ -21,6 +22,7 @@ function UserChip({ onNavigate }: { onNavigate?: () => void }) {
   const { user } = useAuth();
   const { t } = useTranslation("shell");
   const { displayName, email, role, initials } = useProfileSummary();
+  const { mutate: logout, isPending: isLoggingOut } = useLogout();
 
   function go(path: string) {
     setOpen(false);
@@ -70,11 +72,9 @@ function UserChip({ onNavigate }: { onNavigate?: () => void }) {
               <button
                 onClick={() => {
                   setOpen(false);
-                  localStorage.removeItem("accessToken");
-                  localStorage.removeItem("refreshToken");
-                  localStorage.removeItem("role");
-                  navigate("/login");
+                  logout();
                 }}
+                disabled={isLoggingOut}
                 className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors text-left"
               >
                 <LogOut className="w-3.5 h-3.5" />

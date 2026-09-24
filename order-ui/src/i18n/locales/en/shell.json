@@ -27,6 +27,11 @@
   "mobileHeader": {
     "openMenu": "Open navigation menu"
   },
+  "serviceUnavailable": {
+    "title": "Oops, something went wrong",
+    "description": "We couldn't reach the server to load your account. Please try again in a moment. If the problem persists, contact your administrator.",
+    "retry": "Try again"
+  },
   "notificationBell": {
     "title": "Notifications",
     "newCount": "{{count}} new"

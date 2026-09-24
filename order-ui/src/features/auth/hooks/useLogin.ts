@@ -1,5 +1,5 @@
 import { isAxiosError } from 'axios';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import type { AuthResponse, LoginCredentials } from '@/types/auth';
 import { loginRequest } from '../services/auth.service';
@@ -7,10 +7,13 @@ import { extractUserFromStorage } from '../utils/auth.utils';
 
 export const useLogin = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (credentials: LoginCredentials) => loginRequest(credentials),
     onSuccess: (data: AuthResponse) => {
+      // Start the new session with an empty cache so nothing from a previous user/session leaks in.
+      queryClient.clear();
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
       const user = extractUserFromStorage();

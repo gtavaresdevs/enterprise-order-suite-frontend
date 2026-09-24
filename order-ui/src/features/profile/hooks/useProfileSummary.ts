@@ -2,30 +2,22 @@ import { useQuery } from "@tanstack/react-query";
 import type { ProfileResponse } from "@/types/profile";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { profileService } from "@/features/profile/services/profile.service";
-import { MOCK_PROFILE_SUMMARY } from "@/features/profile/constants/profile.constants";
 
 // Lightweight profile summary for chrome (account menu, sidebar, home greeting).
 // Backed by one shared query so every consumer reads the same cached GET /me/profile
-// instead of each firing its own request. Falls back to mock data if it fails so the
-// header stays usable during a backend outage instead of crashing.
+// instead of each firing its own request. Errors are surfaced, never papered over with
+// placeholder data: 401s are handled by the api client (refresh or /login), and anything
+// else is shown by AppLayout as a "service unavailable" screen.
 export function useProfileSummary() {
     const { user } = useAuth();
 
-    const { data, isPending } = useQuery({
+    const { data, isPending, isError, refetch } = useQuery<ProfileResponse>({
         queryKey: ["profile", "summary"],
         staleTime: 5 * 60_000,
-        queryFn: async (): Promise<{ profile: ProfileResponse; isMock: boolean }> => {
-            try {
-                return { profile: await profileService.getProfile(), isMock: false };
-            } catch (err) {
-                console.error("Failed to load profile for account menu, falling back to mock data:", err);
-                return { profile: MOCK_PROFILE_SUMMARY, isMock: true };
-            }
-        },
+        queryFn: () => profileService.getProfile(),
     });
 
-    const profile = data?.profile ?? null;
-    const isMock = data?.isMock ?? false;
+    const profile = data ?? null;
 
     const source = profile ?? user;
     const fullName = `${source?.firstName || ""} ${source?.lastName || ""}`.trim();
@@ -46,5 +38,5 @@ export function useProfileSummary() {
           ? ((user.firstName?.[0] || "") + (user.lastName?.[0] || "")).toUpperCase() || "U"
           : "U";
 
-    return { profile, isMock, isPending, fullName, displayName, email, role, initials };
+    return { profile, isPending, isError, refetch, fullName, displayName, email, role, initials };
 }

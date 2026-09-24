@@ -5,10 +5,17 @@ import { Sidebar, SidebarContent } from "./Sidebar";
 import { MobileHeader } from "./MobileHeader";
 import { GlobalHeader } from "./GlobalHeader";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import { ServiceUnavailable } from "@/components/errors/ServiceUnavailable";
+import { useProfileSummary } from "@/features/profile/hooks/useProfileSummary";
 
 export function AppLayout() {
     const { t } = useTranslation("shell");
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const { isError: profileFailed, refetch: retryProfile } = useProfileSummary();
+
+    // Without the signed-in user's profile the shell can't show who is logged in, so a
+    // backend outage replaces it entirely rather than rendering with placeholder identity.
+    if (profileFailed) return <ServiceUnavailable onRetry={() => retryProfile()} />;
 
     return (
         <div className="flex h-screen w-full bg-background overflow-hidden" style={{ fontFamily: "'Outfit', sans-serif" }}>

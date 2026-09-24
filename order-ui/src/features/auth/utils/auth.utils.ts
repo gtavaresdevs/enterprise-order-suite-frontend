@@ -26,6 +26,15 @@ export function parseJwt(token: string): Record<string, any> | null {
   }
 }
 
+// True when the JWT is unreadable or its `exp` is in the past. A token without `exp` is
+// treated as unexpired and left for the backend to judge.
+export function isTokenExpired(token: string): boolean {
+  const payload = parseJwt(token);
+  if (!payload) return true;
+  if (typeof payload.exp !== 'number') return false;
+  return payload.exp * 1000 <= Date.now();
+}
+
 export function extractUserFromStorage(): User | null {
   const token = localStorage.getItem('accessToken');
   const storedRole = localStorage.getItem('role');
