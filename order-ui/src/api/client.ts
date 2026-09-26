@@ -72,8 +72,10 @@ let refreshInFlight: Promise<string> | null = null;
 export function refreshSession(): Promise<string> {
   if (!refreshInFlight) {
     // The token that triggered this refresh. If localStorage holds a different one once we get
-    // the lock, another tab already rotated: reuse its token. Rotating again would only waste a
-    // rotation, and in the legacy body path it would spend a token that tab already used.
+    // the lock, another tab already rotated: reuse its token instead of rotating again.
+    // localStorage reaches other tabs asynchronously, so this can occasionally miss and rotate a
+    // second time. That is harmless: the lock guarantees the first rotation finished, so the
+    // browser already sends the new cookie, and the backend prefers the cookie over any body token.
     const staleAccessToken = localStorage.getItem('accessToken');
     refreshInFlight = withRefreshLock(async () => {
       const current = localStorage.getItem('accessToken');
