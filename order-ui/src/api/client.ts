@@ -51,15 +51,29 @@ async function postRefresh(): Promise<string> {
   return data.accessToken;
 }
 
+// Web Locks serialize refresh across every tab of this origin. They need a secure context
+// (https or localhost); where unavailable, fall back to the in-tab dedupe alone.
+function withRefreshLock<T>(fn: () => Promise<T>): Promise<T> {
+  if (typeof navigator.locks?.request !== 'function') return fn();
+  return navigator.locks.request('order-ui:auth-refresh', fn);
+}
+
 let refreshInFlight: Promise<string> | null = null;
 
 // POST /auth/refresh rotates the refresh token, and a second use of a rotated token revokes the
-// whole token family (no grace window), so concurrent callers must share a single request.
+// whole token family (no grace window). So callers in this tab share a single request, and the
+// Web Lock keeps other tabs from refreshing at the same time.
 // Resolves with the new access token. A 4xx means the session is over (ends it), except
 // ORIGIN_NOT_ALLOWED; a network error, 5xx or that 403 is rethrown so the UI shows an outage.
 export function refreshSession(): Promise<string> {
   if (!refreshInFlight) {
-    refreshInFlight = (async () => {
+    // The token that triggered this refresh. If localStorage holds a different one once we get
+    // the lock, another tab already rotated: reuse its token. Rotating again would only waste a
+    // rotation, and in the legacy body path it would spend a token that tab already used.
+    const staleAccessToken = localStorage.getItem('accessToken');
+    refreshInFlight = withRefreshLock(async () => {
+      const current = localStorage.getItem('accessToken');
+      if (current && current !== staleAccessToken) return current;
       try {
         return await postRefresh();
       } catch (error) {
@@ -72,7 +86,7 @@ export function refreshSession(): Promise<string> {
         }
         throw error;
       }
-    })().finally(() => {
+    }).finally(() => {
       refreshInFlight = null;
     });
   }
