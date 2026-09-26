@@ -44,8 +44,12 @@ const ORIGIN_NOT_ALLOWED = 'ORIGIN_NOT_ALLOWED';
 async function postRefresh(): Promise<string> {
   const legacyRefreshToken = localStorage.getItem('refreshToken');
   const body = legacyRefreshToken ? { refreshToken: legacyRefreshToken } : {};
-  // Bare axios, not `api`, so a failing refresh can't re-enter the 401 interceptor.
-  const { data } = await axios.post<AuthResponse>(`${baseURL}/auth/refresh`, body, { withCredentials: true });
+  // Bare axios, not `api`, so a failing refresh can't re-enter the 401 interceptor. The timeout
+  // bounds how long a stalled request can hold the cross-tab lock; it surfaces as an outage.
+  const { data } = await axios.post<AuthResponse>(`${baseURL}/auth/refresh`, body, {
+    withCredentials: true,
+    timeout: 10_000,
+  });
   localStorage.setItem('accessToken', data.accessToken);
   localStorage.removeItem('refreshToken');
   return data.accessToken;
@@ -74,6 +78,12 @@ export function refreshSession(): Promise<string> {
     refreshInFlight = withRefreshLock(async () => {
       const current = localStorage.getItem('accessToken');
       if (current && current !== staleAccessToken) return current;
+      // Nothing stored means this browser is logged out, even if a refresh cookie survived (e.g.
+      // POST /auth/logout failed). Never let a stale tab silently bring that session back.
+      if (!current && !localStorage.getItem('refreshToken')) {
+        endSession();
+        throw new Error('No session');
+      }
       try {
         return await postRefresh();
       } catch (error) {
