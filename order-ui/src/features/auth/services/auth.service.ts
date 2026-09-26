@@ -7,13 +7,14 @@ import type {
   ResetPasswordFields,
 } from '@/types/auth';
 
+// withCredentials so the browser stores the HttpOnly refreshToken cookie from Set-Cookie.
 export const loginRequest = async (credentials: LoginCredentials): Promise<AuthResponse> => {
-  const { data } = await api.post<AuthResponse>('/auth/login', credentials);
+  const { data } = await api.post<AuthResponse>('/auth/login', credentials, { withCredentials: true });
   return data;
 };
 
 export const registerRequest = async (data: RegisterFields): Promise<void> => {
-  const response = await api.post('/auth/register', data);
+  const response = await api.post('/auth/register', data, { withCredentials: true });
   return response.data;
 };
 
@@ -26,7 +27,10 @@ export const resetPasswordRequest = async (data: ResetPasswordFields): Promise<v
 };
 
 export const logoutRequest = async (): Promise<void> => {
-  // POST /auth/logout revokes the refresh token server-side (idempotent per the spec).
-  const refreshToken = localStorage.getItem('refreshToken');
-  if (refreshToken) await api.post('/auth/logout', { refreshToken });
+  // POST /auth/logout revokes the whole token family and clears the cookie; idempotent (200 even
+  // with no token). A pre-cookie refreshToken still in localStorage goes in the body instead.
+  const legacyRefreshToken = localStorage.getItem('refreshToken');
+  await api.post('/auth/logout', legacyRefreshToken ? { refreshToken: legacyRefreshToken } : {}, {
+    withCredentials: true,
+  });
 };

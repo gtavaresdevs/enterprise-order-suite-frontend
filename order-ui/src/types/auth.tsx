@@ -10,7 +10,9 @@ export interface User {
 
 export interface AuthResponse {
   accessToken: string;
-  refreshToken: string;
+  // Still sent in the body by the backend for older clients. Ignored here: the HttpOnly
+  // refreshToken cookie is the source of truth and is never readable from JS.
+  refreshToken?: string;
 }
 
 // Credentials for the login form

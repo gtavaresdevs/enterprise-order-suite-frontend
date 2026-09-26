@@ -18,38 +18,58 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Drops the local session and does a full navigation to /login. The full reload also wipes the
-// in-memory React Query cache, so nothing from this session survives into the next login.
-export function endSession() {
+// Drops every trace of the session from localStorage without navigating. The refresh cookie is
+// HttpOnly, so only the server can clear it (POST /auth/logout).
+export function clearSession() {
   localStorage.removeItem('accessToken');
   localStorage.removeItem('refreshToken');
   localStorage.removeItem('role');
+}
+
+// Drops the local session and does a full navigation to /login. The full reload also wipes the
+// in-memory React Query cache, so nothing from this session survives into the next login.
+export function endSession() {
+  clearSession();
   window.location.replace('/login');
+}
+
+// The backend answers 403 with this code when the refresh cookie arrives from an origin outside
+// its CORS list: a deploy misconfiguration, not an expired session, so it must not log out.
+const ORIGIN_NOT_ALLOWED = 'ORIGIN_NOT_ALLOWED';
+
+// One network refresh. The refresh token travels in the HttpOnly cookie (withCredentials). A
+// refreshToken still in localStorage predates the cookie: send it in the body this one time
+// (the backend falls back to it when there is no cookie), then forget it; the response sets the
+// cookie. `{}` keeps Content-Type: application/json, which the endpoint requires.
+async function postRefresh(): Promise<string> {
+  const legacyRefreshToken = localStorage.getItem('refreshToken');
+  const body = legacyRefreshToken ? { refreshToken: legacyRefreshToken } : {};
+  // Bare axios, not `api`, so a failing refresh can't re-enter the 401 interceptor.
+  const { data } = await axios.post<AuthResponse>(`${baseURL}/auth/refresh`, body, { withCredentials: true });
+  localStorage.setItem('accessToken', data.accessToken);
+  localStorage.removeItem('refreshToken');
+  return data.accessToken;
 }
 
 let refreshInFlight: Promise<string> | null = null;
 
-// POST /auth/refresh rotates the refresh token (the old one is rejected after one use), so
-// concurrent callers must share a single request instead of each spending the same token.
-// Resolves with the new access token. A 4xx means the session is over (ends it); a network
-// error or 5xx is rethrown as-is so the UI can show an outage instead of logging the user out.
+// POST /auth/refresh rotates the refresh token, and a second use of a rotated token revokes the
+// whole token family (no grace window), so concurrent callers must share a single request.
+// Resolves with the new access token. A 4xx means the session is over (ends it), except
+// ORIGIN_NOT_ALLOWED; a network error, 5xx or that 403 is rethrown so the UI shows an outage.
 export function refreshSession(): Promise<string> {
   if (!refreshInFlight) {
     refreshInFlight = (async () => {
-      const refreshToken = localStorage.getItem('refreshToken');
-      if (!refreshToken) {
-        endSession();
-        throw new Error('No refresh token');
-      }
       try {
-        // Bare axios, not `api`, so a failing refresh can't re-enter the 401 interceptor.
-        const { data } = await axios.post<AuthResponse>(`${baseURL}/auth/refresh`, { refreshToken });
-        localStorage.setItem('accessToken', data.accessToken);
-        localStorage.setItem('refreshToken', data.refreshToken);
-        return data.accessToken;
+        return await postRefresh();
       } catch (error) {
         const status = isAxiosError(error) ? error.response?.status : undefined;
-        if (status !== undefined && status >= 400 && status < 500) endSession();
+        const code = isAxiosError(error)
+          ? (error.response?.data as { code?: string } | undefined)?.code
+          : undefined;
+        if (status !== undefined && status >= 400 && status < 500 && code !== ORIGIN_NOT_ALLOWED) {
+          endSession();
+        }
         throw error;
       }
     })().finally(() => {

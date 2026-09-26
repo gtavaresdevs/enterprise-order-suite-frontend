@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Restaurant Ops — Backend Integration Manifest
-  version: "0.3.0"
+  version: "0.4.0"
   description: |
     Contract the frontend needs from the backend to finish the restaurant-ops
     redesign. Generated from the CURRENT frontend mock services/types under
@@ -94,7 +94,7 @@ tags:
   - name: Public Storefront
     description: Unauthenticated customer-facing endpoints for the Online channel, the QR-tagged table menu view and order tracking.
   - name: Auth
-    description: LIVE endpoints with a TARGET CHANGE (x-status target-change) — identity claims in the JWT, refresh token moved to an HttpOnly cookie, CORS with credentials.
+    description: LIVE endpoints with a TARGET CHANGE (x-status target-change) — identity claims in the JWT, refresh token moved to an HttpOnly cookie, CORS with credentials. A successful password reset revokes every refresh token of the user (backend Phase 1, D21); the frontend also drops its local session on success.
   - name: Menu Categories
     description: Managed category list behind MenuItem.category (x-status proposed) — used by the Menu category manager.
   - name: Restaurant Settings
@@ -110,7 +110,7 @@ components:
           type: string
         code:
           type: string
-          description: 'Machine-readable error code the frontend maps to translated copy (additive in 0.2.0). Known: CATEGORY_NAME_REQUIRED, CATEGORY_NAME_TAKEN, CATEGORY_IN_USE.'
+          description: 'Machine-readable error code the frontend maps to translated copy (additive in 0.2.0). Known: CATEGORY_NAME_REQUIRED, CATEGORY_NAME_TAKEN, CATEGORY_IN_USE, INVALID_REFRESH_TOKEN, ORIGIN_NOT_ALLOWED.'
         details:
           type: object
           additionalProperties: true
@@ -390,7 +390,8 @@ components:
       description: >
         TARGET: only the access token in the body. The refresh token is delivered as an HttpOnly cookie
         (see the Set-Cookie header on each /auth response) and is never readable by the frontend.
-        LIVE today: {accessToken, refreshToken} both in the body and both kept in localStorage.
+        INTERIM (backend Phase 1, 2026-09-25): the body still carries refreshToken for older clients, next to
+        the Set-Cookie; the frontend ignores the body value and no longer stores it. Phase 6 drops it from the body.
       required: [accessToken]
       properties:
         accessToken: { type: string, description: 'JWT, 24h lifetime today (do not change without notice). Sent as Authorization: Bearer.' }
@@ -470,6 +471,13 @@ paths:
         exact frontend origin; validate the Origin header and require Content-Type application/json —
         this endpoint and /auth/logout are the only ones that depend on a cookie, so they are the only
         CSRF surface (the rest authenticate with the Authorization header).
+        DECIDED 2026-09-25 (backend Phase 1, D16-D20): the cookie wins, the body refreshToken is an optional
+        fallback until Phase 6, and no token from either source answers 401. Content-Type application/json
+        stays required (415 otherwise). Presenting a used or revoked token (reuse) revokes the whole family,
+        strictly, with no grace window; the lookup row-locks, so two concurrent refreshes cannot both succeed.
+        The frontend therefore single-flights refresh across tabs (Web Locks) and reuses the access token
+        another tab just wrote instead of rotating again. The Origin check applies only when the request
+        carries the cookie (universal from Phase 6). Every invalid-token case answers 401 INVALID_REFRESH_TOKEN.
       responses:
         '200':
           description: OK
@@ -481,7 +489,7 @@ paths:
             application/json:
               schema: { $ref: '#/components/schemas/AuthResponse' }
         '401': { description: 'Cookie missing, invalid, expired or already used', content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
-        '403': { description: Origin not allowed, content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
+        '403': { description: 'Origin missing or not allowed (code ORIGIN_NOT_ALLOWED), only when the request carries the cookie. The frontend treats it as an outage, not a logout.', content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } } }
 
   /auth/logout:
     post:
@@ -492,6 +500,7 @@ paths:
         LIVE takes {refreshToken} in the body (the frontend now calls it with that body since 2026-09-19).
         TARGET: read it from the cookie, revoke server-side, answer with Set-Cookie ... Max-Age=0 (same
         Path and attributes). Stays idempotent: 200 even when there is no cookie.
+        DECIDED 2026-09-25 (backend Phase 1): revokes the whole token family; cookie first, body fallback until Phase 6.
       responses:
         '200':
           description: OK
@@ -1006,6 +1015,14 @@ x-maintenance:
     - 'Keep the file valid OpenAPI 3.0.3 YAML; validate after editing.'
 
 x-changelog:
+  - version: "0.4.0"
+    date: 2026-09-25
+    changes:
+      - 'Auth: recorded backend Phase 1 decisions (D16-D21) - refresh cookie issued alongside the body refreshToken (kept for older clients until Phase 6), body optional on /auth/refresh and /auth/logout with the cookie winning, token families with strict reuse revocation (no grace window), row-locked rotation, invalid refresh answers 401 INVALID_REFRESH_TOKEN, 403 ORIGIN_NOT_ALLOWED only on cookie-borne requests, logout revokes the family, password reset revokes all refresh tokens of the user.'
+      - 'Frontend: stops storing the refresh token (cookie only, with a one-time body migration for pre-cookie sessions), sends withCredentials on /auth calls, single-flights refresh across tabs, treats ORIGIN_NOT_ALLOWED as an outage, clears the local session after a password reset.'
+      - 'Error.code: INVALID_REFRESH_TOKEN and ORIGIN_NOT_ALLOWED added to the known list.'
+    why: 'Backend Phase 1 (enterprise-order-suite docs/superpowers/specs/2026-09-25-restaurant-ops-phase-1-auth-design.md) chose strict reuse detection with no grace window, so the frontend must never race two refreshes, and it moves the refresh token to the cookie.'
+    breaking: 'None on the wire - additive. The access token stays in localStorage for now; moving it to memory (the full TARGET) is a later coordinated change with Phase 6.'
   - version: "0.3.0"
     date: 2026-09-24
     changes:

@@ -15,7 +15,8 @@ export const useLogin = () => {
       // Start the new session with an empty cache so nothing from a previous user/session leaks in.
       queryClient.clear();
       localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
+      // The refresh token now lives in the HttpOnly cookie; drop any pre-cookie leftover.
+      localStorage.removeItem('refreshToken');
       const user = extractUserFromStorage();
       if (user && user.roles.length > 0) {
         localStorage.setItem('role', user.roles[0]);
