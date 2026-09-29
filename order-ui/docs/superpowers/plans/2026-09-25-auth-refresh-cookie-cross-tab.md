@@ -44,12 +44,12 @@ No code changes. Confirms the real contract before any client code changes (`con
 **Interfaces:**
 - Produces: confirmed facts Task 2 relies on: login `Set-Cookie` attributes, refresh accepting an empty JSON body `{}` with the cookie, the exact 403 `code` string, and the error body shape `{message, code}`.
 
-- [ ] **Step 1: Confirm the backend is Phase 1**
+- [x] **Step 1: Confirm the backend is Phase 1**
 
 Run: `curl -s http://localhost:8080/api/v3/api-docs | python -m json.tool > "$SCRATCH/api-docs.json"` and then `grep -n "refresh" -A30 "$SCRATCH/api-docs.json" | head -80`
 Expected: the refresh request schema's `refreshToken` is **not** in `required`, and the request body itself is `required: false`. If `refreshToken` is still required, **stop**: Phase 1 isn't deployed, so tell the user.
 
-- [ ] **Step 2: Confirm login sets the cookie**
+- [x] **Step 2: Confirm login sets the cookie**
 
 Run (credentials from memory; don't echo them into files):
 ```bash
@@ -59,7 +59,7 @@ curl -si -H 'Origin: http://localhost:3000' -H 'Content-Type: application/json' 
 ```
 Expected: `HTTP/1.1 200`, `Set-Cookie: refreshToken=...; Path=/api/auth; Max-Age=1209600; HttpOnly; SameSite=Lax` (no `Secure` locally), `Access-Control-Allow-Origin: http://localhost:3000`, `Access-Control-Allow-Credentials: true`.
 
-- [ ] **Step 3: Confirm cookie-only refresh with an empty JSON body and the 403 shape**
+- [x] **Step 3: Confirm cookie-only refresh with an empty JSON body and the 403 shape**
 
 ```bash
 curl -si -c "$SCRATCH/jar" -H 'Origin: http://localhost:3000' -H 'Content-Type: application/json' \
@@ -92,7 +92,7 @@ Expected: the first refresh returns `200` with a new `Set-Cookie`. The foreign-o
   - `async function postRefresh(): Promise<string>`: module-private. It does one network refresh, writes `accessToken`, deletes the legacy `refreshToken`, and returns the new access token.
   - `const ORIGIN_NOT_ALLOWED = 'ORIGIN_NOT_ALLOWED'`: module-private.
 
-- [ ] **Step 1: Write the failing browser check (baseline)**
+- [x] **Step 1: Write the failing browser check (baseline)**
 
 Create `$SCRATCH/verify-cookie.mjs`. Resolve `playwright` from `order-ui/node_modules` if present, else use `executablePath: '/opt/pw-browsers/chromium'` (or the local Chromium on Windows):
 ```js
@@ -115,12 +115,12 @@ console.log(JSON.stringify({
 await browser.close();
 ```
 
-- [ ] **Step 2: Run it against the current code to see it fail**
+- [x] **Step 2: Run it against the current code to see it fail**
 
 Run: `TEST_EMAIL=... TEST_PASSWORD=... node "$SCRATCH/verify-cookie.mjs"` (with `yarn dev` running and the Phase 1 backend up)
 Expected: `{"cookie":null,"storedRefreshToken":true}`. There's no cookie because login isn't `withCredentials`, and the refresh token is still in `localStorage`.
 
-- [ ] **Step 3: Implement the client changes**
+- [x] **Step 3: Implement the client changes**
 
 `src/types/auth.tsx`, replacing `AuthResponse`:
 ```ts
@@ -223,17 +223,17 @@ export const logoutRequest = async (): Promise<void> => {
 
 `src/features/auth/hooks/useLogin.ts`: delete line 18 (`localStorage.setItem('refreshToken', data.refreshToken);`) and add `localStorage.removeItem('refreshToken');` in its place, so a leftover legacy token from an earlier session never gets sent. `useLogout.ts` keeps its existing `removeItem('refreshToken')` calls, which are harmless cleanup.
 
-- [ ] **Step 4: Lint and type-check**
+- [x] **Step 4: Lint and type-check**
 
 Run: `yarn lint && yarn build`
 Expected: both clean. If `data.refreshToken` is still referenced anywhere, the build flags it as possibly undefined. Search for it with `grep -rn "refreshToken" src` and confirm the only remaining hits are the legacy read/remove calls above and the type comment.
 
-- [ ] **Step 5: Re-run the Step 1 check**
+- [x] **Step 5: Re-run the Step 1 check**
 
 Run: `node "$SCRATCH/verify-cookie.mjs"`
 Expected: `{"cookie":{"httpOnly":true,"path":"/api/auth"},"storedRefreshToken":false}`
 
-- [ ] **Step 6: Legacy-session migration check (Review Focus 2)**
+- [x] **Step 6: Legacy-session migration check (Review Focus 2)**
 
 Append to the script (or a copy, `$SCRATCH/verify-migration.mjs`) after login:
 ```js
@@ -254,7 +254,7 @@ console.log(JSON.stringify({ url: page.url(), legacyGone: after === null, hasCoo
 ```
 Expected: `{"url":"http://localhost:3000/orders","legacyGone":true,"hasCookie":true}`
 
-- [ ] **Step 7: 403 ORIGIN_NOT_ALLOWED check (Review Focus 4)**
+- [x] **Step 7: 403 ORIGIN_NOT_ALLOWED check (Review Focus 4)**
 
 In a fresh logged-in context:
 ```js
@@ -273,7 +273,7 @@ console.log(JSON.stringify({
 ```
 Expected: `url` is still `/orders` (not `/login`), `tokenKept: true`, `outageShown: true`.
 
-- [ ] **Step 8: Logout check (Review Focus 5)**
+- [x] **Step 8: Logout check (Review Focus 5)**
 
 After a login, click the account chip, then the logout item. Then:
 ```js
@@ -287,7 +287,7 @@ console.log(JSON.stringify({ hasCookie, status, url: page.url() }));
 ```
 Expected: `{"hasCookie":false,"status":401,"url":"http://localhost:3000/login"}`
 
-- [ ] **Step 9: Patch the manifest (same commit)**
+- [x] **Step 9: Patch the manifest (same commit)**
 
 Read `x-maintenance` first. Patch only these spots and leave every other line byte-identical:
 - `info.version: "0.3.0"` → `"0.4.0"`.
@@ -309,7 +309,7 @@ Read `x-maintenance` first. Patch only these spots and leave every other line by
 ```
 Validate: `python -c "import yaml,sys; yaml.safe_load(open(sys.argv[1]))" docs/superpowers/specs/2026-09-14-backend-integration-manifest.openapi.yaml` exits 0. Then `git diff --stat` on the manifest shows only the touched lines.
 
-- [ ] **Step 10: Confirm with the user, then commit**
+- [x] **Step 10: Confirm with the user, then commit**
 
 These are auth-sensitive files, so show the diff and wait for explicit confirmation. Then:
 ```bash
@@ -335,7 +335,7 @@ git push -u origin Claude-Assisted-Development
 - Consumes: `postRefresh(): Promise<string>`, `refreshSession(): Promise<string>`, `ORIGIN_NOT_ALLOWED` from Task 2.
 - Produces: `refreshSession()` with the same signature. Callers (`ProtectedLayout.tsx`, the 401 interceptor) are unchanged.
 
-- [ ] **Step 1: Write the two-tab check**
+- [x] **Step 1: Write the two-tab check**
 
 `$SCRATCH/verify-two-tabs.mjs`:
 ```js
@@ -366,12 +366,12 @@ console.log(JSON.stringify({ refreshCalls, a: a.url(), b: b.url() }));
 await browser.close();
 ```
 
-- [ ] **Step 2: Run it against the Task 2 code to see it fail**
+- [x] **Step 2: Run it against the Task 2 code to see it fail**
 
 Run: `node "$SCRATCH/verify-two-tabs.mjs"`
 Expected (bug reproduced): `refreshCalls: 2`, and at least one of `a`/`b` ends on `/login` because the second refresh counted as reuse. If it doesn't reproduce on a given run (timing), run it up to three times. One reproduction is enough. If it never reproduces, say so in the task report and continue. The Step 4 assertion still holds.
 
-- [ ] **Step 3: Implement the lock**
+- [x] **Step 3: Implement the lock**
 
 In `src/api/client.ts`, add above `refreshSession`:
 ```ts
@@ -414,12 +414,12 @@ export function refreshSession(): Promise<string> {
 ```
 Update the comment above `refreshSession` to say concurrent callers share one request **in this tab**, and the Web Lock serializes tabs.
 
-- [ ] **Step 4: Re-run the two-tab check**
+- [x] **Step 4: Re-run the two-tab check**
 
 Run: `node "$SCRATCH/verify-two-tabs.mjs"` three times.
 Expected every run: `{"refreshCalls":1,"a":"http://localhost:3000/orders","b":"http://localhost:3000/profile"}`
 
-- [ ] **Step 5: No-Web-Locks fallback check (Review Focus 3)**
+- [x] **Step 5: No-Web-Locks fallback check (Review Focus 3)**
 
 Copy the Step 1 script to `$SCRATCH/verify-no-locks.mjs` and add, right after `browser.newContext()`:
 ```js
@@ -428,12 +428,12 @@ await ctx.addInitScript(() => Object.defineProperty(navigator, 'locks', { value:
 Only load tab `a` (drop tab `b`), expire the token, and go to `/orders`.
 Expected: `refreshCalls: 1`, `a` ends on `/orders`, and there's no `TypeError` in `a.on('pageerror')` output.
 
-- [ ] **Step 6: Lint and type-check**
+- [x] **Step 6: Lint and type-check**
 
 Run: `yarn lint && yarn build`
 Expected: clean. If TS rejects `navigator.locks?.request` as always defined, keep the optional chain and the `typeof` guard (the runtime can lack it). Only add `// eslint-disable-next-line` with a reason if a type-aware rule actually fires.
 
-- [ ] **Step 7: Confirm with the user, then commit**
+- [x] **Step 7: Confirm with the user, then commit**
 
 ```bash
 git commit -m "fix(auth): single-flight token refresh across tabs with Web Locks
@@ -456,7 +456,7 @@ The backend revokes every refresh token on reset, but the access token in this b
 **Interfaces:**
 - Consumes: `clearSession(): void` from `@/api/client` (Task 2).
 
-- [ ] **Step 1: Write the check**
+- [x] **Step 1: Write the check**
 
 `$SCRATCH/verify-reset.mjs`: log in (as in Task 3 Step 1), then in the same context route the reset call so no real password changes:
 ```js
@@ -472,11 +472,11 @@ console.log(JSON.stringify({
 }));
 ```
 
-- [ ] **Step 2: Run it to see it fail**
+- [x] **Step 2: Run it to see it fail**
 
 Expected: `tokenGone: false`, `successShown: true`.
 
-- [ ] **Step 3: Implement**
+- [x] **Step 3: Implement**
 
 `src/features/auth/hooks/useResetPassword.ts`: add `import { clearSession } from '@/api/client';` and change `onSuccess`:
 ```ts
@@ -489,11 +489,11 @@ Expected: `tokenGone: false`, `successShown: true`.
     },
 ```
 
-- [ ] **Step 4: Re-run the check**
+- [x] **Step 4: Re-run the check**
 
 Expected: `{"tokenGone":true,"successShown":true}`
 
-- [ ] **Step 5: Lint, build, confirm with the user, commit**
+- [x] **Step 5: Lint, build, confirm with the user, commit**
 
 Run: `yarn lint && yarn build` and make sure both are clean. Then:
 ```bash
@@ -509,16 +509,16 @@ git push -u origin Claude-Assisted-Development
 
 No code changes unless something fails. One `ui-behavior-verifier` dispatch through the `verify-ui` skill (pinned to sonnet), against the real backend with real credentials.
 
-- [ ] **Step 1: Claims render on first paint**
+- [x] **Step 1: Claims render on first paint**
 
 `extractUserFromStorage` (`src/features/auth/utils/auth.utils.ts:78-84`) already reads `payload.firstName`, `lastName` and `email`, and `useProfileSummary` falls back to them while `GET /me/profile` loads. Check: log in, block `**/api/me/profile` with a never-resolving route, reload `/home`, and confirm the sidebar chip shows the real name, not the email or "Account". If it shows the email, decode the token (`parseJwt`) and compare the claim names with Task 1's api-docs before changing anything.
 
-- [ ] **Step 2: Full regression pass**
+- [x] **Step 2: Full regression pass**
 
 Dispatch the verifier with these scenarios: login → `/home`; F5 on `/orders` with a valid token (no refresh call); an expired token on one tab (one refresh); logout → `/login` and the cookie cleared; register → the login flow still works.
 Expected: all pass. Any failure goes back to the owning task. Don't iterate fixes through repeated dispatches (repo rule). Resume the same verifier with `SendMessage` for a re-check.
 
-- [ ] **Step 3: Final gate**
+- [x] **Step 3: Final gate**
 
 Run: `yarn lint && yarn build`, then `git status` and check that only the intended files changed and nothing from `.playwright-cli/`, `.vite/` or the scratchpad got staged.
 
