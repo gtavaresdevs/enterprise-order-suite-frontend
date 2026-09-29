@@ -1,5 +1,7 @@
 # Restaurant Ops Redesign — Phase 1: Menu & Tables Features Implementation Plan
 
+> **Executed plan, historical record (2026-09-29).** Do not re-execute it or copy its process. It predates the multi-tenant and backend-owned-contract decisions (ADR-0001, ADR-0010); its worktree-merge and manifest-patch steps are not current (ADR-0013, ADR-0010). Current work starts at `enterprise-order-suite/docs/README.md`.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Scaffold the two new feature modules the redesign spec calls for — `features/menu` (canonical `MenuItem` CRUD) and `features/tables` (Table list + QR code generation/download) — each following this repo's standard feature-module shape, wired into routing and navigation.

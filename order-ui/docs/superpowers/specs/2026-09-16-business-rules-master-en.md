@@ -1,5 +1,7 @@
 # order-ui — Master Business Rules & Data Flow (English source)
 
+> **Status snapshot of 2026-09-16, not current (2026-09-29).** "Implemented" and "Diverges" tags predate later fixes; about half of the audit list is already fixed. Re-verify a rule against the code before acting on it. "[NEW]" rules are proposals Gabriel has not confirmed. Order and menu rules are input to the Order Core, Menu and Storefront contracts in `enterprise-order-suite/docs/`, which win where they differ. This English file wins over the pt-BR versions (ADR-0012).
+
 Status vocabulary used throughout:
 - **Implemented** — rule is real, working code today.
 - **Partially implemented** — some of the rule is built, some isn't.

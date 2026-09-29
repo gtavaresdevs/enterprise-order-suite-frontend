@@ -1,5 +1,7 @@
 # Restaurant Ops Phase 4: Orders/KDS Repoint to Shared Order Model Implementation Plan
 
+> **Executed plan, historical record (2026-09-29).** Do not re-execute it or copy its process. It predates the multi-tenant and backend-owned-contract decisions (ADR-0001, ADR-0010); its worktree-merge and manifest-patch steps are not current (ADR-0013, ADR-0010). Current work starts at `enterprise-order-suite/docs/README.md`.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Make `features/orders` and `features/kds` two views over one real data source — the shared `Order`/`OrderStatus` model in `src/types/orders.ts` (defined in Phase 0) — so a status change made in either feature is visible in the other, and retire `types/kds.ts`'s incompatible `KdsTicket`/`TicketItem`/`TicketStatus` types entirely.

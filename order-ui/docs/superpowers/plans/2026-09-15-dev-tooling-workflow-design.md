@@ -1,5 +1,7 @@
 # Dev Tooling Workflow (Graphify, ponytail, wshobson/agents) Implementation Plan
 
+> **Executed plan, historical record (2026-09-29).** Do not re-execute it or copy its process. It predates the multi-tenant and backend-owned-contract decisions (ADR-0001, ADR-0010); its worktree-merge and manifest-patch steps are not current (ADR-0013, ADR-0010). Current work starts at `enterprise-order-suite/docs/README.md`.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Install and wire up three project-scoped dev-tooling additions (Graphify knowledge-graph skill+MCP, ponytail minimalism plugin, two wshobson/agents marketplace plugins) into `order-ui/.claude/` without touching global (user-level) Claude Code config.

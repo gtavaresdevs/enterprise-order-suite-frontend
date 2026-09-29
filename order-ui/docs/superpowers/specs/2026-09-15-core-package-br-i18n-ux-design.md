@@ -1,5 +1,10 @@
 # Core Package — Brazil Market Fit, EN/PT-BR i18n & UX Polish
 
+> **Partly superseded (2026-09-29).** Still valid: i18n (EN/pt-BR), BR formatting, delivery zones as a named neighborhood list, in-person card and cash.
+> Superseded: the mock PIX "pay now" flow and in-app card payment through a PSP (ADR-0005, ADR-0006); restaurant settings kept in the browser's `PreferencesState` (ADR-0014); "no backend/API change" as a scope rule (ADR-0007).
+> Not scheduled: the 10-package product plan (ADR-0018: reference only), Phase 10 comandas and Phase 11 polish (Later, MASTER-PLAN §8d).
+> Verdicts: `enterprise-order-suite/docs/adr/0000-legacy-decisions-triage.md` (table G).
+
 ## Context
 
 The restaurant-ops redesign (Phases 0–6, see `RESTAURANT-OPS-ROADMAP.md`) delivered a unified

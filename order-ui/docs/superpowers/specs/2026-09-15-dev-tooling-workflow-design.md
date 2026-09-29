@@ -1,5 +1,7 @@
 # Dev tooling workflow: Graphify, ponytail, wshobson/agents
 
+> **Under review (2026-09-29).** The frontend `.claude/` is being versioned in git (ADR-0015, step S3). Whether Graphify, ponytail and the wshobson plugins are kept is an open question. They are installed only on Gabriel's machine; cloud sessions do not have them.
+
 > **Status:** Implemented 2026-09-15 — see `docs/superpowers/plans/2026-09-15-dev-tooling-workflow-design.md`.
 > Two deviations from the plan as installed, both documented in the plan: Graphify's Claude
 > integration is skill-only (CLI-invoked), no separate MCP server exists for it; its default

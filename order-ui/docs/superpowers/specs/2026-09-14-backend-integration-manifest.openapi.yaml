@@ -1,3 +1,11 @@
+# FROZEN at 0.4.0 on 2026-09-29. READ-ONLY. NOT THE API CONTRACT.
+# The backend owns the contract (ADR-0010): live spec enterprise-order-suite/docs/api/openapi.yaml,
+# design drafts enterprise-order-suite/docs/api/drafts/. This file only seeds those drafts.
+# Do not edit it, bump info.version, or add x-changelog or x-open-decisions entries.
+# Its x-maintenance rules no longer apply.
+# Superseded inside: payment-processor checkout and automatic WhatsApp (ADR-0005, ADR-0006);
+# x-open-decisions id-type (ADR-0009) and the created-at-format config fallback (ADR-0001).
+# Verdicts per decision: enterprise-order-suite/docs/adr/0000-legacy-decisions-triage.md (table F).
 openapi: 3.0.3
 info:
   title: Restaurant Ops — Backend Integration Manifest

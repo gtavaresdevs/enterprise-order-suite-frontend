@@ -1,139 +1,107 @@
-# CLAUDE.md
+## Start here (shared by backend and frontend; keep identical in both repos)
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+- **Docs live in the backend repo** `gtavaresdevs/enterprise-order-suite`, folder `docs/`, branch `feature/ai-agent`. Read `docs/README.md` first: it says what phase we are in and what to read for each kind of task. Frontend sessions clone the backend repo read-only to read them.
+- **The backend owns the docs and the API contract** and keeps them current (ADR-0010, ADR-0011). The frontend reads them and may add an annotation only when necessary and only after Gabriel has agreed to it.
+- **Decisions are ADRs** in `docs/adr/`. Check them before proposing anything that contradicts one; raise the conflict instead of working around it. Never apply a legacy decision from an old spec without checking `docs/adr/0000-legacy-decisions-triage.md`.
+- **Open questions** live in `docs/planning/open-questions.md` (ids `Q-NN`, never renumbered). Never record an answer Gabriel did not give.
+- **Current phase:** planning, documentation and Claude readiness (`docs/roadmap.md`). No feature code for the new architecture until the readiness gate in `docs/roadmap.md` passes.
+- **Git:** work only on the working branch (backend `feature/ai-agent`, frontend `Claude-Assisted-Development`); never read or base work on `main`. Commit straight to the working branch with an explicit pathspec (`git commit -m "..." -- <files>`) and push. Never merge (no `git merge`, no PR merges, nothing into `main`), never `git stash`, never `git add -A`, never force-push (ADR-0013). Only the main agent commits; subagents never write git state.
+- **Architecture in one paragraph:** one shared multi-tenant SaaS; every restaurant-owned row is scoped to its restaurant and fails closed without one (ADR-0001). One operational core (one Order model with channel + source, one Menu) that every interface calls through application services; no business rules in channel adapters (ADR-0002). The Restaurant Edge is optional and not built this run (ADR-0003); offline support means orders (ADR-0004). Payments are record-only: the app never processes or queues a payment and never reports an unconfirmed external operation as successful (ADR-0005). There is no production data yet, so schema and API may be reshaped (ADR-0008); ids are ULIDs (ADR-0009).
+- **Language:** code, comments and docs in English; ask Gabriel questions in the language he writes in.
+
+## This repo (frontend, `order-ui/`)
+
+React 19 + TypeScript SPA on Vite; Tailwind 4 with shadcn/Radix primitives; TanStack Query; React Router 7; axios; i18next (EN and pt-BR). Most features still run on mock data (see "Mock vs real backend").
 
 ## Commands
 
-There is no test suite configured in this repo (no test script, no test runner installed). Do not assume Jest/Vitest exists — check `package.json` before adding test tooling.
+- `yarn dev` (Vite), `yarn build` (`tsc -b && vite build`), `yarn lint` (`eslint .`).
+- No test runner yet: no `test` script, no Jest or Vitest. Vitest is planned in S3 (ADR-0015); after that, verification is `yarn lint && yarn build && yarn test`. Until then `yarn build` and `yarn lint` are the only automated safety net. Check `package.json` before assuming test tooling exists.
+- `yarn lint` had about 28 pre-existing errors in `profile`/`settings`/`auth` files when last counted (frontend phase 6; not re-verified since; baseline: Q-74, S3). Add no new ones.
 
-## Active initiative: restaurant ops redesign
+## Direction (replaces the 2026-09-09 "Active initiative")
 
-The app is being reshaped from a generic B2B order-tracking demo into an actual restaurant
-order-management product (unified Online/Dine-in/Phone order model, a single Menu module,
-QR-code Tables, real Administration screens). The target concept, exact shared type shapes, and
-what's explicitly out of scope are all written down in
-`docs/superpowers/specs/2026-09-09-restaurant-ops-redesign-design.md` — read it before making any
-non-trivial change to `orders`, `kds`, `storefront`, `inventory`, `administration`, `home`, or
-before creating the new `menu`/`tables` features. Don't re-derive the concept from the current
-(pre-redesign) code alone; the current code is exactly what's being moved away from.
+- `docs/superpowers/specs/2026-09-09-restaurant-ops-redesign-design.md` is superseded where the ADRs differ: single-tenant deployment (ADR-0001), in-app payment through a gateway (ADR-0005, ADR-0006), automatic WhatsApp messages (ADR-0006). It is no longer the concept source or the backend's contract; the backend `docs/` (README, architecture, ADRs) is. Read its banner.
+- Still holds: one order stream (one `Order` model, one KDS queue) and one menu source (ADR-0002). `features/menu` is the only source of `MenuItem` data; no feature keeps its own fixture copy.
+- Shared domain types (`Order`, `MenuItem`, `Table`, ...) live once in `src/types/`. Never duplicate one per feature with a slightly different shape. Use `migrate-shared-type` when changing a type with more than one consumer, `scaffold-feature` for a new feature module.
+- Mock services keep the *target* shapes, so wiring the backend later is additive. Target shapes now come from the backend docs (contract docs, `docs/api/drafts/`), not from the 2026-09-09 spec's "Backend gaps". Mocks retire feature by feature in the build order (ADR-0007).
+- Mock `MenuItem` ids `m1`-`m9` (`features/menu/constants/menu.constants.ts`) are load-bearing while menu is mock: the mock orders in `features/orders/constants/orders.constants.ts` (served by `orders.service.ts`) reference `m1`-`m8`. Never change them without checking every consumer.
+- Never show a `MenuItem` with `available === false` in a customer-facing view.
 
-- **Shared domain types belong in one place.** `Order`, `MenuItem`, and `Table` (per the spec)
-  are consumed by more than one feature — they must not be duplicated per-feature with
-  slightly different shapes (this was the original problem the redesign fixes). Use the
-  `migrate-shared-type` skill when changing a type that already has multiple consumers, and the
-  `scaffold-feature` skill when creating the new `menu`/`tables` feature modules.
-- **New/rebuilt features stay mock-backed with the *target* shapes**, even where the current
-  backend doesn't support a field yet (e.g. `channel`, `fulfillment`, `table` on `Order`; backend
-  gaps are listed in the spec's "Backend gaps" section). Shape the mock fixture like the eventual
-  real DTO now, so wiring the backend later is additive, not a second migration.
+## API contract (ADR-0010)
 
-## Architecture
+- The backend owns the contract. API shapes come from the backend repo docs: `docs/api/drafts/` while a contract is designed, `docs/api/openapi.yaml` once implemented. Types generated from that spec (`openapi-typescript`) arrive with Build 1, as one of its acceptance criteria (ADR-0010); hand-written API types in `src/types/*` are then deleted feature by feature as each moves to the real backend. How frontend CI and sessions get the spec is Q-76 (open).
+- A frontend need that changes the contract (a field added or renamed on a shared type, a new or changed endpoint, an auth/CORS/cookie behavior, a rule the server must enforce) is raised to Gabriel and the backend. It is never written into a frontend manifest or doc.
+- `docs/superpowers/specs/2026-09-14-backend-integration-manifest.openapi.yaml` is frozen at 0.4.0 and read-only: never edit it, bump `info.version`, or add `x-changelog` or `x-open-decisions` entries.
+- Annotations to shared docs: only when necessary and only with Gabriel's prior agreement (ADR-0011). Where an agreed annotation lives is not decided yet; ask.
+- Mock → real: switch a service only to an endpoint present in the committed backend `docs/api/openapi.yaml`, never to an assumed one; a wrong assumption breaks a working UI. `src/types/<feature>.ts` and `services/<feature>.service.ts` change together, never one without the other.
 
-### Feature-module structure
+## Code structure
 
-All domain logic lives under `src/features/<feature>/`, each following the same internal shape:
+All domain code lives in `src/features/<feature>/`:
 
 ```
 features/<feature>/
-  components/   # feature UI, one top-level "<Feature>Feature.tsx" composes the page
-  hooks/        # use<Feature>-style hooks — hold state and orchestrate services
-  services/     # data access — either real API calls via src/api/client.ts, or mock data
+  components/   # feature UI; a top-level <Feature>Feature.tsx composes the page
+  hooks/        # use<Feature> hooks: hold state, orchestrate services
+  services/     # data access: real calls via src/api/client.ts, or mock data
   constants/    # static/mock data, enum-like lookups
-  index.ts      # re-exports only the top-level Feature component, e.g. `export * from "./components/OrdersFeature"`
+  index.ts      # re-exports only the top-level Feature component
 ```
 
-`src/pages/*.tsx` are thin route entry points that just render the feature's top-level component (e.g. `pages/Orders.tsx` renders `<OrdersFeature />` from `features/orders`). Route → page → feature is the standard chain; put logic in the feature, not the page.
+- Route → page → feature: routes are in `src/app/router.tsx`; `src/pages/*.tsx` only render the feature's top-level component (`pages/Orders.tsx` renders `<OrdersFeature />`). Logic goes in the feature, not the page.
+- `src/components/ui/`: presentational shadcn-based primitives (Button, Card, Input, ...). `src/components/<domain>/`: a domain component used by two or more features today (`payment/PaymentMethodPicker.tsx`, used by `orders` and `storefront`). With one consumer it stays in that feature's `components/`; "might be reused later" is not a second consumer.
+- Import through the `@/*` → `src/*` alias (`tsconfig.app.json`, `vite.config.ts`), never relative `../../` paths.
+- Server state: TanStack React Query only. Do not add SWR, Redux, Zustand or another data/state library.
+- UI strings are translated with i18next (`src/i18n/locales/en`, `src/i18n/locales/pt-BR`).
 
-`src/components/` holds code that lives outside any single feature. `src/components/ui/` is
-presentational UI primitives (shadcn-based: Button, Card, Input, etc.). `src/components/<domain>/`
-is for a domain component genuinely shared by 2+ feature modules (e.g.
-`src/components/payment/PaymentMethodPicker.tsx`, shared by `orders` and `storefront`). Anything
-with only one feature consumer stays inside that feature's own `components/` folder — don't
-promote something to `src/components/` just because it might be reused later; the bar is an actual
-second consumer today.
+## Mock vs real backend (as of 2026-09-29)
 
-### Mock data vs. real backend — important
+Check the service file before editing a feature: a hook that looks like it fetches may be reading a mock.
+- Real (through `src/api/client.ts`): `auth`; `profile` get and update (avatar upload is still a `setTimeout` mock); `administration` (team, roles, audit log).
+- Mock (in-memory fixtures from `constants/`, mostly with `setTimeout` latency; `menu`, `orders` and `tables` carry `// TODO: connect-backend` markers): `menu`, `orders`, `tables`, `settings`, `notifications`. `storefront`, `table-menu`, `track-order`, `kds`, `home` and `analytics` read the `menu`/`orders`/`tables` mocks.
+- `preferences` is stored in the browser's `localStorage`. Restaurant settings are to become a typed backend-owned schema (ADR-0014).
 
-Feature services are **not uniformly wired to a real backend yet**. Only `auth` and `profile` services call the real API (`src/api/client.ts` → `axios`). Every other feature's service (`orders`, `inventory`, `administration`, `analytics`, `home`, `kds`, `notifications`, `preferences`, `settings`, `storefront`) returns static/mock data from its `constants/` file, sometimes wrapped in an artificial `setTimeout` to simulate latency, with the real `api.get/post/...` calls left commented out as TODOs. When touching one of these features, check the service file first to see whether you're editing mock plumbing or a real integration — don't assume network calls exist just because a hook looks like it's fetching.
+## Auth (current behavior)
 
-### Auth
+- Access token: `localStorage.accessToken`, sent as `Authorization: Bearer` by the `api` axios instance (`src/api/client.ts`). The `User` (id, email, name, `roles`) is decoded client-side (`features/auth/utils/auth.utils.ts`: `parseJwt`, `extractUserFromStorage`); roles come from `roles[]`, `role` or `authorities[]`, then the stored `role`, and default to `USER`.
+- Refresh token: an HttpOnly cookie since the 2026-09-25 auth plan (`docs/superpowers/plans/2026-09-25-auth-refresh-cookie-cross-tab.md`), set by `/auth/login` and rotated by `POST /auth/refresh` (both `withCredentials`). JavaScript cannot read it. A leftover `localStorage.refreshToken` predates the cookie: it is sent once in the refresh body, then removed.
+- On a 401 from a non-`/auth/*` endpoint the client refreshes once and replays the request. Refresh is shared within the tab and serialized across tabs by a Web Lock (`order-ui:auth-refresh`), because reusing a rotated token revokes the whole token family. A 4xx from refresh ends the session, except 403 `ORIGIN_NOT_ALLOWED`; a network error or 5xx shows `ServiceUnavailable`.
+- `useAuth()` reads the user from storage and follows other tabs through the `storage` event. Logout calls `POST /auth/logout` (the server clears the cookie), then clears `localStorage` and the React Query cache.
+- Route protection (`src/app/router.tsx`): `ProtectedLayout` (no token → `/login`; expired token → refresh before rendering) wraps `AppLayout` (sidebar and header shell); `RoleGuard` wraps admin routes (team: `ADMIN`/`SUPER_ADMIN`; roles and audit log: `SUPER_ADMIN`).
+- `/storefront`, `/checkout`, `/kds`, `/table-menu` and `/track-order` render outside the shell with no login. That describes today, not a rule: KDS sign-in is Q-54 and an in-memory access token is Q-29 (both open).
+- **Auth-sensitive files** (`src/api/client.ts`, `features/auth/**`, `src/layouts/protected-layout/**`, anything that touches the tokens or `role` in `localStorage` or relies on the refresh cookie): extra caution, and Gabriel's explicit confirmation before a change lands.
 
-- JWT (`accessToken`/`refreshToken`) stored in `localStorage`, decoded client-side (`features/auth/utils/auth.utils.ts::parseJwt`) to derive the `User` (id, email, name, `roles: Role[]`). Roles are normalized from several possible JWT shapes (`roles[]`, `role` string, `authorities[]`) and default to `USER` if none are found.
-- `useAuth()` (`features/auth/hooks/useAuth.ts`) reads the user from storage and listens for the `storage` event to react to login/logout in other tabs.
-- Route protection is two-layered in `src/app/router.tsx`:
-  1. `ProtectedLayout` — checks `accessToken` exists in `localStorage`, redirects to `/login` if not. Renders only an `<Outlet />` (no shell UI).
-  2. `AppLayout` — the actual sidebar/header shell, nested inside `ProtectedLayout`.
-  3. `RoleGuard` (`allowedRoles`) — wraps individual admin-only routes (e.g. `/administration/*`) and redirects to `/home` if the user's roles don't match.
-- `/storefront` and `/kds` are standalone routes rendered outside the authenticated app shell (customer-facing / kiosk-facing).
+## Claude tooling (machine-local today)
 
-### Path alias
+- The skills named here (`migrate-shared-type`, `scaffold-feature`, `connect-backend`, `verify-ui`, also `audit-requirement`), the agents `requirement-auditor` and `ui-behavior-verifier`, and the hook `.claude/hooks/lint-typecheck.cjs` live in `order-ui/.claude/`. That folder is gitignored (`order-ui/.gitignore` L17) and exists only on Gabriel's machine; cloud sessions do not have it. How it gets into git is Q-06; what happens to Graphify, ponytail and the wshobson plugins is Q-07 (both open).
+- Without them, follow the rules in this file directly. Where a skill conflicts with an ADR, the ADR wins: `connect-backend` predates ADR-0010, which requires it to read the backend spec (S3 reviews it).
+- The hook, where present, runs `eslint --fix` and a scoped incremental `tsc --noEmit` after each Edit/Write on `*.ts`/`*.tsx`, asynchronously and without blocking. It does not replace `yarn build` before finishing a task.
 
-`@/*` maps to `src/*` (configured in both `tsconfig.app.json` and `vite.config.ts`) — always import via `@/...`, not relative `../../` paths.
+## Browser verification (`verify-ui`)
 
-## Working agreements for Claude Code
+- It confirms behavior; it does not discover fixes. CSS, layout and stacking bugs are derivable from source (grep `z-index`/`position`, read the DOM ancestry): reason out the fix, apply it, then dispatch at most once to confirm. Each dispatch costs tens of thousands of tokens and minutes.
+- For a follow-up check on the same flow, resume the prior `ui-behavior-verifier` agent with `SendMessage` instead of dispatching a fresh one.
+- A check that needs a real backend response logs in through the real `/login` form with real test credentials, never a synthetic JWT (it passes route guards but 401s on every real endpoint). The credentials are in Gabriel's machine-local `order-ui-test-login` memory; cloud sessions do not have it, so ask Gabriel. S3 decides a shared source.
 
-- **Mock → real backend**: never flip a feature's service from mock data to a real API call without
-  first confirming the endpoint against the local backend's live swagger/OpenAPI spec (see the
-  `connect-backend` skill). A wrong assumption here breaks a working UI against a nonexistent or
-  mismatched endpoint.
-- **Types/service lockstep**: `src/types/<feature>.ts` changes and `services/<feature>.service.ts`
-  changes land together — never one without the other.
-- **Backend integration manifest stays in lockstep too**: `docs/superpowers/specs/2026-09-14-backend-integration-manifest.openapi.yaml` is
-  the contract the backend team (and its Claude) builds against. Any change that alters what the
-  backend must provide — a field added/renamed on a shared type in `src/types/`, a new or changed
-  endpoint, an auth/CORS/cookie decision, a business rule the server must enforce — patches that
-  file **in the same commit**. Patch only what the decision touches, bump `info.version`, add an
-  `x-changelog` entry, and put anything not yet final under `x-open-decisions`. Never rewrite the
-  file or drop a superseded decision (record it in the changelog). The rules live in its
-  `x-maintenance` block — read it before editing. Purely visual/frontend-only changes don't touch it.
-- **No new data-fetching/state library**: TanStack React Query is the standard here; don't introduce
-  SWR, Redux, Zustand, etc.
-- **Auth-sensitive files** (`src/api/client.ts`, `features/auth/**`, anything touching the
-  `accessToken`/`refreshToken` in `localStorage`) get extra caution and explicit confirmation before
-  changes land, given the blast radius.
-- **Before calling a task done**: `yarn lint` and `yarn build` (or `tsc -b`) clean. There's no test
-  suite in this repo, so type-checking and lint are the only automated safety net.
-- **Fast-feedback hook**: `.claude/hooks/lint-typecheck.cjs` runs `eslint --fix` plus a scoped
-  incremental `tsc --noEmit` after every Edit/Write on a `*.ts`/`*.tsx` file, asynchronously
-  (non-blocking — it never gates the edit). It surfaces remaining issues via a system message; it
-  does not replace running `yarn build` before finishing a task.
-- **Browser verification (`verify-ui`) is for behavior, not for discovering fixes**: CSS/layout/
-  stacking bugs are derivable from source (grep `z-index`/`position`, read the DOM ancestry) —
-  reason out the fix and apply it, then dispatch at most once to confirm. Don't iterate fixes
-  through repeated browser dispatches; each one is tens of thousands of tokens and minutes of wall
-  time. When a check needs a real backend response, use real test credentials (see the
-  `order-ui-test-login` memory) via the actual `/login` form, not a synthetic JWT — a synthetic
-  token passes route guards but always 401s against real endpoints. For a follow-up check on the
-  same flow, resume the prior `ui-behavior-verifier` agent via `SendMessage` instead of dispatching
-  fresh — see the `verify-ui` skill for details.
-- **Model tiering for subagents**: a custom agent with no `model:` in its frontmatter silently
-  inherits whatever model is driving the *main* session — if that's Opus, every dispatch of it
-  pays Opus rates regardless of how mechanical the task is. Pin `model:` explicitly on every
-  `.claude/agents/*.md` file to match the task, not the caller:
-  - `sonnet` — anything that correlates code across files and forms a judgment call (verdicts,
-    drift reports, bug findings). Both `requirement-auditor` and `ui-behavior-verifier` are pinned
-    here; don't bump either to `opus` and don't drop either to `haiku` — both do real
-    cross-file/cross-state reasoning where a wrong verdict is expensive to discover later.
-  - `haiku` — only for genuinely mechanical work with no judgment call: pure lookup/formatting/
-    extraction where the acceptance criteria are unambiguous. This repo has no such agent yet;
-    don't force-fit an existing judgment-heavy agent down to this tier just to save cost.
-  - Leave unpinned (inherit) only for a one-off `Agent` dispatch you're driving interactively in
-    the same turn, where you're choosing the model yourself via the `model` param anyway.
-- **Prefer `fork` over a fresh agent mid-conversation** for research that needs this session's
-  context (e.g. "what's left before X ships" style survey questions) — a fork shares this
-  session's prompt cache, so it doesn't re-pay cache-creation cost for context the main session
-  already paid for. Reach for a fresh `general-purpose`/custom agent only when the task doesn't
-  need conversation context (it starts cold either way) or when you deliberately want the noisy
-  transcript kept out of both this session and a fork's shared history.
+## Subagents
 
-## Git workflow
+- Pin `model:` on every `.claude/agents/*.md`. An agent without it inherits the main session's model, so an Opus session pays Opus rates for mechanical work.
+  - `sonnet`: work that correlates code across files and makes a judgment call (verdicts, drift reports, bug findings). `requirement-auditor` and `ui-behavior-verifier` stay on `sonnet`; move neither to `opus` nor to `haiku`.
+  - `haiku`: only purely mechanical lookup, formatting or extraction with unambiguous acceptance criteria. No such agent exists yet; do not force a judgment-heavy agent down to it.
+  - Unpinned only for a one-off `Agent` dispatch where you pass `model` yourself.
+- Prefer a `fork` over a fresh agent mid-conversation for research that needs this session's context: a fork shares this session's prompt cache. Use a fresh agent when the task needs no conversation context, or to keep a noisy transcript out of this session and a fork's history.
 
-- **Branch:** all work is committed to `Claude-Assisted-Development` and pushed to
-  `origin/Claude-Assisted-Development`. `main` stays untouched until there is something concrete
-  to release — never commit to, merge into, or push `main`.
-- **Commit at the end of every task**, after `yarn build` and `yarn lint` are clean. Use an
-  explicit pathspec (`git commit -m "..." -- <files>`) and a conventional message (`feat(...)`,
-  `fix(...)`, `docs(...)`). Never `git add -A`.
-- **Push** to `origin/Claude-Assisted-Development` after committing (plain push, never force).
-- **Only the main agent commits/pushes.** Subagents never run git write commands; the main agent
-  reviews their work first. Never `git stash` (shared `.git` across worktrees).
+## Git workflow (ADR-0013)
+
+- Working branch `Claude-Assisted-Development`, pushed to `origin/Claude-Assisted-Development`. Never commit to, merge into or push `main`, and never read `main` as the reference.
+- Commit at the end of every task, after `yarn build` passes and `yarn lint` shows no new errors. Always an explicit pathspec (`git commit -m "..." -- <files>`) and a conventional message (`feat(...)`, `fix(...)`, `docs(...)`). Never `git add -A`, `git add .` or `git commit -a`.
+- Push with a plain `git push`, never force. Update with `git pull --ff-only` (a plain pull can create a merge commit).
+- Never merge: no `git merge` in any form, including local worktree-to-branch merges; no PR merge or auto-merge. Parallel worktree results land by `git cherry-pick`.
+- Never `git stash`: `.git` is shared across worktrees, and stash/pop can clobber another worktree's work.
+- Only the main agent commits and pushes, after reviewing subagent work. Subagents never run git write commands.
+- These rules become `permissions.deny` entries in the committed `.claude/settings.json` in S3, once `.claude/` is versioned (Q-06).
+
+## Legacy docs in this repo
+
+`docs/superpowers/` holds the frontend's earlier specs and plans. Each carries a superseded or status banner (under the title; in the manifest, comment lines at the top): read it first. The plans are executed records: never re-execute them or copy their worktree-merge or manifest-patch steps. `2026-09-16-business-rules-master-en.md` is a 2026-09-16 snapshot that wins over the pt-BR copies (ADR-0012); whether it moves to the backend `docs/` is Q-14.

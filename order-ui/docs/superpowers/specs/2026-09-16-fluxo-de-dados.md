@@ -1,5 +1,7 @@
 # Fluxo de Dados — order-ui (Operação de Restaurante)
 
+> **Reference only (2026-09-29).** pt-BR data-flow notes of 2026-09-16 with no English counterpart (ADR-0012). The mock-versus-real boundary described here changes as each feature moves to the backend (ADR-0007). Translate the parts a new doc needs; do not extend this file.
+
 Este documento descreve, sob a ótica de engenharia de software, como os dados circulam entre as áreas do sistema: camadas, fronteira entre dados simulados e backend real, chaves de cache compartilhadas e os pontos onde uma área lê dados de outra. É o complemento técnico do documento `2026-09-16-regras-de-negocio.md`.
 
 ## Convenção de camadas (vale para toda área com dados simulados)

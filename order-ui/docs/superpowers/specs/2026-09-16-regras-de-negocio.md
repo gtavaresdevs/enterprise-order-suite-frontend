@@ -1,5 +1,7 @@
 # Regras de Negócio — order-ui (Operação de Restaurante)
 
+> **Reference only (2026-09-29).** pt-BR translation of `2026-09-16-business-rules-master-en.md`, which wins where they differ (ADR-0012). Same caveat as the English file: status snapshot of 2026-09-16; re-verify before acting.
+
 ## Como ler este documento
 
 Este documento reúne as regras de negócio de **todas** as áreas do sistema, cobrindo tanto o que já está **implementado** (Fases 0-9 da reestruturação para operação de restaurante) quanto o que já foi **decidido em especificação, mas ainda não construído** (Fases 10-11: comandas, atendimento por garçom, polimento visual). Ele nasce de uma auditoria cruzada entre as duas especificações já existentes do projeto e o código-fonte real, e serve de referência única para o próximo trabalho de correção/ajuste do sistema.
