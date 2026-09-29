@@ -15,9 +15,9 @@ React 19 + TypeScript SPA on Vite; Tailwind 4 with shadcn/Radix primitives; TanS
 
 ## Commands
 
-- `yarn dev` (Vite), `yarn build` (`tsc -b && vite build`), `yarn lint` (`eslint .`).
-- No test runner yet: no `test` script, no Jest or Vitest. Vitest is planned in S3 (ADR-0015); after that, verification is `yarn lint && yarn build && yarn test`. Until then `yarn build` and `yarn lint` are the only automated safety net. Check `package.json` before assuming test tooling exists.
-- `yarn lint` had about 28 pre-existing errors in `profile`/`settings`/`auth` files when last counted (frontend phase 6; not re-verified since; baseline: Q-74, S3). Add no new ones.
+- `yarn dev` (Vite), `yarn build` (`tsc -b && vite build`), `yarn lint` (`eslint .`), `yarn test` (`vitest run`).
+- Verification before "done": `yarn lint && yarn build && yarn test`. Vitest runs `*.test.ts(x)` files next to the code they test (first ones: `src/utils/*.test.ts`); the default environment is Node, so a component test must opt into a DOM environment first. CI (`.github/workflows/ci.yml` at the repo root) runs the same three commands on every push to `Claude-Assisted-Development`.
+- `yarn lint` is clean (0 errors, re-checked 2026-09-29 in S3). Keep it clean: CI fails on any lint error.
 
 ## Direction (replaces the 2026-09-09 "Active initiative")
 
@@ -95,7 +95,7 @@ Check the service file before editing a feature: a hook that looks like it fetch
 ## Git workflow (ADR-0013)
 
 - Working branch `Claude-Assisted-Development`, pushed to `origin/Claude-Assisted-Development`. Never commit to, merge into or push `main`, and never read `main` as the reference.
-- Commit at the end of every task, after `yarn build` passes and `yarn lint` shows no new errors. Always an explicit pathspec (`git commit -m "..." -- <files>`) and a conventional message (`feat(...)`, `fix(...)`, `docs(...)`). Never `git add -A`, `git add .` or `git commit -a`.
+- Commit at the end of every task, after `yarn lint && yarn build && yarn test` passes. Always an explicit pathspec (`git commit -m "..." -- <files>`) and a conventional message (`feat(...)`, `fix(...)`, `docs(...)`). Never `git add -A`, `git add .` or `git commit -a`.
 - Push with a plain `git push`, never force. Update with `git pull --ff-only` (a plain pull can create a merge commit).
 - Never merge: no `git merge` in any form, including local worktree-to-branch merges; no PR merge or auto-merge. Parallel worktree results land by `git cherry-pick`.
 - Never `git stash`: `.git` is shared across worktrees, and stash/pop can clobber another worktree's work.
