@@ -1,5 +1,7 @@
 # Enterprise Order Suite (EOS) - Frontend
 
+> **Note (2026-10-01):** this README describes the earlier B2B demo. The product is now a multi-tenant restaurant operations SaaS; see [`docs/README.md`](https://github.com/gtavaresdevs/enterprise-order-suite/blob/feature/ai-agent/docs/README.md) in the backend repo (branch `feature/ai-agent`).
+
 Modern React + TypeScript client application for the Enterprise Order Suite, a B2B Order Management System. This frontend provides a responsive, role-aware dashboard for order fulfillment, inventory management, user profiles, and a Kitchen Display System (KDS). 
 
 Designed as the client-side counterpart to a Spring Boot/PostgreSQL backend, this repository prioritizes clean architecture, type-safe API consumption, strict separation of concerns, and scalable state management.

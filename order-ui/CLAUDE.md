@@ -72,11 +72,13 @@ Check the service file before editing a feature: a hook that looks like it fetch
 - `/storefront`, `/checkout`, `/kds`, `/table-menu` and `/track-order` render outside the shell with no login. That describes today, not a rule: KDS sign-in is Q-54 and an in-memory access token is Q-29 (both open).
 - **Auth-sensitive files** (`src/api/client.ts`, `features/auth/**`, `src/layouts/protected-layout/**`, anything that touches the tokens or `role` in `localStorage` or relies on the refresh cookie): extra caution, and Gabriel's explicit confirmation before a change lands.
 
-## Claude tooling (machine-local today)
+## Claude tooling (`order-ui/.claude/`, versioned)
 
-- The skills named here (`migrate-shared-type`, `scaffold-feature`, `connect-backend`, `verify-ui`, also `audit-requirement`), the agents `requirement-auditor` and `ui-behavior-verifier`, and the hook `.claude/hooks/lint-typecheck.cjs` live in `order-ui/.claude/`. That folder is gitignored (`order-ui/.gitignore` L17) and exists only on Gabriel's machine; cloud sessions do not have it. How it gets into git is Q-06; what happens to Graphify, ponytail and the wshobson plugins is Q-07 (both open).
-- Without them, follow the rules in this file directly. Where a skill conflicts with an ADR, the ADR wins: `connect-backend` predates ADR-0010, which requires it to read the backend spec (S3 reviews it).
-- The hook, where present, runs `eslint --fix` and a scoped incremental `tsc --noEmit` after each Edit/Write on `*.ts`/`*.tsx`, asynchronously and without blocking. It does not replace `yarn build` before finishing a task.
+- `order-ui/.claude/` is in git since Gabriel's commit `c4a7309` (Q-06, Q-07): the skills (`migrate-shared-type`, `scaffold-feature`, `connect-backend`, `verify-ui`, `audit-requirement`, `graphify`), the agents `requirement-auditor` and `ui-behavior-verifier`, the hook `hooks/lint-typecheck.cjs`, `settings.json` (hook, plugins, git `permissions.deny`) and `.claude/CLAUDE.md` (Graphify trigger). Machine-local state stays ignored (`order-ui/.gitignore`): `settings.local.json`, `.tsc-hook-cache`, `scheduled_tasks.lock`, `*.graphify-bak`.
+- Where you start Claude Code matters. Settings load only from the starting directory: started in `order-ui/` (Gabriel's machine), `order-ui/.claude/settings.json` applies; started at the repo root (cloud sessions), the root `.claude/settings.json` applies instead, and it carries only the git `permissions.deny` rules, so the lint hook and plugins do not run there. Skills, agents and this file load on demand once the session works under `order-ui/`.
+- Graphify needs the `graphifyy` Python package on the machine; its output (`graphify-out/`) is gitignored and refreshed by hand.
+- Where a skill conflicts with an ADR, the ADR wins: `connect-backend` predates ADR-0010, which requires it to read the backend spec.
+- The hook runs `eslint --fix` and a scoped incremental `tsc --noEmit` after each Edit/Write on `*.ts`/`*.tsx`, asynchronously and without blocking. It does not replace `yarn build` before finishing a task.
 
 ## Browser verification (`verify-ui`)
 
@@ -100,7 +102,7 @@ Check the service file before editing a feature: a hook that looks like it fetch
 - Never merge: no `git merge` in any form, including local worktree-to-branch merges; no PR merge or auto-merge. Parallel worktree results land by `git cherry-pick`.
 - Never `git stash`: `.git` is shared across worktrees, and stash/pop can clobber another worktree's work.
 - Only the main agent commits and pushes, after reviewing subagent work. Subagents never run git write commands.
-- These rules become `permissions.deny` entries in the committed `.claude/settings.json` in S3, once `.claude/` is versioned (Q-06).
+- `permissions.deny` in `order-ui/.claude/settings.json` and in the root `.claude/settings.json` blocks the common forms of these commands. It matches command prefixes, so it is a guardrail, not a boundary.
 
 ## Legacy docs in this repo
 
