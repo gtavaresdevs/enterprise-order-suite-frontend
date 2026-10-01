@@ -13,8 +13,11 @@ dist/
 dist-ssr/
 coverage/
 
-# Claude Code local state
-.claude/
+# Claude Code local state (the rest of .claude/ is versioned)
+.claude/settings.local.json
+.claude/.tsc-hook-cache
+.claude/scheduled_tasks.lock
+.claude/*.graphify-bak
 .playwright-mcp/
 
 # Graphify knowledge graph output (manual refresh only, not synced to git)
