@@ -3,6 +3,8 @@ name: connect-backend
 description: Wire a feature's service layer to the real backend (running locally via Docker) using its live OpenAPI/swagger spec — either auditing an already-connected feature (e.g. profile, auth) for drift, or converting a mock feature's service from constants-based fake data to real Axios calls. Use when the user asks to "connect", "wire up", "hook up to the backend", or "implement" a feature against the real API, or to check a feature against swagger.
 ---
 
+> **Partly superseded (2026-10-01). Where this skill and ADR-0010 differ, the ADR wins.** §6 is retired: never patch the frozen frontend manifest. The live swagger of a local backend (§0-§1) shows what that backend runs today; it is not the contract. API shapes come from the backend repo `enterprise-order-suite/docs/api/` (`drafts/` while a contract is designed, `openapi.yaml` once implemented) and, from Build 1, from the frontend's vendored copy of that spec and the types generated from it (Q-76 a). Raise any difference between them to Gabriel and the backend; never settle it in the frontend. §4 predates Vitest: verify with `yarn lint && yarn build && yarn test`.
+
 # Connect a feature to the real backend
 
 This project's backend runs locally in Docker (started separately by the user, e.g. from an

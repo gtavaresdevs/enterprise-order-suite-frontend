@@ -3,7 +3,7 @@
 > **SUPERSEDED as the project entry point (2026-09-29). Do not start here.**
 > Current plan, phase and order of work: `enterprise-order-suite/docs/README.md` and `enterprise-order-suite/docs/roadmap.md`. ADRs: `enterprise-order-suite/docs/adr/`.
 > This file is the historical record of frontend phases 0-9, which are done.
-> Superseded below: "Read this file first" (ADR-0007); the local-merge finishing step (ADR-0013); the "Blocked" items and "What's next" (ADR-0005, ADR-0006, ADR-0007); "No test suite" (ADR-0015); the public `/kds` route as a standing rule (ADR-0001; KDS sign-in is an open question).
+> Superseded below: "Read this file first" (ADR-0007); the local-merge finishing step (ADR-0013); the "Blocked" items and "What's next" (ADR-0005, ADR-0006, ADR-0007); "No test suite" (ADR-0015); the public `/kds` route as a standing rule (ADR-0001; the KDS signs in with a staff login, Q-54 a, 2026-10-01).
 > Phase 9 is on `origin/Claude-Assisted-Development`; "not pushed" below is stale. The 2026-09-25 auth refresh-cookie work (`2026-09-25-auth-refresh-cookie-cross-tab.md`) is done and not listed here.
 > The audit Stage 2 section is input to the S5 audit triage, not a ready plan: re-verify each item first, and cite the English business-rules file (ADR-0012).
 

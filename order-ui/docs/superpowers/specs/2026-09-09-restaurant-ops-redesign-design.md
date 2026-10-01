@@ -2,7 +2,7 @@
 
 > **Partly superseded (2026-09-29). No longer the source of truth for the concept.**
 > Superseded: single-tenant deployment and its role mapping (ADR-0001); in-app payment before confirmation (ADR-0005); automatic WhatsApp messages (ADR-0006); this spec as the backend's target contract and roadmap (ADR-0010, ADR-0007).
-> Open, decided in the contracts, not here: chains vs single location, the Customer model, channel and fulfillment vocabulary and casing, stock counts. Decided since: ids are ULIDs (ADR-0009).
+> Decided since (Gabriel, 2026-10-01; the contracts record the detail): one tenant = one restaurant location, not a chain (Q-22 a); the customer is a snapshot on each order, with no Customer table (Q-51 a); `channel` DINE_IN, TAKEAWAY or DELIVERY and `source` STOREFRONT, PHONE, WAITER, POS, QR or TABLET, SCREAMING_SNAKE on the wire (Q-49 a, Q-34 a); no stock counts, the 86 toggle only (Q-42 c); ids are ULIDs (ADR-0009).
 > Still valid: one Order model and one KDS queue, one Menu served everywhere (ADR-0002); Tables as a list with QR codes; Team, Roles and Audit Log; keep and extend what works.
 > Per-decision verdicts: `enterprise-order-suite/docs/adr/0000-legacy-decisions-triage.md` (table E). Start at `enterprise-order-suite/docs/README.md`.
 

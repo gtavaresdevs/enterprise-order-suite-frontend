@@ -1,6 +1,6 @@
 # Dev tooling workflow: Graphify, ponytail, wshobson/agents
 
-> **Under review (2026-09-29).** The frontend `.claude/` is being versioned in git (ADR-0015, step S3). Whether Graphify, ponytail and the wshobson plugins are kept is an open question. They are installed only on Gabriel's machine; cloud sessions do not have them.
+> **Partly out of date (2026-10-01).** `.claude/` is no longer git-ignored: it is versioned since commit `c4a7309` (Q-06, Q-07), including the graphify skill and a `settings.json` that enables ponytail and the two wshobson plugins. The "git-ignored, local-machine state" statements below describe the setup before that commit.
 
 > **Status:** Implemented 2026-09-15 — see `docs/superpowers/plans/2026-09-15-dev-tooling-workflow-design.md`.
 > Two deviations from the plan as installed, both documented in the plan: Graphify's Claude
