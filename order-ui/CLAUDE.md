@@ -84,7 +84,7 @@ Check the service file before editing a feature: a hook that looks like it fetch
 
 - It confirms behavior; it does not discover fixes. CSS, layout and stacking bugs are derivable from source (grep `z-index`/`position`, read the DOM ancestry): reason out the fix, apply it, then dispatch at most once to confirm. Each dispatch costs tens of thousands of tokens and minutes.
 - For a follow-up check on the same flow, resume the prior `ui-behavior-verifier` agent with `SendMessage` instead of dispatching a fresh one.
-- A check that needs a real backend response logs in through the real `/login` form with real test credentials, never a synthetic JWT (it passes route guards but 401s on every real endpoint). The credentials are in Gabriel's machine-local `order-ui-test-login` memory; cloud sessions do not have it, so ask Gabriel. S3 decides a shared source.
+- A check that needs a real backend response logs in through the real `/login` form with real test credentials, never a synthetic JWT (it passes route guards but 401s on every real endpoint). The credentials are in Gabriel's machine-local `order-ui-test-login` memory; cloud sessions do not have it, so ask Gabriel. No shared source is set yet.
 
 ## Subagents
 
@@ -106,4 +106,4 @@ Check the service file before editing a feature: a hook that looks like it fetch
 
 ## Legacy docs in this repo
 
-`docs/superpowers/` holds the frontend's earlier specs and plans. Each carries a superseded or status banner (under the title; in the manifest, comment lines at the top): read it first. The plans are executed records: never re-execute them or copy their worktree-merge or manifest-patch steps. `2026-09-16-business-rules-master-en.md` is a 2026-09-16 snapshot that wins over the pt-BR copies (ADR-0012); whether it moves to the backend `docs/` is Q-14.
+`docs/superpowers/` holds the frontend's earlier specs and plans. Each carries a superseded or status banner (under the title; in the manifest, comment lines at the top): read it first. The plans are executed records: never re-execute them or copy their worktree-merge or manifest-patch steps. `2026-09-16-business-rules-master-en.md` is a 2026-09-16 snapshot that wins over the pt-BR copies (ADR-0012); it stays here until S5 re-verifies it, then the English master moves to the backend `docs/business-rules/` (Q-14, decided by Claude, Gabriel may override).

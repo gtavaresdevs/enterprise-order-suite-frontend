@@ -3,6 +3,8 @@ name: scaffold-feature
 description: Use when creating a new feature module under src/features/ (e.g. a brand-new domain like Menu or Tables), or when checking whether an existing feature folder actually matches this repo's standard module shape, before writing any feature files.
 ---
 
+> **Partly superseded (2026-10-01). Where this skill and ADR-0010 differ, the ADR wins.** Never add resources to the frozen frontend manifest; a new backend need is raised to Gabriel and the backend. Target DTO shapes come from the backend repo `enterprise-order-suite/docs/` (contract docs, `docs/api/drafts/`), not from the 2026-09-09 spec.
+
 # Scaffold a feature module
 
 This repo (`order-ui`) requires every feature under `src/features/<feature>/` to follow one

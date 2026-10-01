@@ -1,6 +1,6 @@
 # order-ui — Master Business Rules & Data Flow (English source)
 
-> **Status snapshot of 2026-09-16, not current (2026-09-29).** "Implemented" and "Diverges" tags predate later fixes; about half of the audit list is already fixed. Re-verify a rule against the code before acting on it. "[NEW]" rules are proposals Gabriel has not confirmed. Order and menu rules are input to the Order Core, Menu and Storefront contracts in `enterprise-order-suite/docs/`, which win where they differ. This English file wins over the pt-BR versions (ADR-0012).
+> **Status snapshot of 2026-09-16, not current (2026-09-29).** "Implemented" and "Diverges" tags predate later fixes; about half of the audit list is already fixed. Re-verify a rule against the code before acting on it. "[NEW]" rules are proposals Gabriel has not confirmed, except those his register answers of 2026-10-01 settled (for example rules 6, 8, 13, 18 and 46: Q-48 a; rules 29 and 30: Q-45 a; rule 48: Q-56 a; rule 47: Q-67 a; rule 15 rejected by Q-55 a): check `enterprise-order-suite/docs/planning/open-questions.md` first. Order and menu rules are input to the Order Core, Menu and Storefront contracts in `enterprise-order-suite/docs/`, which win where they differ. This English file wins over the pt-BR versions (ADR-0012).
 
 Status vocabulary used throughout:
 - **Implemented** — rule is real, working code today.

@@ -38,6 +38,10 @@ not just CLAUDE.md's general conventions. A requirement phrased loosely ("orders
 different channels") often means "matches the spec's `OrderChannel` type exactly," and the spec
 is the place to check the precise expected shape/fields before forming a verdict.
 
+Read that spec's banner first: where it marks a part superseded or "decided since" (for example
+channel and source, Q-49 a), the backend docs (`enterprise-order-suite/docs/`, ADRs and the
+register) win over the spec.
+
 ## Method
 
 1. **Parse the requirement into sub-requirements.** A single sentence often bundles several

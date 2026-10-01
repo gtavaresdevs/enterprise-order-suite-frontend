@@ -3,6 +3,8 @@ name: migrate-shared-type
 description: Use when a type or interface referenced by more than one feature module needs its shape changed, renamed, or consolidated with a duplicate — before editing any file that consumes it. Symptoms include multiple near-identical interfaces for the same real-world concept (e.g. an Order type and a Ticket type both describing an order), or a field rename that needs to propagate across features.
 ---
 
+> **Partly superseded (2026-10-01). Where this skill and ADR-0010 differ, the ADR wins.** Step 7 is retired: never patch the frozen frontend manifest; raise a contract change to Gabriel and the backend. Target shapes come from the backend repo `enterprise-order-suite/docs/` (contract docs, `docs/api/drafts/`), not from the 2026-09-09 spec, whose banner lists what is superseded or decided since (for example channel and source, Q-49 a). Step 5 predates Vitest: verify with `yarn lint && yarn build && yarn test`.
+
 # Migrate a shared type across consumers
 
 The highest-error part of a cross-feature refactor is a type change landing in the type file but
