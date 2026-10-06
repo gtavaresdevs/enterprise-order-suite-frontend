@@ -1,7 +1,7 @@
 # Core Package — Brazil Market Fit, EN/PT-BR i18n & UX Polish
 
 > **Partly superseded (2026-09-29).** Still valid: i18n (EN/pt-BR), BR formatting, delivery zones as a named neighborhood list, in-person card and cash.
-> Superseded: the mock PIX "pay now" flow and in-app card payment through a PSP (ADR-0005, ADR-0006); restaurant settings kept in the browser's `PreferencesState` (ADR-0014); "no backend/API change" as a scope rule (ADR-0007). PIX paid at checkout is proposed again as a static PIX code that staff confirm by recording the payment, with no PSP (ADR-0020, Proposed).
+> Superseded: the mock PIX "pay now" flow and in-app card payment through a PSP (ADR-0005, ADR-0006); restaurant settings kept in the browser's `PreferencesState` (ADR-0014); "no backend/API change" as a scope rule (ADR-0007). PIX paid at checkout comes back as a static PIX code that staff confirm by recording the payment, with no PSP (ADR-0020, Accepted 2026-10-06).
 > Not scheduled: the 10-package product plan (ADR-0018: reference only) and Phase 10 comandas (Later, Q-81 a). Phase 11's small polish items ride alongside Build 3-4 (Q-82 a, 2026-10-01).
 > Verdicts: `enterprise-order-suite/docs/adr/0000-legacy-decisions-triage.md` (table G).
 
